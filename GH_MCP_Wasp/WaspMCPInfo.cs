@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing;
 using Grasshopper.Kernel;
 
@@ -12,7 +12,7 @@ namespace GH_MCP_Wasp
         /// detect v0.2+/v0.3 capability without probing. Keep in sync with
         /// &lt;Version&gt; in GH_MCP_Wasp.csproj.
         /// </summary>
-        public const string BridgeVersion = "0.5.1";
+        public const string BridgeVersion = "0.5.2";
 
         public override string Name => "GH_MCP_Wasp";
 

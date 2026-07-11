@@ -40,6 +40,8 @@ if (Test-Path $Dist) { Remove-Item $Dist -Recurse -Force -Confirm:$false }
 New-Item -ItemType Directory -Path $Dist | Out-Null
 Copy-Item $GhaSource $Dist
 Copy-Item $Manifest  $Dist
+$Icon = Join-Path $PSScriptRoot "icon.png"
+if (Test-Path $Icon) { Copy-Item $Icon $Dist }
 Write-Host "Staged package contents in $Dist" -ForegroundColor Green
 Get-ChildItem $Dist | ForEach-Object { Write-Host "  $($_.Name)  ($($_.Length) bytes)" }
 

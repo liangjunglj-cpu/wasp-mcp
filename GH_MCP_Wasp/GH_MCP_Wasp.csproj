@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <!-- Rhino 8 Windows loads net48 .gha by default -->
@@ -12,7 +12,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <NoWarn>NU1701</NoWarn>
-    <Version>0.5.1</Version>
+    <Version>0.5.2</Version>
     <Title>GH_MCP_Wasp</Title>
     <Company>wasp-mcp</Company>
     <Description>Wasp MCP Bridge - TCP command bridge for driving Wasp components on the Grasshopper canvas</Description>

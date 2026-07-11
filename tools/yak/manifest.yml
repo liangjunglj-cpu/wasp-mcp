@@ -1,6 +1,6 @@
 ---
 name: wasp-mcp-bridge
-version: 0.5.1
+version: 0.5.2
 authors:
   - Liang Jung
 description: >
@@ -17,3 +17,4 @@ keywords:
   - claude
   - automation
   - aggregation
+icon: icon.png
