@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Rhino 8 Windows loads net48 .gha by default -->
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <AssemblyName>GH_MCP_Wasp</AssemblyName>
+    <RootNamespace>GH_MCP_Wasp</RootNamespace>
+    <TargetExt>.gha</TargetExt>
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>NU1701</NoWarn>
+    <Version>0.5.0</Version>
+    <Title>GH_MCP_Wasp</Title>
+    <Company>wasp-mcp</Company>
+    <Description>Wasp MCP Bridge - TCP command bridge for driving Wasp components on the Grasshopper canvas</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Reference Rhino/Grasshopper assemblies from the local Rhino 8 install.
+         Private=False so the .gha does not bundle copies (Rhino provides them at runtime). -->
+    <Reference Include="RhinoCommon">
+      <HintPath>C:\Program Files\Rhino 8\System\RhinoCommon.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Grasshopper">
+      <HintPath>C:\Program Files\Rhino 8\Plug-ins\Grasshopper\Grasshopper.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="GH_IO">
+      <HintPath>C:\Program Files\Rhino 8\Plug-ins\Grasshopper\GH_IO.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <!-- Grasshopper ships Newtonsoft.Json; do not bundle a conflicting copy -->
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\Program Files\Rhino 8\System\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\ComponentKnowledgeBase.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

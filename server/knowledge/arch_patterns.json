@@ -1,0 +1,1887 @@
+{
+  "version": "0.2",
+  "generated": "2026-07-10",
+  "provenance": "Extracted from corpus/arch-dumps (gh_dump over the architectural corpus; repos + licenses in corpus/ARCH_SOURCES.md). Stage templates per docs/generation-principles.md: typed SLOTS + body wiring referencing slots. Every body edge, componentGuid and range_evidence value is traceable to the listed source_files. MACHINE WIRE SYNTAX (v0.5 expander): 'slot:<name> -> <ref>.<Param>' binds a slot; '<ref>.<OutParam> -> <ref>.<InParam>' is an internal edge; refs are the local component refs declared in body.components; param names are the exact names recorded in the dump wires (never prose guesses - regression finding #2). Component entries carry the dump's componentGuid ('guid') and the expander places stock components BY GUID (regression finding #1: name collisions like 'Square'); only PROTOCOL-guaranteed names (Panel, Number Slider, Boolean Toggle, Mesh, Geometry, Construct Plane, Plane) may appear without a guid. Optional component fields: 'panel_text' (fixed Panel content, set via set_panel), 'skip_when_bound': '<slot>' (internal default source - skipped when the slot is bound, its outgoing wires re-source from the binding), 'when_bound': '<slot>' (optional sub-chain, placed only when the slot is bound). Templates that cannot be expanded record 'expansion_blocked' with the reason. Slot field 'ref_param' names the floating param type (see param_components) used to realize a geometry slot bound to Rhino object ids.",
+  "slot_kinds": {
+    "geometry": "referenced Rhino geometry, an upstream stage output, or an internal construction chain - anything satisfying the declared geometry role",
+    "driver_num": "user-tweakable number (slider); range_evidence = [observed slider min, max] with default = observed value",
+    "driver_int": "integer driver (seed, index)",
+    "driver_domain": "numeric domain, corpus evidence is panel text like '2 To 10'",
+    "driver_image": "file path fed to an Image Sampler (needs an image on disk before solving)",
+    "count": "integer element/subdivision count driver"
+  },
+  "templates": {
+    "arch.attractor_scale_grid": {
+      "id": "arch.attractor_scale_grid",
+      "stage_name": "ATTRACTOR FIELD",
+      "explainer": "Measures each grid point's distance to an attractor point and turns distance into size: elements grow as they move away from the attractor.\nOne point steering a whole field is the basic move behind graded facades and paving.",
+      "slots": {
+        "grid_points": {
+          "kind": "geometry",
+          "arity": "1..n",
+          "note": "any point set: Square/Hexagonal grid Points output, Divide Surface points, or referenced points",
+          "optional": true,
+          "ref_param": "Point"
+        },
+        "attractor": {
+          "kind": "geometry",
+          "arity": "1",
+          "note": "attractor point (referenced Rhino point in corpus)",
+          "ref_param": "Point"
+        },
+        "influence": {
+          "kind": "driver_num",
+          "default": 0.05,
+          "range_evidence": [
+            0,
+            1
+          ],
+          "note": "corpus values 0.025 / 0.034 / 0.05"
+        },
+        "cell_size": {
+          "kind": "driver_num",
+          "default": 10,
+          "range_evidence": [
+            0,
+            10
+          ]
+        },
+        "extent_x": {
+          "kind": "count",
+          "default": 10,
+          "range_evidence": [
+            0,
+            100
+          ]
+        },
+        "extent_y": {
+          "kind": "count",
+          "default": 10,
+          "range_evidence": [
+            0,
+            100
+          ]
+        }
+      },
+      "body": {
+        "components": [
+          {
+            "ref": "grid",
+            "type": "Square",
+            "guid": "717a1e25-a075-4530-bc80-d43ecc2500d9",
+            "nickname": "SqGrid",
+            "skip_when_bound": "grid_points",
+            "note": "internal default grid; skipped when slot grid_points is bound (its Points wires re-source from the binding). GUID mandatory: 'Square' also names Maths>Sqr (regression finding #1)."
+          },
+          {
+            "ref": "dist",
+            "type": "Distance",
+            "guid": "93b8e93d-f932-402c-b435-84be04d87666",
+            "nickname": "Dist"
+          },
+          {
+            "ref": "scale",
+            "type": "Multiplication",
+            "guid": "ce46b74e-00c9-43c4-805a-193b69ea4a11",
+            "nickname": "A×B"
+          },
+          {
+            "ref": "cell",
+            "type": "Center Box",
+            "guid": "28061aae-04fb-4cb5-ac45-16f3b66bc0a4",
+            "nickname": "Box"
+          }
+        ],
+        "wires": [
+          "slot:cell_size -> grid.Size",
+          "slot:extent_x -> grid.Extent X",
+          "slot:extent_y -> grid.Extent Y",
+          "grid.Points -> dist.Point A",
+          "slot:attractor -> dist.Point B",
+          "dist.Distance -> scale.A",
+          "slot:influence -> scale.B",
+          "grid.Points -> cell.Base",
+          "scale.Result -> cell.X",
+          "scale.Result -> cell.Y",
+          "scale.Result -> cell.Z"
+        ]
+      },
+      "outputs": {
+        "sizes": "scale.Result",
+        "cells": "cell.Box"
+      },
+      "source_files": [
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.5.1 Attraction-Repulsion.gh",
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.5.2 Attraction-Repulsion.gh"
+      ]
+    },
+    "arch.hex_attractor_paneling": {
+      "id": "arch.hex_attractor_paneling",
+      "stage_name": "ATTRACTOR PANELING",
+      "explainer": "Fills a region with hexagonal cells, scales each cell by its remapped distance to attractor points, and culls cells past a threshold.\nAttractor-driven scale + cull is how an opening pattern responds to sun, views, or circulation.",
+      "slots": {
+        "attractors": {
+          "kind": "geometry",
+          "arity": "1..n",
+          "note": "attractor point(s); Closest Point takes a cloud, so several attractors work unchanged"
+        },
+        "cell_size": {
+          "kind": "driver_num",
+          "default": 0.1,
+          "range_evidence": [
+            0,
+            1
+          ]
+        },
+        "extent_x": {
+          "kind": "count",
+          "default": 40,
+          "range_evidence": [
+            0,
+            1000
+          ]
+        },
+        "extent_y": {
+          "kind": "count",
+          "default": 30,
+          "range_evidence": [
+            0,
+            1000
+          ]
+        },
+        "threshold": {
+          "kind": "driver_num",
+          "default": 0.4,
+          "range_evidence": [
+            0,
+            1
+          ]
+        },
+        "scale_range": {
+          "kind": "driver_domain",
+          "default": "0.85 To 0.1",
+          "note": "remap target: near-attractor cells shrink toward 0.1"
+        }
+      },
+      "body": {
+        "components": [
+          {
+            "ref": "hexgrid",
+            "type": "Hexagonal"
+          },
+          {
+            "ref": "cp",
+            "type": "Closest Point"
+          },
+          {
+            "ref": "bounds",
+            "type": "Bounds"
+          },
+          {
+            "ref": "remap",
+            "type": "Remap Numbers"
+          },
+          {
+            "ref": "gmap",
+            "type": "Graph Mapper",
+            "note": "optional response-curve shaping between remap and scale"
+          },
+          {
+            "ref": "scale",
+            "type": "Scale"
+          },
+          {
+            "ref": "gt",
+            "type": "Larger Than"
+          },
+          {
+            "ref": "cull",
+            "type": "Cull Pattern"
+          },
+          {
+            "ref": "srf",
+            "type": "Boundary Surfaces"
+          }
+        ],
+        "wires": [
+          "slot:cell_size -> hexgrid.Size",
+          "slot:extent_x -> hexgrid.Extent X",
+          "slot:extent_y -> hexgrid.Extent Y",
+          "hexgrid.Points -> cp.Point",
+          "slot:attractors -> cp.Cloud",
+          "cp.Distance -> bounds.Numbers",
+          "cp.Distance -> remap.Value",
+          "bounds.Domain -> remap.Source",
+          "slot:scale_range -> remap.Target",
+          "remap.Mapped -> gmap.Graph Mapper",
+          "hexgrid.Cells -> scale.Geometry",
+          "hexgrid.Points -> scale.Center",
+          "gmap.Graph Mapper -> scale.Factor",
+          "gmap.Graph Mapper -> gt.First Number",
+          "slot:threshold -> gt.Second Number",
+          "scale.Geometry -> cull.List",
+          "gt.Larger than -> cull.Cull Pattern",
+          "cull.List -> srf.Edges"
+        ]
+      },
+      "outputs": {
+        "panels": "srf.Surfaces",
+        "kept_cells": "cull.List"
+      },
+      "source_files": [
+        "computational-design-library/12-attractor/wave-attractor.gh"
+      ]
+    },
+    "arch.voronoi_cell_extrusion": {
+      "id": "arch.voronoi_cell_extrusion",
+      "stage_name": "VORONOI CELLS",
+      "explainer": "Scatters random points in a boundary, builds Voronoi cells around them, then extrudes each cell to a height driven by its own area (remapped into a height range).\nCellular fields like this read as organic masterplans, rockeries, or paving.",
+      "slots": {
+        "boundary": {
+          "kind": "geometry",
+          "arity": "1",
+          "note": "closed planar region curve: Rectangle in corpus, Circle in the radial variant, any region works"
+        },
+        "count": {
+          "kind": "count",
+          "default": 100,
+          "range_evidence": [
+            0,
+            1000
+          ]
+        },
+        "seed": {
+          "kind": "driver_int",
+          "default": 0,
+          "range_evidence": [
+            0,
+            1000
+          ]
+        },
+        "height_range": {
+          "kind": "driver_domain",
+          "default": "2 To 10",
+          "note": "corpus panels: '2 To 10' and '2 To 20'"
+        }
+      },
+      "body": {
+        "components": [
+          {
+            "ref": "pop",
+            "type": "Populate 2D"
+          },
+          {
+            "ref": "vor",
+            "type": "Voronoi"
+          },
+          {
+            "ref": "cellsrf",
+            "type": "Boundary Surfaces"
+          },
+          {
+            "ref": "area",
+            "type": "Area"
+          },
+          {
+            "ref": "bounds",
+            "type": "Bounds"
+          },
+          {
+            "ref": "remap",
+            "type": "Remap Numbers"
+          },
+          {
+            "ref": "uz",
+            "type": "Unit Z"
+          },
+          {
+            "ref": "ext",
+            "type": "Extrude"
+          }
+        ],
+        "wires": [
+          "slot:boundary -> pop.Region",
+          "slot:count -> pop.Count",
+          "slot:seed -> pop.Seed",
+          "pop.Population -> vor.Points",
+          "slot:boundary -> vor.Boundary",
+          "vor.Cells -> cellsrf.Edges",
+          "vor.Cells -> area.Geometry",
+          "area.Area -> bounds.Numbers",
+          "area.Area -> remap.Value",
+          "bounds.Domain -> remap.Source",
+          "slot:height_range -> remap.Target",
+          "remap.Mapped -> uz.Factor",
+          "cellsrf.Surfaces -> ext.Base",
+          "uz.Unit vector -> ext.Direction"
+        ]
+      },
+      "outputs": {
+        "cells": "vor.Cells",
+        "solids": "ext.Extrusion",
+        "heights": "remap.Mapped"
+      },
+      "notes": "Corpus also evidences a non-rectangular variant (Circle boundary + Region Intersection to trim cells + Cull Pattern dropping cells under a minimum area, slider 250 [0,1000]).",
+      "source_files": [
+        "computational-design-library/06-tessellations/cellular-rockery.gh"
+      ]
+    },
+    "arch.random_panel_facade": {
+      "id": "arch.random_panel_facade",
+      "stage_name": "RANDOM PANEL GRID",
+      "explainer": "Splits a facade rectangle into rows and columns of random sizes: each random list is normalized against its running total, so the panels always fill the overall width and height exactly.\nRe-roll the seed for a new Mondrian-style layout without touching the frame.",
+      "slots": {
+        "width": {
+          "kind": "driver_num",
+          "default": 40,
+          "range_evidence": [
+            0,
+            100
+          ]
+        },
+        "height": {
+          "kind": "driver_num",
+          "default": 32,
+          "range_evidence": [
+            0,
+            100
+          ]
+        },
+        "n_rows": {
+          "kind": "count",
+          "default": 5,
+          "range_evidence": [
+            0,
+            100
+          ]
+        },
+        "n_cols": {
+          "kind": "count",
+          "default": 14,
+          "range_evidence": [
+            0,
+            100
+          ]
+        },
+        "seed": {
+          "kind": "driver_int",
+          "default": 933,
+          "range_evidence": [
+            0,
+            1000
+          ]
+        },
+        "size_domain": {
+          "kind": "driver_domain",
+          "default": "1.27 To 2.13",
+          "note": "relative panel-size spread before normalization; corpus sliders 0-10"
+        }
+      },
+      "body": {
+        "components": [
+          {
+            "ref": "frame",
+            "type": "Rectangle",
+            "note": "overall facade rectangle W x H on XY plane"
+          },
+          {
+            "ref": "rand_rows",
+            "type": "Random"
+          },
+          {
+            "ref": "rand_cols",
+            "type": "Random",
+            "note": "per-row seeds via Series(seed+1, n_rows) so every row differs"
+          },
+          {
+            "ref": "ma_rows",
+            "type": "Mass Addition"
+          },
+          {
+            "ref": "ma_cols",
+            "type": "Mass Addition"
+          },
+          {
+            "ref": "norm_rows",
+            "type": "Division",
+            "note": "height / Mass Addition.Result"
+          },
+          {
+            "ref": "norm_cols",
+            "type": "Division",
+            "note": "width / Mass Addition.Result"
+          },
+          {
+            "ref": "row_h",
+            "type": "Multiplication"
+          },
+          {
+            "ref": "col_w",
+            "type": "Multiplication"
+          },
+          {
+            "ref": "mv_rows",
+            "type": "Move",
+            "note": "XY planes stepped by Mass Addition.Partial Results via Unit Y"
+          },
+          {
+            "ref": "mv_cols",
+            "type": "Move",
+            "note": "row planes stepped by partial sums via Unit X"
+          },
+          {
+            "ref": "cellrec",
+            "type": "Rectangle"
+          },
+          {
+            "ref": "panels",
+            "type": "Boundary Surfaces"
+          }
+        ],
+        "wires": [
+          "slot:size_domain -> rand_rows.Range",
+          "slot:n_rows -> rand_rows.Number",
+          "slot:seed -> rand_rows.Seed",
+          "rand_rows.Random -> ma_rows.Input",
+          "slot:height -> norm_rows.A",
+          "ma_rows.Result -> norm_rows.B",
+          "norm_rows.Result -> row_h.A",
+          "rand_rows.Random -> row_h.B",
+          "row_h.Result -> ma_rows.Input  (partial results give cumulative row offsets)",
+          "ma_rows.Partial Results -> mv_rows via Unit Y.Factor",
+          "slot:size_domain -> rand_cols.Range",
+          "slot:n_cols -> rand_cols.Number",
+          "Series(seed+1, n_rows) -> rand_cols.Seed",
+          "rand_cols.Random -> col_w.A (normalized by width / Mass Addition.Result)",
+          "ma_cols.Partial Results -> mv_cols via Unit X.Factor",
+          "mv_cols.Geometry (grafted planes) -> cellrec.Plane",
+          "col_w.Result -> cellrec.X Size",
+          "row_h.Result -> cellrec.Y Size",
+          "cellrec.Rectangle -> panels.Edges"
+        ]
+      },
+      "outputs": {
+        "panels": "panels.Surfaces",
+        "cell_rectangles": "cellrec.Rectangle"
+      },
+      "notes": "Body condenses the corpus graph's Merge/Shift List plumbing (planes list = [origin] + moved planes, shifted by 1) - keep that idiom when expanding: Merge origin-plane with moved planes, Shift List before feeding cell rectangles.",
+      "source_files": [
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.23 Random Panel Facade.gh"
+      ]
+    },
+    "arch.triangulated_paneling": {
+      "id": "arch.triangulated_paneling",
+      "stage_name": "TRIANGULATED PANELING",
+      "explainer": "Divides a surface into a UV point grid, then builds two families of triangles between each row and the next (shifted copies of the same grid).\nTriangles stay planar even on doubly-curved hosts - that is why diagrid facades are cut this way.",
+      "slots": {
+        "host_surface": {
+          "kind": "geometry",
+          "arity": "1",
+          "note": "any surface: referenced Rhino surface in corpus; a loft or another stage's output works"
+        },
+        "u_count": {
+          "kind": "count",
+          "default": 5,
+          "range_evidence": [
+            0,
+            10
+          ]
+        },
+        "v_count": {
+          "kind": "count",
+          "default": 7,
+          "range_evidence": [
+            0,
+            10
+          ]
+        }
+      },
+      "body": {
+        "components": [
+          {
+            "ref": "sdiv",
+            "type": "Divide Surface",
+            "nickname": "SDivide"
+          },
+          {
+            "ref": "tstat",
+            "type": "Tree Statistics"
+          },
+          {
+            "ref": "shift_rows",
+            "type": "Shift List",
+            "note": "shift -1 over branch paths = 'next row'; four Tree Branch + Shift List combos build BL/BR/TL/TR corner sets"
+          },
+          {
+            "ref": "corner_bl",
+            "type": "Point",
+            "nickname": "BOTTOM LEFT POINTS"
+          },
+          {
+            "ref": "corner_br",
+            "type": "Point",
+            "nickname": "BOTTOM RIGHT POINTS"
+          },
+          {
+            "ref": "corner_tl",
+            "type": "Point",
+            "nickname": "TOP LEFT POINTS"
+          },
+          {
+            "ref": "corner_tr",
+            "type": "Point",
+            "nickname": "TOP RIGHT POINTS"
+          },
+          {
+            "ref": "tri_a",
+            "type": "4Point Surface",
+            "note": "triangle family A: corners BL, BR, TL (3 of 4 corners = triangle)"
+          },
+          {
+            "ref": "tri_b",
+            "type": "4Point Surface",
+            "note": "triangle family B: corners BR, TR, TL"
+          }
+        ],
+        "wires": [
+          "slot:host_surface -> sdiv.Surface",
+          "slot:u_count -> sdiv.U Count",
+          "slot:v_count -> sdiv.V Count",
+          "sdiv.Points -> tstat.Tree",
+          "tstat.Paths -> shift_rows.List (Shift=-1, Wrap=False)",
+          "sdiv.Points + shifted paths -> Tree Branch -> Shift List (+/-1, Wrap=False) -> corner_bl/br/tl/tr",
+          "corner_bl.Point -> tri_a.Corner A",
+          "corner_br.Point -> tri_a.Corner B",
+          "corner_tl.Point -> tri_a.Corner C",
+          "corner_br.Point -> tri_b.Corner A",
+          "corner_tr.Point -> tri_b.Corner B",
+          "corner_tl.Point -> tri_b.Corner C"
+        ]
+      },
+      "outputs": {
+        "panels_a": "tri_a.Surface",
+        "panels_b": "tri_b.Surface"
+      },
+      "notes": "E.19 continues with Plane 3Pt + Orient to unroll every panel onto a Series-spaced XY grid for fabrication layout - reuse that tail as an optional FLATTEN sub-stage. E.18 is the single-strip facade variant of the same shift-and-triangulate idiom.",
+      "source_files": [
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.19 Triangulated Surface.gh",
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.18 Triangulated Facade.gh"
+      ]
+    },
+    "arch.planar_truss": {
+      "id": "arch.planar_truss",
+      "stage_name": "TRUSS",
+      "explainer": "Spans a truss between two supports: divide the span into equal bays, drop the bottom chord by span/depth-factor, connect the node rows with verticals (and diagonals).\nDepth as a fraction of span is how trusses are actually sized, so the slider is the engineering knob.",
+      "slots": {
+        "start_support": {
+          "kind": "geometry",
+          "arity": "1"
+        },
+        "end_support": {
+          "kind": "geometry",
+          "arity": "1"
+        },
+        "spans": {
+          "kind": "count",
+          "default": 8,
+          "range_evidence": [
+            0,
+            25
+          ]
+        },
+        "depth_factor": {
+          "kind": "driver_num",
+          "default": 8.58,
+          "range_evidence": [
+            0,
+            20
+          ],
+          "note": "truss depth = span length / depth_factor"
+        },
+        "member_radius": {
+          "kind": "driver_num",
+          "default": 0.107,
+          "range_evidence": [
+            0,
+            1
+          ]
+        }
+      },
+      "body": {
+        "components": [
+          {
+            "ref": "axis",
+            "type": "Line"
+          },
+          {
+            "ref": "div",
+            "type": "Divide Curve"
+          },
+          {
+            "ref": "len",
+            "type": "Length"
+          },
+          {
+            "ref": "depth",
+            "type": "Expression",
+            "note": "expression '- len / factor'"
+          },
+          {
+            "ref": "uz",
+            "type": "Unit Z"
+          },
+          {
+            "ref": "drop",
+            "type": "Move"
+          },
+          {
+            "ref": "verticals",
+            "type": "Line"
+          },
+          {
+            "ref": "top_chord",
+            "type": "Line",
+            "note": "Split List (index 1 / index spans) pairs consecutive top nodes"
+          },
+          {
+            "ref": "bottom_chord",
+            "type": "Line",
+            "note": "same Split List idiom on bottom nodes"
+          },
+          {
+            "ref": "pipe",
+            "type": "Pipe"
+          }
+        ],
+        "wires": [
+          "slot:start_support -> axis.Start Point",
+          "slot:end_support -> axis.End Point",
+          "axis.Line -> div.Curve",
+          "slot:spans -> div.Count",
+          "axis.Line -> len.Curve",
+          "len.Length -> depth.Variable len",
+          "slot:depth_factor -> depth.Variable factor",
+          "depth.Result -> uz.Factor",
+          "div.Points -> drop.Geometry",
+          "uz.Unit vector -> drop.Motion",
+          "div.Points -> verticals.Start Point",
+          "drop.Geometry -> verticals.End Point",
+          "Split List(top nodes, 1) x Split List(top nodes, spans) -> top_chord.Start/End Point",
+          "Split List(bottom nodes, 1) x Split List(bottom nodes, spans) -> bottom_chord.Start/End Point",
+          "verticals.Line + top_chord.Line + bottom_chord.Line -> pipe.Curve",
+          "slot:member_radius -> pipe.Radius"
+        ]
+      },
+      "outputs": {
+        "members": "pipe.Pipe",
+        "axes": "verticals.Line + top_chord.Line + bottom_chord.Line"
+      },
+      "notes": "E.16 Pratt adds diagonals with the same node lists offset via Sub List/Shift List before Line - add a 'diagonals' toggle when composing.",
+      "source_files": [
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.15 Vierendeel Truss.gh",
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.16 Pratt Truss.gh"
+      ]
+    },
+    "arch.spatial_truss": {
+      "id": "arch.spatial_truss",
+      "stage_name": "SPACE FRAME",
+      "explainer": "A three-chord space frame: one bottom arch plus two top chords offset half the frame width to either side, all divided into the same node count, with diagonals woven zigzag between the chords (Cull alternate nodes, Weave 1/0).\nThe triangular section is what makes the frame stiff.",
+      "slots": {
+        "start_support": {
+          "kind": "geometry",
+          "arity": "1",
+          "ref_param": "Point"
+        },
+        "end_support": {
+          "kind": "geometry",
+          "arity": "1",
+          "ref_param": "Point"
+        },
+        "height_factor": {
+          "kind": "driver_num",
+          "default": 3.19,
+          "range_evidence": [
+            0,
+            30
+          ],
+          "note": "arch rise = span / height_factor"
+        },
+        "depth_factor": {
+          "kind": "driver_num",
+          "default": 10.41,
+          "range_evidence": [
+            0,
+            30
+          ],
+          "note": "top-chord lift = span / depth_factor"
+        },
+        "width_factor": {
+          "kind": "driver_num",
+          "default": 17.05,
+          "range_evidence": [
+            0,
+            30
+          ],
+          "note": "frame width = span / width_factor"
+        },
+        "spans": {
+          "kind": "count",
+          "default": 20,
+          "range_evidence": [
+            0,
+            50
+          ]
+        },
+        "void_spans": {
+          "kind": "count",
+          "default": 4,
+          "range_evidence": [
+            0,
+            10
+          ],
+          "note": "bays left open at each support (Sub List domain void..spans-void)"
+        },
+        "chord_radius": {
+          "kind": "driver_num",
+          "default": 0.05,
+          "range_evidence": [
+            0,
+            1
+          ]
+        },
+        "web_radius": {
+          "kind": "driver_num",
+          "default": 0.026,
+          "range_evidence": [
+            0,
+            0.1
+          ]
+        }
+      },
+      "body": {
+        "components": [
+          {
+            "ref": "axis",
+            "type": "Line",
+            "guid": "4c4e56eb-2f04-43f9-95a3-cc46a14f495a"
+          },
+          {
+            "ref": "mid_t",
+            "type": "Panel",
+            "panel_text": "0.5",
+            "note": "Evaluate Curve parameter 0.5 (E.17 panel)"
+          },
+          {
+            "ref": "mid",
+            "type": "Evaluate Curve",
+            "guid": "fc6979e4-7e91-4508-8e05-37c680779751"
+          },
+          {
+            "ref": "span_len",
+            "type": "Distance",
+            "guid": "93b8e93d-f932-402c-b435-84be04d87666"
+          },
+          {
+            "ref": "rise_div",
+            "type": "Division",
+            "guid": "9c85271f-89fa-4e9f-9f4a-d75802120ccc",
+            "note": "arch rise = span / height_factor"
+          },
+          {
+            "ref": "depth_div",
+            "type": "Division",
+            "guid": "9c85271f-89fa-4e9f-9f4a-d75802120ccc",
+            "note": "top-chord lift = span / depth_factor"
+          },
+          {
+            "ref": "width_div",
+            "type": "Division",
+            "guid": "9c85271f-89fa-4e9f-9f4a-d75802120ccc",
+            "note": "frame width = span / width_factor"
+          },
+          {
+            "ref": "rise_uz",
+            "type": "Unit Z",
+            "guid": "9103c240-a6a9-4223-9b42-dbd19bf38e2b"
+          },
+          {
+            "ref": "rise_pt",
+            "type": "Move",
+            "guid": "e9eb1dcf-92f6-4d4d-84ae-96222d60f56b"
+          },
+          {
+            "ref": "base_arch",
+            "type": "Interpolate",
+            "guid": "2b2a4145-3dff-41d4-a8de-1ea9d29eef33"
+          },
+          {
+            "ref": "frame_pl",
+            "type": "Plane 3Pt",
+            "guid": "c98a6015-7a2f-423c-bc66-bdc505249b45"
+          },
+          {
+            "ref": "depl",
+            "type": "Deconstruct Plane",
+            "guid": "3cd2949b-4ea8-4ffb-a70c-5c380f9f46ea"
+          },
+          {
+            "ref": "const_two",
+            "type": "Panel",
+            "panel_text": "2"
+          },
+          {
+            "ref": "const_negtwo",
+            "type": "Panel",
+            "panel_text": "-2"
+          },
+          {
+            "ref": "half_w",
+            "type": "Division",
+            "guid": "9c85271f-89fa-4e9f-9f4a-d75802120ccc",
+            "note": "E.17 uses Expression 'w / 2'; Expression state is not settable over the bridge, so the same value is computed as width / panel-constant 2 (panel-fed arithmetic constant idiom, E.29 Addition.B='1')"
+          },
+          {
+            "ref": "neg_half_w",
+            "type": "Division",
+            "guid": "9c85271f-89fa-4e9f-9f4a-d75802120ccc",
+            "note": "E.17 Expression '-w / 2' realized as width / -2 (same substitution)"
+          },
+          {
+            "ref": "depth_uz",
+            "type": "Unit Z",
+            "guid": "9103c240-a6a9-4223-9b42-dbd19bf38e2b"
+          },
+          {
+            "ref": "offs_l",
+            "type": "Multiplication",
+            "guid": "ce46b74e-00c9-43c4-805a-193b69ea4a11"
+          },
+          {
+            "ref": "offs_r",
+            "type": "Multiplication",
+            "guid": "ce46b74e-00c9-43c4-805a-193b69ea4a11"
+          },
+          {
+            "ref": "lift_l",
+            "type": "Addition",
+            "guid": "a0d62394-a118-422d-abb3-6af115c75b25"
+          },
+          {
+            "ref": "lift_r",
+            "type": "Addition",
+            "guid": "a0d62394-a118-422d-abb3-6af115c75b25"
+          },
+          {
+            "ref": "top_l_pt",
+            "type": "Move",
+            "guid": "e9eb1dcf-92f6-4d4d-84ae-96222d60f56b"
+          },
+          {
+            "ref": "top_r_pt",
+            "type": "Move",
+            "guid": "e9eb1dcf-92f6-4d4d-84ae-96222d60f56b"
+          },
+          {
+            "ref": "top_left",
+            "type": "Interpolate",
+            "guid": "2b2a4145-3dff-41d4-a8de-1ea9d29eef33"
+          },
+          {
+            "ref": "top_right",
+            "type": "Interpolate",
+            "guid": "2b2a4145-3dff-41d4-a8de-1ea9d29eef33"
+          },
+          {
+            "ref": "div_base",
+            "type": "Divide Curve",
+            "guid": "2162e72e-72fc-4bf8-9459-d4d82fa8aa14"
+          },
+          {
+            "ref": "div_l",
+            "type": "Divide Curve",
+            "guid": "2162e72e-72fc-4bf8-9459-d4d82fa8aa14"
+          },
+          {
+            "ref": "div_r",
+            "type": "Divide Curve",
+            "guid": "2162e72e-72fc-4bf8-9459-d4d82fa8aa14"
+          },
+          {
+            "ref": "void_sub",
+            "type": "Subtraction",
+            "guid": "9c007a04-d0d9-48e4-9da3-9ba142bc4d46"
+          },
+          {
+            "ref": "dom",
+            "type": "Construct Domain",
+            "guid": "d1a28e95-cf96-4936-bf34-8bf142d731bf"
+          },
+          {
+            "ref": "sub_base",
+            "type": "Sub List",
+            "guid": "b333ff42-93bd-406b-8e17-15780719b6ec"
+          },
+          {
+            "ref": "sub_l",
+            "type": "Sub List",
+            "guid": "b333ff42-93bd-406b-8e17-15780719b6ec"
+          },
+          {
+            "ref": "sub_r",
+            "type": "Sub List",
+            "guid": "b333ff42-93bd-406b-8e17-15780719b6ec"
+          },
+          {
+            "ref": "pat_base",
+            "type": "Panel",
+            "panel_text": "False\nTrue"
+          },
+          {
+            "ref": "pat_l",
+            "type": "Panel",
+            "panel_text": "True\nFalse"
+          },
+          {
+            "ref": "pat_r",
+            "type": "Panel",
+            "panel_text": "True\nFalse"
+          },
+          {
+            "ref": "cull_base",
+            "type": "Cull Pattern",
+            "guid": "008e9a6f-478a-4813-8c8a-546273bc3a6b"
+          },
+          {
+            "ref": "cull_l",
+            "type": "Cull Pattern",
+            "guid": "008e9a6f-478a-4813-8c8a-546273bc3a6b"
+          },
+          {
+            "ref": "cull_r",
+            "type": "Cull Pattern",
+            "guid": "008e9a6f-478a-4813-8c8a-546273bc3a6b"
+          },
+          {
+            "ref": "wpat_l",
+            "type": "Panel",
+            "panel_text": "1\n0"
+          },
+          {
+            "ref": "wpat_r",
+            "type": "Panel",
+            "panel_text": "1\n0"
+          },
+          {
+            "ref": "weave_l",
+            "type": "Weave",
+            "guid": "50faccbd-9c92-4175-a5fa-d65e36013db6"
+          },
+          {
+            "ref": "weave_r",
+            "type": "Weave",
+            "guid": "50faccbd-9c92-4175-a5fa-d65e36013db6"
+          },
+          {
+            "ref": "web_l",
+            "type": "PolyLine",
+            "guid": "71b5b089-500a-4ea6-81c5-2f960441a0e8"
+          },
+          {
+            "ref": "web_r",
+            "type": "PolyLine",
+            "guid": "71b5b089-500a-4ea6-81c5-2f960441a0e8"
+          },
+          {
+            "ref": "expl_l",
+            "type": "Explode",
+            "guid": "afb96615-c59a-45c9-9cac-e27acb1c7ca0"
+          },
+          {
+            "ref": "expl_r",
+            "type": "Explode",
+            "guid": "afb96615-c59a-45c9-9cac-e27acb1c7ca0"
+          },
+          {
+            "ref": "ties",
+            "type": "Line",
+            "guid": "4c4e56eb-2f04-43f9-95a3-cc46a14f495a"
+          },
+          {
+            "ref": "pipe_chords",
+            "type": "Pipe",
+            "guid": "c277f778-6fdf-4890-8f78-347efb23c406"
+          },
+          {
+            "ref": "pipe_web",
+            "type": "Pipe",
+            "guid": "c277f778-6fdf-4890-8f78-347efb23c406"
+          }
+        ],
+        "wires": [
+          "slot:start_support -> axis.Start Point",
+          "slot:end_support -> axis.End Point",
+          "axis.Line -> mid.Curve",
+          "mid_t.Panel -> mid.Parameter",
+          "slot:start_support -> span_len.Point A",
+          "slot:end_support -> span_len.Point B",
+          "span_len.Distance -> rise_div.A",
+          "slot:height_factor -> rise_div.B",
+          "span_len.Distance -> depth_div.A",
+          "slot:depth_factor -> depth_div.B",
+          "span_len.Distance -> width_div.A",
+          "slot:width_factor -> width_div.B",
+          "rise_div.Result -> rise_uz.Factor",
+          "mid.Point -> rise_pt.Geometry",
+          "rise_uz.Unit vector -> rise_pt.Motion",
+          "slot:start_support -> base_arch.Vertices",
+          "rise_pt.Geometry -> base_arch.Vertices",
+          "slot:end_support -> base_arch.Vertices",
+          "slot:start_support -> frame_pl.Point A",
+          "slot:end_support -> frame_pl.Point B",
+          "rise_pt.Geometry -> frame_pl.Point C",
+          "frame_pl.Plane -> depl.Plane",
+          "width_div.Result -> half_w.A",
+          "const_two.Panel -> half_w.B",
+          "width_div.Result -> neg_half_w.A",
+          "const_negtwo.Panel -> neg_half_w.B",
+          "depth_div.Result -> depth_uz.Factor",
+          "depl.Z-Axis -> offs_l.A",
+          "half_w.Result -> offs_l.B",
+          "depl.Z-Axis -> offs_r.A",
+          "neg_half_w.Result -> offs_r.B",
+          "depth_uz.Unit vector -> lift_l.A",
+          "offs_l.Result -> lift_l.B",
+          "depth_uz.Unit vector -> lift_r.A",
+          "offs_r.Result -> lift_r.B",
+          "rise_pt.Geometry -> top_l_pt.Geometry",
+          "lift_l.Result -> top_l_pt.Motion",
+          "rise_pt.Geometry -> top_r_pt.Geometry",
+          "lift_r.Result -> top_r_pt.Motion",
+          "slot:start_support -> top_left.Vertices",
+          "top_l_pt.Geometry -> top_left.Vertices",
+          "slot:end_support -> top_left.Vertices",
+          "slot:start_support -> top_right.Vertices",
+          "top_r_pt.Geometry -> top_right.Vertices",
+          "slot:end_support -> top_right.Vertices",
+          "base_arch.Curve -> div_base.Curve",
+          "slot:spans -> div_base.Count",
+          "top_left.Curve -> div_l.Curve",
+          "slot:spans -> div_l.Count",
+          "top_right.Curve -> div_r.Curve",
+          "slot:spans -> div_r.Count",
+          "slot:spans -> void_sub.A",
+          "slot:void_spans -> void_sub.B",
+          "slot:void_spans -> dom.Domain start",
+          "void_sub.Result -> dom.Domain end",
+          "div_base.Points -> sub_base.List",
+          "dom.Domain -> sub_base.Domain",
+          "div_l.Points -> sub_l.List",
+          "dom.Domain -> sub_l.Domain",
+          "div_r.Points -> sub_r.List",
+          "dom.Domain -> sub_r.Domain",
+          "sub_base.List -> cull_base.List",
+          "pat_base.Panel -> cull_base.Cull Pattern",
+          "sub_l.List -> cull_l.List",
+          "pat_l.Panel -> cull_l.Cull Pattern",
+          "sub_r.List -> cull_r.List",
+          "pat_r.Panel -> cull_r.Cull Pattern",
+          "cull_base.List -> weave_l.Stream 0",
+          "cull_l.List -> weave_l.Stream 1",
+          "wpat_l.Panel -> weave_l.Pattern",
+          "cull_base.List -> weave_r.Stream 0",
+          "cull_r.List -> weave_r.Stream 1",
+          "wpat_r.Panel -> weave_r.Pattern",
+          "weave_l.Weave -> web_l.Vertices",
+          "weave_r.Weave -> web_r.Vertices",
+          "web_l.Polyline -> expl_l.Curve",
+          "web_r.Polyline -> expl_r.Curve",
+          "cull_l.List -> ties.Start Point",
+          "cull_r.List -> ties.End Point",
+          "base_arch.Curve -> pipe_chords.Curve",
+          "top_left.Curve -> pipe_chords.Curve",
+          "top_right.Curve -> pipe_chords.Curve",
+          "slot:chord_radius -> pipe_chords.Radius",
+          "ties.Line -> pipe_web.Curve",
+          "expl_l.Segments -> pipe_web.Curve",
+          "expl_r.Segments -> pipe_web.Curve",
+          "slot:web_radius -> pipe_web.Radius"
+        ]
+      },
+      "outputs": {
+        "chords": "pipe_chords.Pipe",
+        "web": "pipe_web.Pipe",
+        "arch_curves": "base_arch.Curve"
+      },
+      "source_files": [
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.17 Warren Spatial Truss.gh"
+      ],
+      "notes": "Body is the E.17 graph verbatim (guids + param names from the dump wires), minus display-only objects (Vector Display, floating Curve/Number containers, the Loft demo tail on referenced curves). Two documented substitutions: Expression 'w / 2' / '-w / 2' realized as Division by panel constants 2 / -2 (Expression component state is not settable over the bridge; panel-fed arithmetic constant idiom evidenced in E.29). Multi-line pattern panels (True/False, 1/0) need a v0.3+ bridge (set_panel split_lines)."
+    },
+    "arch.section_contours": {
+      "id": "arch.section_contours",
+      "stage_name": "SECTIONS / TERRACES",
+      "explainer": "Cuts a solid with a stack of parallel planes (a Series drives the plane positions) and returns one set of closed curves per level.\nThe same stage yields terrain terraces, laser-cut stacks, and orthographic section drawings - only the cut direction changes.",
+      "slots": {
+        "solid": {
+          "kind": "geometry",
+          "arity": "1",
+          "note": "Brep (Brep | Plane) or Mesh (Mesh | Plane); Contour.Shape accepts either",
+          "ref_param": "Brep"
+        },
+        "n_sections": {
+          "kind": "count",
+          "default": 20,
+          "range_evidence": [
+            0,
+            100
+          ]
+        },
+        "interval": {
+          "kind": "driver_num",
+          "default": 1,
+          "range_evidence": [
+            0,
+            10
+          ],
+          "note": "alternative driver: Contour.Distance instead of a plane Series (terrain-mesh.gh, Interval slider)",
+          "optional": true
+        },
+        "layout_spacing": {
+          "kind": "driver_num",
+          "default": 5.98,
+          "range_evidence": [
+            0,
+            10
+          ],
+          "note": "optional 2D layout: distance between laid-out section drawings",
+          "optional": true
+        }
+      },
+      "body": {
+        "components": [
+          {
+            "ref": "bbox",
+            "type": "Bounding Box",
+            "guid": "0bb3d234-9097-45db-9998-621639c87d3b"
+          },
+          {
+            "ref": "corners",
+            "type": "Box Corners",
+            "guid": "a10e8cdf-7c7a-4aac-aa70-ddb7010ab231"
+          },
+          {
+            "ref": "span",
+            "type": "Line",
+            "guid": "4c4e56eb-2f04-43f9-95a3-cc46a14f495a",
+            "note": "cut axis across the solid's bounding box (Box Corners A->D, E.20)"
+          },
+          {
+            "ref": "const_one",
+            "type": "Panel",
+            "panel_text": "1"
+          },
+          {
+            "ref": "minus1",
+            "type": "Subtraction",
+            "guid": "9c007a04-d0d9-48e4-9da3-9ba142bc4d46",
+            "note": "E.20 uses Expression 'x - 1'; realized as n_sections minus panel constant 1 (Expression state is not settable over the bridge; panel-fed arithmetic constant idiom, E.29 Addition.B='1')"
+          },
+          {
+            "ref": "div",
+            "type": "Divide Curve",
+            "guid": "2162e72e-72fc-4bf8-9459-d4d82fa8aa14"
+          },
+          {
+            "ref": "cutpl",
+            "type": "XZ Plane",
+            "guid": "8cc3a196-f6a0-49ea-9ed9-0cb343a3ae64",
+            "note": "plane orientation picks the section direction; XY Plane for horizontal terraces"
+          },
+          {
+            "ref": "sec",
+            "type": "Brep | Plane",
+            "guid": "4fe828e8-fa95-4cc5-9a8c-c33856ecc783",
+            "nickname": "Sec"
+          },
+          {
+            "ref": "contour",
+            "type": "Contour",
+            "guid": "3b112fb6-3eba-42d2-ba75-0f903c18faab",
+            "when_bound": "interval",
+            "note": "even-interval variant (terrain-mesh.gh): Contour.Distance instead of the plane stack"
+          },
+          {
+            "ref": "lay_xy",
+            "type": "XY Plane",
+            "guid": "17b7152b-d30d-4d50-b9ef-c9fe25576fc2",
+            "when_bound": "layout_spacing"
+          },
+          {
+            "ref": "lay_series",
+            "type": "Series",
+            "guid": "e64c5fb1-845c-4ab1-8911-5f338516ba67",
+            "when_bound": "layout_spacing"
+          },
+          {
+            "ref": "lay_uy",
+            "type": "Unit Y",
+            "guid": "d3d195ea-2d59-4ffa-90b1-8b7ff3369f69",
+            "when_bound": "layout_spacing"
+          },
+          {
+            "ref": "lay_move",
+            "type": "Move",
+            "guid": "e9eb1dcf-92f6-4d4d-84ae-96222d60f56b",
+            "when_bound": "layout_spacing"
+          },
+          {
+            "ref": "src_graft",
+            "type": "Graft Tree",
+            "guid": "87e1d9ef-088b-4d30-9dda-8a7448a17329",
+            "when_bound": "layout_spacing"
+          },
+          {
+            "ref": "tgt_graft",
+            "type": "Graft Tree",
+            "guid": "87e1d9ef-088b-4d30-9dda-8a7448a17329",
+            "when_bound": "layout_spacing"
+          },
+          {
+            "ref": "flatten",
+            "type": "Orient",
+            "guid": "378d0690-9da0-4dd1-ab16-1d15246e7c22",
+            "when_bound": "layout_spacing",
+            "note": "each section from its cut plane to its layout plane (E.20 2D drawing layout)"
+          }
+        ],
+        "wires": [
+          "slot:solid -> bbox.Content",
+          "bbox.Box -> corners.Box",
+          "corners.Corner A -> span.Start Point",
+          "corners.Corner D -> span.End Point",
+          "span.Line -> div.Curve",
+          "slot:n_sections -> minus1.A",
+          "const_one.Panel -> minus1.B",
+          "minus1.Result -> div.Count",
+          "div.Points -> cutpl.Origin",
+          "slot:solid -> sec.Brep",
+          "cutpl.Plane -> sec.Plane",
+          "slot:solid -> contour.Shape",
+          "slot:interval -> contour.Distance",
+          "slot:layout_spacing -> lay_series.Step",
+          "slot:n_sections -> lay_series.Count",
+          "lay_series.Series -> lay_uy.Factor",
+          "lay_xy.Plane -> lay_move.Geometry",
+          "lay_uy.Unit vector -> lay_move.Motion",
+          "cutpl.Plane -> src_graft.Tree",
+          "lay_move.Geometry -> tgt_graft.Tree",
+          "sec.Curves -> flatten.Geometry",
+          "src_graft.Tree -> flatten.Source",
+          "tgt_graft.Tree -> flatten.Target"
+        ]
+      },
+      "outputs": {
+        "section_curves": "sec.Curves",
+        "laid_out_curves": "flatten.Geometry",
+        "even_contours": "contour.Contours"
+      },
+      "notes": "Core = E.20 verbatim (Bounding Box -> Box Corners A/D -> Line -> Divide Curve -> XZ Plane -> Brep | Plane; guids + param names from the dump wires). 'x - 1' Expression realized as Subtraction with a panel constant (see minus1 note). Optional tails: slot interval adds the terrain-mesh.gh Contour variant (Shape/Distance, default Point+Direction), slot layout_spacing adds the E.20 2D layout (Series-moved XY planes + grafted Orient). Corpus also evidences Mesh | Plane with Series-moved XY planes (E.29) and Contour with Point=Area.Centroid, Direction=Evaluate Surface.Normal (WAFFLE STRUCTURES.gh).",
+      "source_files": [
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.20 Sections.gh",
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.29 Terrain from Heighfield Image.gh",
+        "computational-design-library/15-terrain/terrain-mesh.gh",
+        "waffle-structure-cnc/WAFFLE STRUCTURES.gh"
+      ]
+    },
+    "arch.terrain_from_image": {
+      "id": "arch.terrain_from_image",
+      "stage_name": "TERRAIN FROM IMAGE",
+      "explainer": "Builds a flat mesh grid, samples an image's brightness at every vertex, and lifts each vertex by brightness x max-height - a classic heightfield.\nAny grayscale map (site survey, noise, hand sketch) becomes terrain you can section, terrace, or panel.",
+      "slots": {
+        "extent": {
+          "kind": "driver_num",
+          "default": 10,
+          "range_evidence": [
+            0,
+            10
+          ],
+          "note": "terrain square size"
+        },
+        "resolution": {
+          "kind": "count",
+          "default": 50,
+          "range_evidence": [
+            0,
+            50
+          ],
+          "note": "mesh W and H count"
+        },
+        "max_height": {
+          "kind": "driver_num",
+          "default": 2.61,
+          "range_evidence": [
+            0,
+            10
+          ]
+        },
+        "heightmap": {
+          "kind": "driver_image",
+          "arity": "1",
+          "note": "Image Sampler needs an image file on disk; the sampler's XY domain must match the grid extent"
+        }
+      },
+      "body": {
+        "components": [
+          {
+            "ref": "rect",
+            "type": "Rectangle",
+            "guid": "d93100b6-d50b-40b2-831a-814659dc38e3"
+          },
+          {
+            "ref": "mplane",
+            "type": "Mesh Plane",
+            "guid": "8adbf481-7589-4a40-b490-006531ea001d",
+            "nickname": "MPlane"
+          },
+          {
+            "ref": "demesh",
+            "type": "Deconstruct Mesh",
+            "guid": "ba2d8f57-0738-42b4-b5a5-fe4d853517eb"
+          },
+          {
+            "ref": "sampler",
+            "type": "Image Sampler",
+            "guid": "d69a3494-785b-4beb-969b-d2373f65abfd",
+            "note": "Filter=Value; FilePath is component state fed by slot:heightmap - the unexpandable part"
+          },
+          {
+            "ref": "sampler_col",
+            "type": "Image Sampler",
+            "guid": "d69a3494-785b-4beb-969b-d2373f65abfd",
+            "note": "second instance, Filter=Colour, reused as vertex colors (E.29)"
+          },
+          {
+            "ref": "amp",
+            "type": "Multiplication",
+            "guid": "ce46b74e-00c9-43c4-805a-193b69ea4a11"
+          },
+          {
+            "ref": "uz",
+            "type": "Unit Z",
+            "guid": "9103c240-a6a9-4223-9b42-dbd19bf38e2b"
+          },
+          {
+            "ref": "lift",
+            "type": "Move",
+            "guid": "e9eb1dcf-92f6-4d4d-84ae-96222d60f56b"
+          },
+          {
+            "ref": "conmesh",
+            "type": "Construct Mesh",
+            "guid": "e2c0f9db-a862-4bd9-810c-ef2610e7a56f",
+            "nickname": "ConMesh"
+          }
+        ],
+        "wires": [
+          "slot:extent -> rect.X Size",
+          "slot:extent -> rect.Y Size",
+          "rect.Rectangle -> mplane.Boundary",
+          "slot:resolution -> mplane.Width count",
+          "slot:resolution -> mplane.Height count",
+          "mplane.Mesh -> demesh.Mesh",
+          "demesh.Vertices -> sampler.Image Sampler",
+          "demesh.Vertices -> sampler_col.Image Sampler",
+          "slot:max_height -> amp.A",
+          "sampler.Image Sampler -> amp.B",
+          "amp.Result -> uz.Factor",
+          "demesh.Vertices -> lift.Geometry",
+          "uz.Unit vector -> lift.Motion",
+          "lift.Geometry -> conmesh.Vertices",
+          "demesh.Faces -> conmesh.Faces",
+          "sampler_col.Image Sampler -> conmesh.Colours"
+        ]
+      },
+      "outputs": {
+        "terrain_mesh": "conmesh.Mesh",
+        "lifted_points": "lift.Geometry"
+      },
+      "notes": "Wires + guids recorded verbatim from the E.29 dump (Image Sampler's param is literally named 'Image Sampler' on both sides). slot:heightmap has NO wire on purpose: it is Image Sampler component state (see expansion_blocked). E.29 also chains a Surface From Points variant (U Count = resolution + 1, panel-constant Addition) and an isocurve tail; Delaunay variant for scattered survey points: terrain-mesh.gh.",
+      "source_files": [
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.29 Terrain from Heighfield Image.gh",
+        "computational-design-library/15-terrain/terrain-mesh.gh"
+      ],
+      "expansion_blocked": "slot heightmap drives an Image Sampler, and the E.29 dump records the image as per-component state (values.FilePath), NOT a wired input - there is no corpus evidence of a wire-settable path and no bridge command can set Image Sampler state (set_panel/set_slider/set_geometry_ref do not apply). Blocked until GH_MCP_Wasp grows an image-sampler command; do not invent values."
+    },
+    "arch.twist_tower": {
+      "id": "arch.twist_tower",
+      "stage_name": "TWIST TOWER",
+      "explainer": "Stacks copies of a floor profile up a series of heights, rotates each copy a bit more than the last, and lofts the profiles into a skin.\nTwist = total rotation spread across the floors; the tower reads as continuous once floors are dense enough.",
+      "slots": {
+        "profile": {
+          "kind": "geometry",
+          "arity": "1",
+          "note": "closed floor-plate curve; Polygon in corpus, any closed curve works",
+          "ref_param": "Curve"
+        },
+        "floors": {
+          "kind": "count",
+          "default": 10,
+          "note": "corpus instance has 3 explicit levels; Series generalization - see abstraction_note",
+          "range_evidence": [
+            0,
+            50
+          ]
+        },
+        "floor_height": {
+          "kind": "driver_num",
+          "default": 10,
+          "note": "corpus z-panels at 0/10/20",
+          "range_evidence": [
+            0,
+            30
+          ]
+        },
+        "twist": {
+          "kind": "driver_num",
+          "default": 0.69,
+          "range_evidence": [
+            0,
+            1
+          ],
+          "note": "total twist in half-turns: fed to Pi.Factor, so 1.0 = 180 degrees over the run"
+        }
+      },
+      "body": {
+        "components": [
+          {
+            "ref": "heights",
+            "type": "Series",
+            "guid": "e64c5fb1-845c-4ab1-8911-5f338516ba67",
+            "note": "Step=floor_height, Count=floors (Series -> Unit Z -> Move stacking idiom, E.9/E.20/E.29)"
+          },
+          {
+            "ref": "uz",
+            "type": "Unit Z",
+            "guid": "9103c240-a6a9-4223-9b42-dbd19bf38e2b"
+          },
+          {
+            "ref": "stack",
+            "type": "Move",
+            "guid": "e9eb1dcf-92f6-4d4d-84ae-96222d60f56b"
+          },
+          {
+            "ref": "const_one",
+            "type": "Panel",
+            "panel_text": "1"
+          },
+          {
+            "ref": "fm1",
+            "type": "Subtraction",
+            "guid": "9c007a04-d0d9-48e4-9da3-9ba142bc4d46",
+            "note": "floors - 1 via panel constant (panel-fed arithmetic constant idiom, E.29)"
+          },
+          {
+            "ref": "ang_step",
+            "type": "Division",
+            "guid": "9c85271f-89fa-4e9f-9f4a-d75802120ccc",
+            "note": "per-floor twist increment = twist / (floors - 1)"
+          },
+          {
+            "ref": "angles",
+            "type": "Series",
+            "guid": "e64c5fb1-845c-4ab1-8911-5f338516ba67"
+          },
+          {
+            "ref": "pi",
+            "type": "Pi",
+            "guid": "0d2ccfb3-9d41-4759-9452-da6a522c3eaa",
+            "note": "ibrahimxxs verbatim: slider 0..1 -> Pi.Factor -> Rotate.Angle (twist in half-turns)"
+          },
+          {
+            "ref": "rot",
+            "type": "Rotate",
+            "guid": "b7798b74-037e-4f0c-8ac7-dc1043d093e0"
+          },
+          {
+            "ref": "flat",
+            "type": "Flatten Tree",
+            "guid": "f80cfe18-9510-4b89-8301-8e58faf423bb",
+            "note": "flatten-into-Loft idiom recorded in E.17"
+          },
+          {
+            "ref": "skin",
+            "type": "Loft",
+            "guid": "a7a41d0a-2188-4f7a-82cc-1a2c4e4ec850"
+          }
+        ],
+        "wires": [
+          "slot:floor_height -> heights.Step",
+          "slot:floors -> heights.Count",
+          "heights.Series -> uz.Factor",
+          "slot:profile -> stack.Geometry",
+          "uz.Unit vector -> stack.Motion",
+          "slot:floors -> fm1.A",
+          "const_one.Panel -> fm1.B",
+          "slot:twist -> ang_step.A",
+          "fm1.Result -> ang_step.B",
+          "ang_step.Result -> angles.Step",
+          "slot:floors -> angles.Count",
+          "angles.Series -> pi.Factor",
+          "stack.Geometry -> rot.Geometry",
+          "pi.Output -> rot.Angle",
+          "rot.Geometry -> flat.Tree",
+          "flat.Tree -> skin.Curves"
+        ]
+      },
+      "outputs": {
+        "skin": "skin.Loft",
+        "floor_curves": "rot.Geometry"
+      },
+      "abstraction_note": "The rotate-then-loft core (Polygon -> Rotate(Pi.Factor slider 0.69 [0,1]) -> Loft) is verbatim from ibrahimxxs (guids + param names from that dump: Pi.Factor/Output, Rotate.Geometry/Angle, Loft.Curves). The Series-driven floor stack generalizes that file's 3 explicit levels using the 'Series -> Unit Z -> Move' stacking idiom evidenced in E.9/E.20/E.29 (Series.Step/Count/Series param names from the E.20/E.29 dumps); the per-floor angle Series (Step = twist/(floors-1)) is part of the same FLAGGED abstraction, realized with Division + panel-constant Subtraction (components/params evidenced in E.17/E.29) because Expression state is not settable over the bridge. Flatten Tree before Loft is the E.17 idiom. raplab's tower confirms the stage decomposition (LEVEL 1..3 profile clusters + BUILDING CORE + MATERIAL THICKNESS slider 0.003 [0,0.01]) but its cluster internals are opaque to gh_dump.",
+      "source_files": [
+        "ibrahimxxs-parametric-tower/Grasshopper.gh",
+        "raplab-parametric-tower/parametric_tower_V0.1.1.gh",
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.9 3D Grids.gh",
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.17 Warren Spatial Truss.gh",
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.20 Sections.gh",
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.29 Terrain from Heighfield Image.gh"
+      ]
+    },
+    "arch.waffle_ribs": {
+      "id": "arch.waffle_ribs",
+      "stage_name": "WAFFLE STRUCTURE",
+      "explainer": "Slices a solid into two perpendicular families of planar ribs (Contour twice), gives each rib material thickness, and cuts half-lap notches where ribs cross (Solid Difference).\nThis is the standard way to turn a freeform blob into flat parts a CNC router can cut.",
+      "slots": {
+        "solid": {
+          "kind": "geometry",
+          "arity": "1",
+          "note": "closed Brep, or a surface Patch + Offset Surface as in corpus"
+        },
+        "spacing_x": {
+          "kind": "driver_num",
+          "default": 0.8,
+          "range_evidence": [
+            0,
+            2
+          ],
+          "note": "Contour.Distance, family 1"
+        },
+        "spacing_y": {
+          "kind": "driver_num",
+          "default": 0.4,
+          "range_evidence": [
+            0,
+            1
+          ],
+          "note": "Contour.Distance, family 2"
+        },
+        "thickness": {
+          "kind": "driver_num",
+          "default": 0.003,
+          "range_evidence": [
+            0,
+            0.01
+          ],
+          "note": "material thickness; raplab tower carries the same driver ('MATERIAL THICKNESS' 0.003)"
+        }
+      },
+      "body": {
+        "components": [
+          {
+            "ref": "ctr_x",
+            "type": "Contour",
+            "note": "Shape=solid, Point=Area.Centroid, Direction=X (corpus: Evaluate Surface.Normal-derived)"
+          },
+          {
+            "ref": "ctr_y",
+            "type": "Contour",
+            "note": "same, perpendicular direction"
+          },
+          {
+            "ref": "ribsrf",
+            "type": "Edge Surface",
+            "note": "corpus also uses Boundary Surfaces for planar rib outlines"
+          },
+          {
+            "ref": "thick",
+            "type": "Extrude",
+            "nickname": "Extr",
+            "note": "rib surface extruded by thickness"
+          },
+          {
+            "ref": "notch",
+            "type": "Solid Difference",
+            "note": "each family minus the other family's thickened ribs = half-lap slots"
+          },
+          {
+            "ref": "flat",
+            "type": "Orient",
+            "note": "rib plane -> XY Plane; lays every rib flat for cutting"
+          }
+        ],
+        "wires": [
+          "slot:solid -> ctr_x.Shape",
+          "Area(solid).Centroid -> ctr_x.Point",
+          "slot:spacing_x -> ctr_x.Distance",
+          "slot:solid -> ctr_y.Shape",
+          "slot:spacing_y -> ctr_y.Distance",
+          "ctr_x.Contours / ctr_y.Contours -> rib outline curves -> ribsrf",
+          "ribsrf -> thick.Base, thickness vector -> thick.Direction",
+          "family A ribs -> notch.Breps A, thickened family B -> notch.Breps B (and vice versa)",
+          "notch result + rib Plane -> flat.Geometry/Source, XY Plane (Series-spaced) -> flat.Target"
+        ]
+      },
+      "outputs": {
+        "ribs_3d": "notch.Result",
+        "ribs_flat": "flat.Geometry"
+      },
+      "notes": "Body is condensed: the corpus file runs ~300 components of tree bookkeeping (Shift Paths, Match Tree, Entwine) around this core; treat those as expansion details, not structure. Sheet nesting in corpus uses OpenNest (PLUGIN-DEPENDENT) - keep nesting out of the core template.",
+      "source_files": [
+        "waffle-structure-cnc/WAFFLE STRUCTURES.gh",
+        "raplab-parametric-tower/parametric_tower_V0.1.1.gh"
+      ]
+    },
+    "arch.sun_oriented_paneling": {
+      "id": "arch.sun_oriented_paneling",
+      "stage_name": "SUN-ANGLE PANELING",
+      "explainer": "Places a frame at every UV point of a facade surface, measures the angle between each frame's normal and the direction to a sun point, and remaps that angle into an opening radius.\nPanels facing the sun open wide; panels turned away close down - a solar-responsive skin with three sliders.",
+      "slots": {
+        "host_surface": {
+          "kind": "geometry",
+          "arity": "1"
+        },
+        "sun_point": {
+          "kind": "geometry",
+          "arity": "1",
+          "note": "stand-in sun position; swap for a solar-vector input without touching the body"
+        },
+        "u_count": {
+          "kind": "count",
+          "default": 10,
+          "range_evidence": [
+            0,
+            100
+          ]
+        },
+        "v_count": {
+          "kind": "count",
+          "default": 35,
+          "range_evidence": [
+            0,
+            100
+          ]
+        },
+        "max_radius": {
+          "kind": "driver_num",
+          "default": 1,
+          "range_evidence": [
+            0,
+            10
+          ]
+        }
+      },
+      "body": {
+        "components": [
+          {
+            "ref": "frames",
+            "type": "Surface Frames",
+            "nickname": "SFrames"
+          },
+          {
+            "ref": "depl",
+            "type": "Deconstruct Plane"
+          },
+          {
+            "ref": "sunvec",
+            "type": "Vector 2Pt"
+          },
+          {
+            "ref": "ang",
+            "type": "Angle"
+          },
+          {
+            "ref": "remap",
+            "type": "Remap Numbers",
+            "note": "Source = 0 To Pi, Target = 0 To 1"
+          },
+          {
+            "ref": "rad",
+            "type": "Multiplication"
+          },
+          {
+            "ref": "opening",
+            "type": "Circle"
+          },
+          {
+            "ref": "srf",
+            "type": "Boundary Surfaces"
+          }
+        ],
+        "wires": [
+          "slot:host_surface -> frames.Surface",
+          "slot:u_count -> frames.U Count",
+          "slot:v_count -> frames.V Count",
+          "frames.Frames -> depl.Plane",
+          "slot:sun_point -> sunvec.Point A",
+          "depl.Origin -> sunvec.Point B",
+          "sunvec.Vector -> ang.Vector A",
+          "depl.Z-Axis -> ang.Vector B",
+          "ang.Angle -> remap.Value",
+          "Construct Domain(0, Pi) -> remap.Source",
+          "Construct Domain(0, 1) -> remap.Target",
+          "slot:max_radius -> rad.A",
+          "remap.Mapped -> rad.B",
+          "frames.Frames -> opening.Plane",
+          "rad.Result -> opening.Radius",
+          "opening.Circle -> srf.Edges"
+        ]
+      },
+      "outputs": {
+        "openings": "srf.Surfaces",
+        "radii": "rad.Result",
+        "frames": "frames.Frames"
+      },
+      "notes": "E.12 Solar Panels is the sibling pattern: same Surface Frames start, then Construct Plane aligned to the sun for tilted physical panels instead of scaled openings.",
+      "source_files": [
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.11 Solar facade.gh",
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.12 Solar Panels.gh"
+      ]
+    },
+    "arch.grid_box_field": {
+      "id": "arch.grid_box_field",
+      "stage_name": "GRID FIELD",
+      "explainer": "Divides a (possibly warped) ground surface into a UV grid and stands a box on every point, its height read from the point's own Z - the Berlin Holocaust Memorial move.\nA dumb grid plus one varying dimension is often all a strong field condition needs.",
+      "slots": {
+        "ground": {
+          "kind": "geometry",
+          "arity": "1",
+          "note": "surface whose Z-variation drives box heights; flat surface = uniform field"
+        },
+        "u_count": {
+          "kind": "count",
+          "default": 10,
+          "range_evidence": [
+            0,
+            10
+          ]
+        },
+        "v_count": {
+          "kind": "count",
+          "default": 10,
+          "range_evidence": [
+            0,
+            10
+          ]
+        },
+        "cell_width": {
+          "kind": "driver_num",
+          "default": 1.13,
+          "range_evidence": [
+            0,
+            10
+          ]
+        },
+        "cell_depth": {
+          "kind": "driver_num",
+          "default": 2.53,
+          "range_evidence": [
+            0,
+            10
+          ]
+        }
+      },
+      "body": {
+        "components": [
+          {
+            "ref": "sdiv",
+            "type": "Divide Surface",
+            "nickname": "SDivide"
+          },
+          {
+            "ref": "dec",
+            "type": "Deconstruct",
+            "nickname": "pDecon"
+          },
+          {
+            "ref": "base",
+            "type": "Construct Point",
+            "note": "X,Y from grid point, Z=0 - boxes sit on the ground plane"
+          },
+          {
+            "ref": "rec",
+            "type": "Rectangle",
+            "note": "X/Y Size = centered domains via Expression -x/2 .. x/2"
+          },
+          {
+            "ref": "box",
+            "type": "Box Rectangle",
+            "nickname": "BoxRec"
+          }
+        ],
+        "wires": [
+          "slot:ground -> sdiv.Surface",
+          "slot:u_count -> sdiv.U Count",
+          "slot:v_count -> sdiv.V Count",
+          "sdiv.Points -> dec.Point",
+          "dec.X component -> base.X coordinate",
+          "dec.Y component -> base.Y coordinate",
+          "base.Point -> rec.Plane",
+          "Construct Domain(-cell_width/2, cell_width/2) -> rec.X Size",
+          "Construct Domain(-cell_depth/2, cell_depth/2) -> rec.Y Size",
+          "rec.Rectangle -> box.Rectangle",
+          "dec.Z component -> box.Height"
+        ]
+      },
+      "outputs": {
+        "boxes": "box.Box",
+        "grid_points": "sdiv.Points"
+      },
+      "notes": "AM_001 (3-part live-stream build of the same memorial) extends this with Random culling, probabilistic tilt (Rotate 3D + Random within Maximum Tilt) and Project Point onto the warped ground - evidence for a 'perturbation' sub-stage: Propability Limit / Maximum Tilt / three Seed sliders.",
+      "source_files": [
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.7 Berlin Memorial.gh",
+        "parametriccamp-tutorialfiles/Algorithmic_Modeling/AM_001_BerlinMemorial/01_BerlinHolocaustMemorial_p2_200415_WK.gh"
+      ]
+    }
+  },
+  "param_components": {
+    "_provenance": "componentGuid values recorded verbatim from corpus/arch-dumps wires/components.",
+    "Point": {
+      "guid": "fbac3e32-f100-4292-8692-77240a42fd1a",
+      "source_files": [
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.5.2 Attraction-Repulsion.gh",
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.17 Warren Spatial Truss.gh"
+      ]
+    },
+    "Curve": {
+      "guid": "d5967b9f-e8ee-436b-a8ad-29fdcecf32d5",
+      "source_files": [
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.20 Sections.gh",
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.17 Warren Spatial Truss.gh"
+      ]
+    },
+    "Brep": {
+      "guid": "919e146f-30ae-4aae-be34-4d72f555e7da",
+      "source_files": [
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.20 Sections.gh"
+      ]
+    },
+    "Geometry": {
+      "guid": "ac2bc2cb-70fb-4dd5-9c78-7e1ea97fe278",
+      "source_files": [
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.20 Sections.gh"
+      ]
+    },
+    "Mesh": {
+      "guid": "1e936df3-0eea-4246-8549-514cb8862b7a",
+      "source_files": [
+        "computational-design-library/15-terrain/terrain-mesh.gh"
+      ]
+    },
+    "Number": {
+      "guid": "3e8ca6be-fda8-4aaf-b5c0-3c54c8bb7312",
+      "source_files": [
+        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.17 Warren Spatial Truss.gh"
+      ]
+    }
+  }
+}

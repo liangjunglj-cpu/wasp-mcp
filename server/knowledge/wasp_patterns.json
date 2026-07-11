@@ -1,0 +1,5163 @@
+{
+  "version": "0.1",
+  "generated": "2026-07-10",
+  "provenance": "Extracted mechanically from corpus/dumps (gh_dump over the official Wasp example corpus, github.com/ar0551/Wasp @ corpus/wasp-upstream). Every entry lists its source file(s).",
+  "rule_syntax": {
+    "rule_text": {
+      "component": "Wasp_Rule From Text (input TXT, one rule per line/panel item)",
+      "form": "PART|CONN_PART|CONN  (pipe between part name and connection index, underscore between the two halves)",
+      "example": "P|0_T|0",
+      "evidence_files": [
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh",
+        "ExampleFiles/2.Fields/2_01_Field_Basics.gh"
+      ]
+    },
+    "connection_type_grammar": {
+      "component": "Wasp_Rules Generator (input GR); connection type names come from the T input of Connection From Plane/Direction",
+      "form": "TYPE>TYPE  (each line permits pairing any two connections carrying these type strings)",
+      "example": "END>END",
+      "evidence_files": [
+        "ExampleFiles/1.Rules/1_03_Rules_Grammar.gh"
+      ]
+    },
+    "graph_grammar": {
+      "component": "Wasp_Graph-Grammar Aggregation (input RULES, panel text directly - no Rule From Text)",
+      "form": "PART|CONN_PART|CONN>node_node  (a rule_text rule followed by '>' and the graph-node rewrite labels)",
+      "example": "HEXA|0_HEXA|0>a_b",
+      "evidence_files": [
+        "ExampleFiles/4.Advanced/4_05_Graph_Grammar_Aggregation.gh"
+      ]
+    },
+    "direction_note": "Rules are directional (scribble in 0_01: 'NB: Rules are directional! So if you want to connect 1 to 2 and 2 to 1, you need to write two separate rules.')",
+    "evidence": "grammars[] below, all verbatim from corpus panels"
+  },
+  "patterns": {
+    "basic_aggregation": {
+      "description": "Single part, connections from direction, Rule components merged into Stochastic Aggregation; geometry extracted via Get Part Geometry",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rule",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Connection From Direction.GEO",
+        "Point[CONNECTIONS_CENTERS].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[CONNECTIONS_X_AXIS].Curve -> Wasp_Connection From Direction.UP",
+        "Wasp_Basic Part[Part].PART -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[PARTS_NUM].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Merge[Merge].Result -> Wasp_Stochastic Aggregation.RULES",
+        "Button[RESET].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[PART_NAME].Panel -> Wasp_Basic Part.NAME",
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Rule[Rule].R -> Merge.Data 1",
+        "Wasp_Rule[Rule].R -> Merge.Data 2",
+        "Wasp_Rule[Rule].R -> Merge.Data 3",
+        "Panel[PART_NAME].Panel -> Wasp_Rule.P1",
+        "Number Slider[].Number Slider -> Wasp_Rule.C1",
+        "Panel[PART_NAME].Panel -> Wasp_Rule.P2",
+        "Number Slider[].Number Slider -> Wasp_Rule.C2",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry"
+      ],
+      "sliders": [
+        {
+          "value": 100,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        },
+        {
+          "value": 0,
+          "min": 0,
+          "max": 10,
+          "feeds": "Wasp_Rule.C1"
+        },
+        {
+          "value": 0,
+          "min": 0,
+          "max": 10,
+          "feeds": "Wasp_Rule.C2"
+        },
+        {
+          "value": 0,
+          "min": 0,
+          "max": 10,
+          "feeds": "Wasp_Rule.C1"
+        },
+        {
+          "value": 1,
+          "min": 0,
+          "max": 10,
+          "feeds": "Wasp_Rule.C2"
+        },
+        {
+          "value": 2,
+          "min": 0,
+          "max": 10,
+          "feeds": "Wasp_Rule.C1"
+        },
+        {
+          "value": 1,
+          "min": 0,
+          "max": 10,
+          "feeds": "Wasp_Rule.C2"
+        }
+      ],
+      "panels": [
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Rule.P1"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Rule.P2"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Rule.P1"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Rule.P2"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Rule.P1"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Rule.P2"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh"
+      ]
+    },
+    "multipart_aggregation": {
+      "description": "Multiple Basic Parts (Merge'd) into one Stochastic Aggregation",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Filter Parts by Name",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rule From Text",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Connection From Direction.GEO",
+        "Point[CONNECTIONS_CENTERS].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[CONNECTIONS_X_AXIS].Curve -> Wasp_Connection From Direction.UP",
+        "Merge[Merge].Result -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[PARTS_NUM].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Merge[Merge].Result -> Wasp_Stochastic Aggregation.RULES",
+        "Button[RESET].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[PART_NAME].Panel -> Wasp_Basic Part.NAME",
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Wasp_Filter Parts by Name[NameFilter].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 1",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 2",
+        "Wasp_Rule From Text[RuleTxt].R -> Merge.Data 1",
+        "Wasp_Rule From Text[RuleTxt].R -> Merge.Data 2",
+        "Wasp_Rule From Text[RuleTxt].R -> Merge.Data 3",
+        "Panel[P -> P].Panel -> Wasp_Rule From Text.TXT",
+        "Panel[P -> T].Panel -> Wasp_Rule From Text.TXT",
+        "Panel[T -> P].Panel -> Wasp_Rule From Text.TXT",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Filter Parts by Name.PART",
+        "Panel[PART_NAME].Panel -> Wasp_Filter Parts by Name.NAME",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry"
+      ],
+      "sliders": [
+        {
+          "value": 500,
+          "min": 0,
+          "max": 100000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "P",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "T",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "P|2_P|6\nP|5_P|6\nP|3_P|7\nP|8_P|2\nP|4_P|3",
+          "feeds": "Wasp_Rule From Text.TXT"
+        },
+        {
+          "text": "P|0_T|0\nP|1_T|1",
+          "feeds": "Wasp_Rule From Text.TXT"
+        },
+        {
+          "text": "T|2_P|1\nT|3_P|0",
+          "feeds": "Wasp_Rule From Text.TXT"
+        },
+        {
+          "text": "T",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        },
+        {
+          "text": "P",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh"
+      ]
+    },
+    "vertex_edge_connections": {
+      "description": "Connection From Plane fed by planes constructed on vertices/edges",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Plane",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rule From Text",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Wasp_Basic Part[Part].PART -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[PARTS_NUM].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Merge[Merge].Result -> Wasp_Stochastic Aggregation.RULES",
+        "Button[RESET].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[PART_NAME].Panel -> Wasp_Basic Part.NAME",
+        "Mesh Brep[Mesh].Mesh -> Wasp_Basic Part.GEO",
+        "Merge[Merge].Result -> Wasp_Basic Part.CONN",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Connection From Plane[ConnPln].CONN -> Merge.Data 1",
+        "Wasp_Connection From Plane[ConnPln].CONN -> Merge.Data 2",
+        "Wasp_Connection From Plane[ConnPln].CONN -> Merge.Data 3",
+        "Wasp_Rule From Text[RuleTxt].R -> Merge.Data 1",
+        "Wasp_Rule From Text[RuleTxt].R -> Merge.Data 2",
+        "XY Plane[XY].Plane -> Wasp_Connection From Plane.PLN",
+        "Construct Plane[Pl].Plane -> Wasp_Connection From Plane.PLN",
+        "Panel[VERTEX -> VERTEX].Panel -> Wasp_Rule From Text.TXT",
+        "Panel[EDGE -> EDGE].Panel -> Wasp_Rule From Text.TXT",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry"
+      ],
+      "sliders": [
+        {
+          "value": 500,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "A",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "A|0_A|1\nA|1_A|0",
+          "feeds": "Wasp_Rule From Text.TXT"
+        },
+        {
+          "text": "A|2_A|3\nA|3_A|2\nA|4_A|5\nA|5_A|4",
+          "feeds": "Wasp_Rule From Text.TXT"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh"
+      ]
+    },
+    "part_geometry_replacement": {
+      "description": "Deconstruct Part TR output used to transform replacement geometry",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Deconstruct Part",
+        "Wasp_Filter Parts by Name",
+        "Wasp_Rule From Text",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Connection From Direction.GEO",
+        "Point[CONNECTIONS_CENTERS].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[CONNECTIONS_X_AXIS].Curve -> Wasp_Connection From Direction.UP",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Deconstruct Part.PART",
+        "Merge[Merge].Result -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[PARTS_NUM].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rule From Text[RuleTxt].R -> Wasp_Stochastic Aggregation.RULES",
+        "Button[RESET].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[PART_NAME].Panel -> Wasp_Basic Part.NAME",
+        "Simple Mesh[SMesh].Mesh -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 1",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 2",
+        "Panel[RULES].Panel -> Wasp_Rule From Text.TXT",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Filter Parts by Name.PART",
+        "Panel[].Panel -> Wasp_Filter Parts by Name.NAME",
+        "Wasp_Deconstruct Part[DePart].TR -> Cull Pattern.List",
+        "Wasp_Filter Parts by Name[NameFilter].MASK -> Cull Pattern.Cull Pattern"
+      ],
+      "sliders": [
+        {
+          "value": 250,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "A",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "B",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "A|0_B|0\nB|0_A|0\nA|1_B|0\nB|0_A|1\nA|2_B|0\nB|0_A|2\nA|0_B|1\nB|1_A|0\nA|1_B|1\nB|1_A|1\nA|2_B|1\nB|1_A|2",
+          "feeds": "Wasp_Rule From Text.TXT"
+        },
+        {
+          "text": "A",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        },
+        {
+          "text": "B",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh"
+      ]
+    },
+    "transform_start_part": {
+      "description": "Transform Part to relocate the aggregation seed part",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rules Generator",
+        "Wasp_Stochastic Aggregation",
+        "Wasp_Transform Part"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Panel[].Panel -> Wasp_Connection From Direction.T",
+        "Merge[Merge].Result -> Wasp_Transform Part.PART",
+        "Rotate 3D[Rot3D].Transform -> Wasp_Transform Part.TR",
+        "Wasp_Basic Part[Part].PART -> Wasp_Transform Part.PART",
+        "Move[Move].Transform -> Wasp_Transform Part.TR",
+        "Wasp_Basic Part[Part].PART -> Wasp_Stochastic Aggregation.PART",
+        "Wasp_Transform Part[PartTr].PART_OUT -> Wasp_Stochastic Aggregation.PREV",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Button[Button].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[].Panel -> Wasp_Basic Part.NAME",
+        "Mesh Brep[Mesh].Mesh -> Wasp_Basic Part.GEO",
+        "Merge[Merge].Result -> Wasp_Basic Part.CONN",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 1",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 2",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 3",
+        "Wasp_Basic Part[Part].PART -> Wasp_Rules Generator.PART",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.SELF_C",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.TYP",
+        "Panel[].Panel -> Wasp_Rules Generator.GR",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 1",
+        "Wasp_Transform Part[PartTr].PART_OUT -> Merge.Data 2"
+      ],
+      "sliders": [
+        {
+          "value": 200,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "SQUARE-BOTTOM",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "SQUARE-TOP",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "TRIANGLE",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "GY",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "TRIANGLE>TRIANGLE\nSQUARE-TOP>SQUARE-BOTTOM\nSQUARE-BOTTOM>SQUARE-TOP",
+          "feeds": "Wasp_Rules Generator.GR"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh"
+      ]
+    },
+    "part_attributes": {
+      "description": "Attribute components attached to Basic Part ATTR input",
+      "wasp_components": [
+        "Wasp_Attribute",
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Get Attribute by Name",
+        "Wasp_Rules Generator",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Get Attribute by Name.PART",
+        "Panel[].Panel -> Wasp_Get Attribute by Name.ID",
+        "Wasp_Basic Part[Part].PART -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Button[Button].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[].Panel -> Wasp_Basic Part.NAME",
+        "Geometry[Geo].Geometry -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Merge[Merge].Result -> Wasp_Basic Part.ATTR",
+        "Panel[].Panel -> Wasp_Attribute.ID",
+        "Geometry[Geo].Geometry -> Wasp_Attribute.VAL",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Attribute.TR",
+        "Colour Swatch[Swatch].Colour Swatch -> Wasp_Attribute.VAL",
+        "Wasp_Attribute[Attribute].ATTR -> Merge.Data 1",
+        "Wasp_Attribute[Attribute].ATTR -> Merge.Data 2",
+        "Wasp_Attribute[Attribute].ATTR -> Merge.Data 3",
+        "Wasp_Basic Part[Part].PART -> Wasp_Rules Generator.PART",
+        "Wasp_Get Attribute by Name[GetAttr].VAL -> Custom Preview.Geometry",
+        "Wasp_Get Attribute by Name[GetAttr].VAL -> Custom Preview.Material"
+      ],
+      "sliders": [
+        {
+          "value": 100,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "CUT_COLOR",
+          "feeds": "Wasp_Get Attribute by Name.ID"
+        },
+        {
+          "text": "CUTOUTS",
+          "feeds": "Wasp_Get Attribute by Name.ID"
+        },
+        {
+          "text": "CUT_BODY",
+          "feeds": "Wasp_Get Attribute by Name.ID"
+        },
+        {
+          "text": "OCTA",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "CUT_BODY",
+          "feeds": "Wasp_Attribute.ID"
+        },
+        {
+          "text": "CUTOUTS",
+          "feeds": "Wasp_Attribute.ID"
+        },
+        {
+          "text": "CUT_COLOR",
+          "feeds": "Wasp_Attribute.ID"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_06_Part_Attributes.gh"
+      ]
+    },
+    "save_load_aggregation": {
+      "description": "Save Aggregation to File / Load Aggregation from File round-trip",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Get Part Geometry",
+        "Wasp_Load Aggregation from File",
+        "Wasp_Rules Generator",
+        "Wasp_Save Aggregation to File",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Merge[Merge].Result -> Wasp_Load Aggregation from File.PART",
+        "Panel[FILE TO IMPORT].Panel -> Wasp_Load Aggregation from File.FILE",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].AGGR -> Wasp_Save Aggregation to File.AGGR",
+        "Panel[].Panel -> Wasp_Save Aggregation to File.PATH",
+        "Panel[].Panel -> Wasp_Save Aggregation to File.NAME",
+        "Button[CLICK TO SAVE!!!].Button -> Wasp_Save Aggregation to File.SAVE",
+        "Merge[Merge].Result -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Button[Button].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[].Panel -> Wasp_Basic Part.NAME",
+        "Geometry[Geo].Geometry -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 1",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 2",
+        "Merge[Merge].Result -> Wasp_Rules Generator.PART",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.SELF_P",
+        "Wasp_Save Aggregation to File[SaveAggr].FILE -> Panel.Panel",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Load Aggregation from File[LoadAggr].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry"
+      ],
+      "sliders": [
+        {
+          "value": 100,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "D:\\GitHub\\Wasp\\ExampleFiles\\0.Basics\\my_Aggregation_01.json",
+          "feeds": "Wasp_Load Aggregation from File.FILE"
+        },
+        {
+          "text": "D:\\GitHub\\Wasp\\ExampleFiles\\0.Basics",
+          "feeds": "Wasp_Save Aggregation to File.PATH"
+        },
+        {
+          "text": "my_Aggregation_01",
+          "feeds": "Wasp_Save Aggregation to File.NAME"
+        },
+        {
+          "text": "CUB",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "HEX",
+          "feeds": "Wasp_Basic Part.NAME"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_07_Save_Load_Aggregation.gh"
+      ]
+    },
+    "fixed_seed": {
+      "description": "Stochastic Aggregation with SEED slider for reproducibility",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rules Generator",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Wasp_Basic Part[Part].PART -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Series[Series].Series -> Wasp_Stochastic Aggregation.SEED",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[].Panel -> Wasp_Basic Part.NAME",
+        "Geometry[Geo].Geometry -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Wasp_Basic Part[Part].PART -> Wasp_Rules Generator.PART",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Move.Geometry"
+      ],
+      "sliders": [
+        {
+          "value": 100,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "P",
+          "feeds": "Wasp_Basic Part.NAME"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh"
+      ]
+    },
+    "parts_catalog": {
+      "description": "Parts Catalog limiting per-part instance counts",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Filter Parts by Name",
+        "Wasp_Get Part Geometry",
+        "Wasp_Parts Catalog",
+        "Wasp_Rules Generator",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Panel[].Panel -> Wasp_Basic Part.NAME",
+        "Geometry[Geo].Geometry -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Mesh Brep[Mesh].Mesh -> Wasp_Basic Part.GEO",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 1",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 2",
+        "Merge[Merge].Result -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Wasp_Parts Catalog[PartCat].CAT -> Wasp_Stochastic Aggregation.CAT",
+        "Button[Button].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Merge[Merge].Result -> Wasp_Rules Generator.PART",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Filter Parts by Name.PART",
+        "Panel[].Panel -> Wasp_Filter Parts by Name.NAME",
+        "Wasp_Filter Parts by Name[NameFilter].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Merge[Merge].Result -> Wasp_Parts Catalog.PART",
+        "Panel[].Panel -> Wasp_Parts Catalog.NUM",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Parts Catalog.LIM",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Parts Catalog.AD",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry"
+      ],
+      "sliders": [
+        {
+          "value": 120,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "P",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "C",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "P",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        },
+        {
+          "text": "C",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        },
+        {
+          "text": "25\n45",
+          "feeds": "Wasp_Parts Catalog.NUM"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh"
+      ]
+    },
+    "aggregation_graph": {
+      "description": "Aggregation Graph extraction of connectivity",
+      "wasp_components": [
+        "Wasp_Aggregation Graph",
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rule From Text",
+        "Wasp_Rules Generator",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Connection From Direction.GEO",
+        "Point[CONNECTIONS_CENTERS].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[CONNECTIONS_X_AXIS].Curve -> Wasp_Connection From Direction.UP",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].AGGR -> Wasp_Aggregation Graph.AGGR",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Aggregation Graph.FG",
+        "Number Slider[].Number Slider -> Wasp_Aggregation Graph.TOL",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Aggregation Graph.FR",
+        "Wasp_Rule From Text[RuleTxt].R -> Wasp_Aggregation Graph.CR",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Aggregation Graph.F",
+        "Wasp_Basic Part[Part].PART -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[PARTS_NUM].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Button[RESET].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[PART_NAME].Panel -> Wasp_Basic Part.NAME",
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry",
+        "Wasp_Aggregation Graph[AggregationGraph].E -> Curve.Curve",
+        "Wasp_Aggregation Graph[AggregationGraph].N -> Point.Point",
+        "Wasp_Basic Part[Part].PART -> Wasp_Rules Generator.PART",
+        "Panel[].Panel -> Wasp_Rule From Text.TXT"
+      ],
+      "sliders": [
+        {
+          "value": 0.5,
+          "min": 0,
+          "max": 1,
+          "feeds": "Wasp_Aggregation Graph.TOL"
+        },
+        {
+          "value": 100,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "HEXA|0_HEXA|0\nHEXA|0_HEXA|1\nHEXA|0_HEXA|2\nHEXA|1_HEXA|0",
+          "feeds": "Wasp_Rule From Text.TXT"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_10_Aggregation_Graph.gh"
+      ]
+    },
+    "rules_generator": {
+      "description": "Rules Generator producing all/self/grammar-based rule sets",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Filter Parts by Name",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rules Generator",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Connection From Direction.GEO",
+        "Point[CONNECTIONS_CENTERS].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[CONNECTIONS_X_AXIS].Curve -> Wasp_Connection From Direction.UP",
+        "Merge[Merge].Result -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[PARTS_NUM].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Button[RESET].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[PART_NAME].Panel -> Wasp_Basic Part.NAME",
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Wasp_Filter Parts by Name[NameFilter].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 1",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 2",
+        "Merge[Merge].Result -> Wasp_Rules Generator.PART",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.SELF_P",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.SELF_C",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Filter Parts by Name.PART",
+        "Panel[].Panel -> Wasp_Filter Parts by Name.NAME"
+      ],
+      "sliders": [
+        {
+          "value": 500,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "BOX",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "HEXA\nBOX",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/1.Rules/1_01_Rules_Generator_Basics.gh"
+      ]
+    },
+    "rules_connection_types": {
+      "description": "Connection type strings (T input) driving Rules Generator compatibility",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rules Generator",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Connection From Direction.GEO",
+        "Point[CONNECTIONS_CENTERS].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[CONNECTIONS_X_AXIS].Curve -> Wasp_Connection From Direction.UP",
+        "Panel[].Panel -> Wasp_Connection From Direction.T",
+        "Wasp_Basic Part[Part].PART -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[PARTS_NUM].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Button[RESET].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[PART_NAME].Panel -> Wasp_Basic Part.NAME",
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Basic Part.GEO",
+        "Merge[Merge].Result -> Wasp_Basic Part.CONN",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 1",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 2",
+        "Wasp_Basic Part[Part].PART -> Wasp_Rules Generator.PART",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.TYP"
+      ],
+      "sliders": [
+        {
+          "value": 250,
+          "min": 0,
+          "max": 5000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "Hexagonal",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "Square",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "OCTA",
+          "feeds": "Wasp_Basic Part.NAME"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/1.Rules/1_02_Rules_Connection_Types.gh"
+      ]
+    },
+    "rule_grammar_text": {
+      "description": "Connection-type grammar (TYPE>TYPE panel into Rules Generator GR; type strings assigned via Connection From Direction T input)",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Filter Parts by Name",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rules Generator",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Brep[Brep].Brep -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Panel[CONNECTION_TYPE].Panel -> Wasp_Connection From Direction.T",
+        "Merge[Merge].Result -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[PARTS_NUM].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Button[RESET].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[PART_NAME].Panel -> Wasp_Basic Part.NAME",
+        "Brep[Brep].Brep -> Wasp_Basic Part.GEO",
+        "Merge[Merge].Result -> Wasp_Basic Part.CONN",
+        "Wasp_Filter Parts by Name[NameFilter].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 1",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 2",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 3",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 1",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 2",
+        "Merge[Merge].Result -> Wasp_Rules Generator.PART",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.SELF_P",
+        "Panel[CONNECTION_GRAMMAR_03].Panel -> Wasp_Rules Generator.GR",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Filter Parts by Name.PART",
+        "Panel[PART_NAME].Panel -> Wasp_Filter Parts by Name.NAME",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry"
+      ],
+      "sliders": [
+        {
+          "value": 500,
+          "min": 0,
+          "max": 10000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "END",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "SHORTSIDE",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "LONGSIDE",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "END",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "SIDE",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "BRANCH",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "STICK",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "END>END\nSIDE>SIDE\nSIDE>LONGSIDE\nLONGSIDE>SIDE",
+          "feeds": "Wasp_Rules Generator.GR"
+        },
+        {
+          "text": "STICK",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        },
+        {
+          "text": "BRANCH",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/1.Rules/1_03_Rules_Grammar.gh"
+      ]
+    },
+    "rules_visualizer": {
+      "description": "Rules Visualizer previewing rule pairings on parts",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Filter Parts by Name",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rules Generator",
+        "Wasp_Rules Visualizer",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Panel[].Panel -> Wasp_Connection From Direction.T",
+        "Panel[].Panel -> Wasp_Basic Part.NAME",
+        "Geometry[Geo].Geometry -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 1",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 2",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 3",
+        "Merge[Merge].Result -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "List Item[Item].Item -> Wasp_Stochastic Aggregation.RULES",
+        "Button[Button].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Merge[Merge].Result -> Wasp_Rules Generator.PART",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.SELF_P",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.SELF_C",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.TYP",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Filter Parts by Name.PART",
+        "Panel[].Panel -> Wasp_Filter Parts by Name.NAME",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry",
+        "Wasp_Filter Parts by Name[NameFilter].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Merge[Merge].Result -> Wasp_Rules Visualizer.PART",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Rules Visualizer.R",
+        "Number Slider[].Number Slider -> Wasp_Rules Visualizer.SF",
+        "XY Plane[XY].Plane -> Wasp_Rules Visualizer.PLN",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Visualizer.SI",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Visualizer.ST",
+        "Wasp_Rules Visualizer[RuleViz].BP -> Wasp_Filter Parts by Name.PART",
+        "Wasp_Rules Visualizer[RuleViz].NP -> Wasp_Filter Parts by Name.PART",
+        "Wasp_Rules Visualizer[RuleViz].RTL -> Text Tag 3D.Location",
+        "Wasp_Rules Visualizer[RuleViz].RT -> Text Tag 3D.Text",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Mesh Edges.Mesh",
+        "Wasp_Rules Generator[RuleGen].R -> List Item.List",
+        "Wasp_Rules Visualizer[RuleViz].RTL -> Rectangle.Plane"
+      ],
+      "sliders": [
+        {
+          "value": 250,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        },
+        {
+          "value": 2.4,
+          "min": 0,
+          "max": 10,
+          "feeds": "Wasp_Rules Visualizer.SF"
+        }
+      ],
+      "panels": [
+        {
+          "text": "BOX",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "TRI",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "TRI",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "BOX",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "HEXA\nTRI\nBOX",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        },
+        {
+          "text": "HEXA\nTRI\nBOX",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        },
+        {
+          "text": "HEXA\nTRI\nBOX",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/1.Rules/1_04_Rules_Visualizer.gh"
+      ]
+    },
+    "rules_from_aggregation": {
+      "description": "Extract rules back out of an existing aggregation",
+      "wasp_components": [
+        "Wasp_Attribute",
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Get Attribute by Name",
+        "Wasp_Get Part Geometry",
+        "Wasp_Graph-Grammar Aggregation",
+        "Wasp_Rules Generator",
+        "Wasp_Rules from Aggregation",
+        "Wasp_Stochastic Aggregation",
+        "Wasp_Transform Part"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Repeat Data[Repeat].Data -> Wasp_Connection From Direction.CEN",
+        "Rotate[Rotate].Geometry -> Wasp_Connection From Direction.UP",
+        "Panel[].Panel -> Wasp_Connection From Direction.T",
+        "Area[Area].Centroid -> Wasp_Connection From Direction.CEN",
+        "Line SDL[Line].Line -> Wasp_Connection From Direction.UP",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Wasp_Graph-Grammar Aggregation[GraphAggr].PART_OUT -> Wasp_Transform Part.PART",
+        "Move[Move].Transform -> Wasp_Transform Part.TR",
+        "Data[Data].Data -> Wasp_Get Attribute by Name.PART",
+        "Panel[].Panel -> Wasp_Get Attribute by Name.ID",
+        "Wasp_Basic Part[Part].PART -> Wasp_Transform Part.PART",
+        "Scale NU[Scale NU].Transform -> Wasp_Transform Part.TR",
+        "Wasp_Basic Part[Part].PART -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Button[Button].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Wasp_Basic Part[Part].PART -> Wasp_Rules Generator.PART",
+        "Panel[].Panel -> Wasp_Rules Generator.GR",
+        "Panel[].Panel -> Wasp_Attribute.ID",
+        "Geometry[Geo].Geometry -> Wasp_Attribute.VAL",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Attribute.TR",
+        "Wasp_Get Attribute by Name[GetAttr].VAL -> Custom Preview.Geometry",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].AGGR -> Wasp_Rules from Aggregation.AGGR",
+        "Panel[].Panel -> Wasp_Rules from Aggregation.ON",
+        "Panel[].Panel -> Wasp_Rules from Aggregation.NN",
+        "Wasp_Basic Part[Part].PART -> Wasp_Graph-Grammar Aggregation.PART",
+        "Wasp_Rules from Aggregation[GraphRules].GR -> Wasp_Graph-Grammar Aggregation.RULES",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Graph-Grammar Aggregation.RESET",
+        "Wasp_Transform Part[PartTr].PART_OUT -> Data.Data",
+        "Wasp_Transform Part[PartTr].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Panel[].Panel -> Wasp_Basic Part.NAME",
+        "Geometry[Geo].Geometry -> Wasp_Basic Part.GEO",
+        "Merge[Merge].Result -> Wasp_Basic Part.CONN",
+        "Wasp_Attribute[Attribute].ATTR -> Wasp_Basic Part.ATTR",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 1",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 2",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 3",
+        "Wasp_Rules from Aggregation[GraphRules].GR -> Panel.Panel",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Data.Data",
+        "Wasp_Transform Part[PartTr].PART_OUT -> Wasp_Graph-Grammar Aggregation.PART"
+      ],
+      "sliders": [
+        {
+          "value": 100,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "TOP",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "BOTTOM",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "SIDE",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "TOP",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "BOTTOM",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "SIDE",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "BLOCK",
+          "feeds": "Wasp_Get Attribute by Name.ID"
+        },
+        {
+          "text": "WIN",
+          "feeds": "Wasp_Get Attribute by Name.ID"
+        },
+        {
+          "text": "BLOCK",
+          "feeds": "Wasp_Get Attribute by Name.ID"
+        },
+        {
+          "text": "WIN",
+          "feeds": "Wasp_Get Attribute by Name.ID"
+        },
+        {
+          "text": "BLOCK",
+          "feeds": "Wasp_Get Attribute by Name.ID"
+        },
+        {
+          "text": "WIN",
+          "feeds": "Wasp_Get Attribute by Name.ID"
+        },
+        {
+          "text": "SIDE>SIDE\nTOP>BOTTOM\nBOTTOM>TOP",
+          "feeds": "Wasp_Rules Generator.GR"
+        },
+        {
+          "text": "BLOCK",
+          "feeds": "Wasp_Attribute.ID"
+        },
+        {
+          "text": "WIN",
+          "feeds": "Wasp_Attribute.ID"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Rules from Aggregation.ON"
+        },
+        {
+          "text": "LBLOCK",
+          "feeds": "Wasp_Rules from Aggregation.NN"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "BLOCK",
+          "feeds": "Wasp_Attribute.ID"
+        },
+        {
+          "text": "WIN",
+          "feeds": "Wasp_Attribute.ID"
+        },
+        {
+          "text": "LBLOCK",
+          "feeds": "Wasp_Basic Part.NAME"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh"
+      ]
+    },
+    "field_driven_aggregation": {
+      "description": "Field (from points + values) driving Field-driven Aggregation",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Deconstruct Field",
+        "Wasp_Field",
+        "Wasp_Field Isolines",
+        "Wasp_Field Points",
+        "Wasp_Field-driven Aggregation",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rule From Text"
+      ],
+      "chain": [
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Connection From Direction.GEO",
+        "Point[CONNECTIONS_CENTERS].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[CONNECTIONS_X_AXIS].Curve -> Wasp_Connection From Direction.UP",
+        "Wasp_Field[Field].FIELD -> Wasp_Field Isolines.FIELD",
+        "Number Slider[].Number Slider -> Wasp_Field Isolines.PLN",
+        "Number Slider[].Number Slider -> Wasp_Field Isolines.T",
+        "Number Slider[].Number Slider -> Wasp_Field Isolines.ISO",
+        "Brep[Brep].Brep -> Wasp_Field Points.BOU",
+        "Number Slider[].Number Slider -> Wasp_Field Points.RES",
+        "Wasp_Field[Field].FIELD -> Wasp_Deconstruct Field.FIELD",
+        "Wasp_Basic Part[Part].PART -> Wasp_Field-driven Aggregation.PART",
+        "Number Slider[PARTS_NUM].Number Slider -> Wasp_Field-driven Aggregation.N",
+        "Wasp_Rule From Text[RuleTxt].R -> Wasp_Field-driven Aggregation.RULES",
+        "Wasp_Field[Field].FIELD -> Wasp_Field-driven Aggregation.FIELD",
+        "Button[RESET].Button -> Wasp_Field-driven Aggregation.RESET",
+        "Panel[PART_NAME].Panel -> Wasp_Basic Part.NAME",
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Wasp_Field-driven Aggregation[FieldAggregation].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Panel[].Panel -> Wasp_Field.NAME",
+        "Wasp_Field Points[FieldPts].E_FIELD -> Wasp_Field.E_FIELD",
+        "Graph Mapper[Graph].Graph Mapper -> Wasp_Field.VAL",
+        "Wasp_Field Points[FieldPts].PTS -> Bounding Box.Content",
+        "Wasp_Field Points[FieldPts].PTS -> Pull Point.Point",
+        "Wasp_Deconstruct Field[DeField].VAL -> Gradient.Parameter",
+        "Wasp_Deconstruct Field[DeField].PTS -> Custom Preview.Geometry",
+        "Panel[OCTA -> OCTA].Panel -> Wasp_Rule From Text.TXT",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry",
+        "Range[Range].Range -> Wasp_Field Isolines.T",
+        "Wasp_Deconstruct Field[DeField].VAL -> Cull Pattern.Cull Pattern",
+        "Wasp_Deconstruct Field[DeField].PTS -> Cull Pattern.List"
+      ],
+      "sliders": [
+        {
+          "value": 0,
+          "min": 0,
+          "max": 2,
+          "feeds": "Wasp_Field Isolines.PLN"
+        },
+        {
+          "value": 0.095,
+          "min": 0,
+          "max": 1,
+          "feeds": "Wasp_Field Isolines.T"
+        },
+        {
+          "value": 0.802,
+          "min": 0,
+          "max": 1,
+          "feeds": "Wasp_Field Isolines.ISO"
+        },
+        {
+          "value": 10,
+          "min": 0,
+          "max": 100,
+          "feeds": "Wasp_Field Points.RES"
+        },
+        {
+          "value": 800,
+          "min": 0,
+          "max": 5000,
+          "feeds": "Wasp_Field-driven Aggregation.N"
+        },
+        {
+          "value": 2,
+          "min": 0,
+          "max": 2,
+          "feeds": "Wasp_Field Isolines.PLN"
+        },
+        {
+          "value": 0.731,
+          "min": 0,
+          "max": 1,
+          "feeds": "Wasp_Field Isolines.ISO"
+        },
+        {
+          "value": 7,
+          "min": 0,
+          "max": 100,
+          "feeds": "Wasp_Field Points.RES"
+        },
+        {
+          "value": 500,
+          "min": 0,
+          "max": 5000,
+          "feeds": "Wasp_Field-driven Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "OCTA",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "myField",
+          "feeds": "Wasp_Field.NAME"
+        },
+        {
+          "text": "OCTA|0_OCTA|6\nOCTA|6_OCTA|0\nOCTA|1_OCTA|7\nOCTA|7_OCTA|1\nOCTA|2_OCTA|4\nOCTA|4_OCTA|2\nOCTA|3_OCTA|5\nOCTA|5_OCTA|3",
+          "feeds": "Wasp_Rule From Text.TXT"
+        },
+        {
+          "text": "OCTA",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "myField",
+          "feeds": "Wasp_Field.NAME"
+        },
+        {
+          "text": "OCTA|0_OCTA|6\nOCTA|6_OCTA|0\nOCTA|1_OCTA|7\nOCTA|7_OCTA|1\nOCTA|2_OCTA|4\nOCTA|4_OCTA|2\nOCTA|3_OCTA|5\nOCTA|5_OCTA|3",
+          "feeds": "Wasp_Rule From Text.TXT"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/2.Fields/2_01_Field_Basics.gh",
+        "ExampleFiles/2.Fields/2_02_Field_Boundaries.gh"
+      ]
+    },
+    "multichannel_field": {
+      "description": "Multiple field channels combined",
+      "wasp_components": [
+        "Wasp_Advanced Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Field",
+        "Wasp_Field Points",
+        "Wasp_Field-driven Aggregation",
+        "Wasp_Filter Parts by Name",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rules Generator"
+      ],
+      "chain": [
+        "Brep[Brep].Brep -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Panel[].Panel -> Wasp_Connection From Direction.T",
+        "Scale NU[Scale NU].Geometry -> Wasp_Field Points.BOU",
+        "Number Slider[].Number Slider -> Wasp_Field Points.RES",
+        "Merge[Merge].Result -> Wasp_Field-driven Aggregation.PART",
+        "Number Slider[].Number Slider -> Wasp_Field-driven Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Field-driven Aggregation.RULES",
+        "Merge[Merge].Result -> Wasp_Field-driven Aggregation.FIELD",
+        "Button[Button].Button -> Wasp_Field-driven Aggregation.RESET",
+        "Panel[PART_NAME].Panel -> Wasp_Advanced Part.NAME",
+        "Brep[Brep].Brep -> Wasp_Advanced Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Advanced Part.CONN",
+        "Panel[].Panel -> Wasp_Advanced Part.FIELD",
+        "Panel[].Panel -> Wasp_Field.NAME",
+        "Wasp_Field Points[FieldPts].E_FIELD -> Wasp_Field.E_FIELD",
+        "Multiplication[A×B].Result -> Wasp_Field.VAL",
+        "Wasp_Field Points[FieldPts].PTS -> Curve Closest Point.Point",
+        "Wasp_Advanced Part[AdvPart].PART -> Merge.Data 1",
+        "Wasp_Advanced Part[AdvPart].PART -> Merge.Data 2",
+        "Wasp_Field-driven Aggregation[FieldAggregation].PART_OUT -> Wasp_Filter Parts by Name.PART",
+        "Panel[].Panel -> Wasp_Filter Parts by Name.NAME",
+        "Wasp_Filter Parts by Name[NameFilter].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Field Points[FieldPts].PTS -> Deconstruct.Point",
+        "Wasp_Field[Field].FIELD -> Merge.Data 1",
+        "Wasp_Field[Field].FIELD -> Merge.Data 2",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry",
+        "Merge[Merge].Result -> Wasp_Rules Generator.PART",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.TYP",
+        "Wasp_Field Points[FieldPts].PTS -> Cull Pattern.List"
+      ],
+      "sliders": [
+        {
+          "value": 4,
+          "min": 0,
+          "max": 10,
+          "feeds": "Wasp_Field Points.RES"
+        },
+        {
+          "value": 500,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Field-driven Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "HEX\nHEX\nSID\nSID\nSID",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "HEX",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "OCTA",
+          "feeds": "Wasp_Advanced Part.NAME"
+        },
+        {
+          "text": "positive-y-field",
+          "feeds": "Wasp_Advanced Part.FIELD"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Advanced Part.NAME"
+        },
+        {
+          "text": "negative-y-field",
+          "feeds": "Wasp_Advanced Part.FIELD"
+        },
+        {
+          "text": "positive-y-field",
+          "feeds": "Wasp_Field.NAME"
+        },
+        {
+          "text": "OCTA",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        },
+        {
+          "text": "negative-y-field",
+          "feeds": "Wasp_Field.NAME"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh"
+      ]
+    },
+    "save_load_field": {
+      "description": "Save Field to File / Load Field from File",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Deconstruct Field",
+        "Wasp_Field",
+        "Wasp_Field Points",
+        "Wasp_Field-driven Aggregation",
+        "Wasp_Get Part Geometry",
+        "Wasp_Load Field from File",
+        "Wasp_Rules Generator",
+        "Wasp_Save Field to File"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Geometry[Geo].Geometry -> Wasp_Field Points.BOU",
+        "Number Slider[].Number Slider -> Wasp_Field Points.RES",
+        "Wasp_Field[Field].FIELD -> Wasp_Save Field to File.FIELD",
+        "Panel[].Panel -> Wasp_Save Field to File.PATH",
+        "Panel[].Panel -> Wasp_Save Field to File.NAME",
+        "Button[Button].Button -> Wasp_Save Field to File.SAVE",
+        "File Path[Path].File Path -> Wasp_Load Field from File.FILE",
+        "Button[Button].Button -> Wasp_Load Field from File.LOAD",
+        "Wasp_Basic Part[Part].PART -> Wasp_Field-driven Aggregation.PART",
+        "Number Slider[].Number Slider -> Wasp_Field-driven Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Field-driven Aggregation.RULES",
+        "Wasp_Load Field from File[LoadField].FIELD -> Wasp_Field-driven Aggregation.FIELD",
+        "Button[Button].Button -> Wasp_Field-driven Aggregation.RESET",
+        "Wasp_Load Field from File[LoadField].FIELD -> Wasp_Deconstruct Field.FIELD",
+        "Wasp_Field Points[FieldPts].PTS -> Pull Point.Point",
+        "Wasp_Field Points[FieldPts].E_FIELD -> Wasp_Field.E_FIELD",
+        "Graph Mapper[Graph].Graph Mapper -> Wasp_Field.VAL",
+        "Wasp_Deconstruct Field[DeField].VAL -> Gradient.Parameter",
+        "Wasp_Deconstruct Field[DeField].PTS -> Custom Preview.Geometry",
+        "Panel[].Panel -> Wasp_Basic Part.NAME",
+        "Geometry[Geo].Geometry -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Wasp_Basic Part[Part].PART -> Wasp_Rules Generator.PART",
+        "Wasp_Field-driven Aggregation[FieldAggregation].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry"
+      ],
+      "sliders": [
+        {
+          "value": 5,
+          "min": 0,
+          "max": 10,
+          "feeds": "Wasp_Field Points.RES"
+        },
+        {
+          "value": 250,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Field-driven Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "D:\\Github\\Wasp\\ExampleFiles\\2.Fields",
+          "feeds": "Wasp_Save Field to File.PATH"
+        },
+        {
+          "text": "myField",
+          "feeds": "Wasp_Save Field to File.NAME"
+        },
+        {
+          "text": "P",
+          "feeds": "Wasp_Basic Part.NAME"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/2.Fields/2_07_Save_Load_Field.gh"
+      ]
+    },
+    "local_constraints_supports": {
+      "description": "Support constraints on parts (Advanced Part)",
+      "wasp_components": [
+        "Wasp_Advanced Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rules Generator",
+        "Wasp_Stochastic Aggregation",
+        "Wasp_Support",
+        "Wasp_Transform Part"
+      ],
+      "chain": [
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Connection From Direction.GEO",
+        "Point[CONNECTIONS_CENTERS].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[CONNECTIONS_X_AXIS].Curve -> Wasp_Connection From Direction.UP",
+        "Panel[].Panel -> Wasp_Connection From Direction.T",
+        "Wasp_Advanced Part[AdvPart].PART -> Wasp_Transform Part.PART",
+        "Move[Move].Transform -> Wasp_Transform Part.TR",
+        "Wasp_Advanced Part[AdvPart].PART -> Wasp_Stochastic Aggregation.PART",
+        "Wasp_Transform Part[PartTr].PART_OUT -> Wasp_Stochastic Aggregation.PREV",
+        "Number Slider[PARTS_NUM].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Value List[CONSTRAINTS].Value List -> Wasp_Stochastic Aggregation.MODE",
+        "Button[RESET].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[PART_NAME].Panel -> Wasp_Advanced Part.NAME",
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Advanced Part.GEO",
+        "Merge[Merge].Result -> Wasp_Advanced Part.CONN",
+        "Merge[Merge].Result -> Wasp_Advanced Part.SUP",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 1",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 2",
+        "Wasp_Support[Support].SUP -> Merge.Data 1",
+        "Wasp_Support[Support].SUP -> Merge.Data 2",
+        "Wasp_Support[Support].SUP -> Merge.Data 3",
+        "Wasp_Support[Support].SUP -> Merge.Data 4",
+        "List Item[Item].Item +1 -> Wasp_Support.DIR",
+        "List Item[Item].Item +4 -> Wasp_Support.DIR",
+        "Brep[PART_GEOMETRY].Brep -> Wasp_Support.GEO",
+        "List Item[Item].Item +3 -> Wasp_Support.DIR",
+        "List Item[Item].Item +6 -> Wasp_Support.DIR",
+        "List Item[Item].Item +7 -> Wasp_Support.DIR",
+        "List Item[Item].Item +5 -> Wasp_Support.DIR",
+        "List Item[Item].Item +8 -> Wasp_Support.DIR",
+        "List Item[Item].Item +2 -> Wasp_Support.DIR",
+        "List Item[Item].Item -> Wasp_Support.DIR",
+        "Wasp_Advanced Part[AdvPart].PART -> Wasp_Rules Generator.PART",
+        "Panel[].Panel -> Wasp_Rules Generator.GR",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> List Length.List"
+      ],
+      "sliders": [
+        {
+          "value": 250,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "TOP",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "BOTTOM",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "T",
+          "feeds": "Wasp_Advanced Part.NAME"
+        },
+        {
+          "text": "TOP>BOTTOM",
+          "feeds": "Wasp_Rules Generator.GR"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/3.Constraints/4_01_Local_Constraints_Supports.gh"
+      ]
+    },
+    "additional_collider": {
+      "description": "Collider component supplying extra collision geometry to parts",
+      "wasp_components": [
+        "Wasp_Advanced Part",
+        "Wasp_Collider",
+        "Wasp_Connection From Direction",
+        "Wasp_Deconstruct Collider",
+        "Wasp_Deconstruct Part",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rule From Text",
+        "Wasp_Stochastic Aggregation",
+        "Wasp_Support",
+        "Wasp_Transform Part"
+      ],
+      "chain": [
+        "Brep[GEOMETRY].Brep -> Wasp_Connection From Direction.GEO",
+        "Point[CONNECTIONS_CENTERS].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[CONNECTIONS_UP].Curve -> Wasp_Connection From Direction.UP",
+        "Wasp_Transform Part[PartTr].PART_OUT -> Wasp_Transform Part.PART",
+        "Move[Move].Transform -> Wasp_Transform Part.TR",
+        "Wasp_Advanced Part[AdvPart].PART -> Wasp_Transform Part.PART",
+        "Wasp_Advanced Part[AdvPart].PART -> Wasp_Stochastic Aggregation.PART",
+        "Wasp_Transform Part[PartTr].PART_OUT -> Wasp_Stochastic Aggregation.PREV",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rule From Text[RuleTxt].R -> Wasp_Stochastic Aggregation.RULES",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.MODE",
+        "Button[Button].Button -> Wasp_Stochastic Aggregation.RESET",
+        "List Item[Item].Item -> Wasp_Deconstruct Part.PART",
+        "Panel[COMPONENT_NAME].Panel -> Wasp_Advanced Part.NAME",
+        "Brep[GEOMETRY].Brep -> Wasp_Advanced Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Advanced Part.CONN",
+        "Wasp_Collider[Collider].COLL -> Wasp_Advanced Part.E_COLL",
+        "Wasp_Support[Support].SUP -> Wasp_Advanced Part.SUP",
+        "Data[Data].Data -> Wasp_Get Part Geometry.PART",
+        "Panel[RULES].Panel -> Wasp_Rule From Text.TXT",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry",
+        "Wasp_Deconstruct Part[DePart].ADD_COLL -> Wasp_Deconstruct Collider.COLL",
+        "Wasp_Deconstruct Collider[DeColl].GEO -> Custom Preview.Geometry",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Split List.List",
+        "Wasp_Transform Part[PartTr].PART_OUT -> List Length.List",
+        "Entwine[Entwine].Result -> Wasp_Support.DIR",
+        "Mesh Join[MJoin].Mesh -> Wasp_Collider.GEO"
+      ],
+      "sliders": [
+        {
+          "value": 50,
+          "min": 0,
+          "max": 100,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        },
+        {
+          "value": 1,
+          "min": 0,
+          "max": 1,
+          "feeds": "Wasp_Stochastic Aggregation.MODE"
+        }
+      ],
+      "panels": [
+        {
+          "text": "B",
+          "feeds": "Wasp_Advanced Part.NAME"
+        },
+        {
+          "text": "B|0_B|1\nB|1_B|0\nB|2_B|4\nB|3_B|5\nB|6_B|7",
+          "feeds": "Wasp_Rule From Text.TXT"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/3.Constraints/4_02_Local_Constraints_Additional_Collider.gh"
+      ]
+    },
+    "adjacency_constraints": {
+      "description": "Adjacency/exclusion constraints between named parts",
+      "wasp_components": [
+        "Wasp_Adjacency Exclusion Constraint",
+        "Wasp_Advanced Part",
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Filter Parts by Name",
+        "Wasp_Get Part Geometry",
+        "Wasp_Rules Generator",
+        "Wasp_Stochastic Aggregation",
+        "Wasp_Transform Part"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Panel[].Panel -> Wasp_Connection From Direction.T",
+        "Wasp_Basic Part[Part].PART -> Wasp_Transform Part.PART",
+        "Move[Move].Transform -> Wasp_Transform Part.TR",
+        "Panel[].Panel -> Wasp_Advanced Part.NAME",
+        "Geometry[Geo].Geometry -> Wasp_Advanced Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Advanced Part.CONN",
+        "Wasp_Adjacency Exclusion Constraint[AdjExcConst].AEC -> Wasp_Advanced Part.AEC",
+        "Merge[Merge].Result -> Wasp_Advanced Part.AEC",
+        "Panel[].Panel -> Wasp_Basic Part.NAME",
+        "Geometry[Geo].Geometry -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Merge[Merge].Result -> Wasp_Stochastic Aggregation.PART",
+        "Wasp_Transform Part[PartTr].PART_OUT -> Wasp_Stochastic Aggregation.PREV",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.MODE",
+        "Button[Button].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Merge[Merge].Result -> Wasp_Rules Generator.PART",
+        "Panel[].Panel -> Wasp_Rules Generator.GR",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 1",
+        "Wasp_Advanced Part[AdvPart].PART -> Merge.Data 2",
+        "Wasp_Advanced Part[AdvPart].PART -> Merge.Data 3",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Filter Parts by Name.PART",
+        "Panel[].Panel -> Wasp_Filter Parts by Name.NAME",
+        "Wasp_Filter Parts by Name[NameFilter].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry",
+        "Wasp_Adjacency Exclusion Constraint[AdjExcConst].AEC -> Merge.Data 1",
+        "Wasp_Adjacency Exclusion Constraint[AdjExcConst].AEC -> Merge.Data 2",
+        "Curve[Crv].Curve -> Wasp_Adjacency Exclusion Constraint.DIR",
+        "Panel[].Panel -> Wasp_Adjacency Exclusion Constraint.PN",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Adjacency Exclusion Constraint.AE"
+      ],
+      "sliders": [
+        {
+          "value": 181,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        },
+        {
+          "value": 1,
+          "min": 0,
+          "max": 3,
+          "feeds": "Wasp_Stochastic Aggregation.MODE"
+        }
+      ],
+      "panels": [
+        {
+          "text": "HBOTTOM\nHTOP",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "HSIDE",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "SSIDE",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "SBOTTOM",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "BUP",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "BSTART\nBEND",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Advanced Part.NAME"
+        },
+        {
+          "text": "STICK",
+          "feeds": "Wasp_Advanced Part.NAME"
+        },
+        {
+          "text": "BOX",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "BSTART>BEND\nBEND>BSTART\nBUP>SBOTTOM\nSSIDE>HSIDE\nHSIDE>HSIDE\nHTOP>HBOTTOM",
+          "feeds": "Wasp_Rules Generator.GR"
+        },
+        {
+          "text": "BOX",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        },
+        {
+          "text": "STICK",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Filter Parts by Name.NAME"
+        },
+        {
+          "text": "STICK\nSTICK\nSTICK\nSTICK",
+          "feeds": "Wasp_Adjacency Exclusion Constraint.PN"
+        },
+        {
+          "text": "BOX\nBOX",
+          "feeds": "Wasp_Adjacency Exclusion Constraint.PN"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/3.Constraints/4_03_Local_Constraints_Adjacencies.gh"
+      ]
+    },
+    "orientation_constraints": {
+      "description": "Orientation constraint on part placement",
+      "wasp_components": [
+        "Wasp_Advanced Part",
+        "Wasp_Attribute",
+        "Wasp_Connection From Direction",
+        "Wasp_Connection From Plane",
+        "Wasp_Get Attribute by Name",
+        "Wasp_Orientation Constraint",
+        "Wasp_Rules Generator",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Area[Area].Centroid -> Wasp_Connection From Direction.CEN",
+        "Line SDL[Line].Line -> Wasp_Connection From Direction.UP",
+        "Panel[].Panel -> Wasp_Connection From Direction.T",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Get Attribute by Name.PART",
+        "Panel[].Panel -> Wasp_Get Attribute by Name.ID",
+        "Panel[].Panel -> Wasp_Advanced Part.NAME",
+        "Geometry[Geo].Geometry -> Wasp_Advanced Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Advanced Part.CONN",
+        "Wasp_Connection From Plane[ConnPln].CONN -> Wasp_Advanced Part.CONN",
+        "Wasp_Attribute[Attribute].ATTR -> Wasp_Advanced Part.ATTR",
+        "Wasp_Orientation Constraint[AdjExcConst].OC -> Wasp_Advanced Part.OC",
+        "Wasp_Advanced Part[AdvPart].PART -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.MODE",
+        "Button[Button].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Wasp_Advanced Part[AdvPart].PART -> Wasp_Rules Generator.PART",
+        "Panel[].Panel -> Wasp_Rules Generator.GR",
+        "Panel[].Panel -> Wasp_Attribute.ID",
+        "Geometry[Geo].Geometry -> Wasp_Attribute.VAL",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Attribute.TR",
+        "Wasp_Get Attribute by Name[GetAttr].VAL -> Custom Preview.Geometry",
+        "Align Plane[Align].Plane -> Wasp_Connection From Plane.PLN",
+        "Panel[].Panel -> Wasp_Connection From Plane.T",
+        "Curve[Crv].Curve -> Wasp_Orientation Constraint.DIR",
+        "Construct Domain[Dom].Domain -> Wasp_Orientation Constraint.R",
+        "XY Plane[XY].Plane -> Wasp_Orientation Constraint.PLN"
+      ],
+      "sliders": [
+        {
+          "value": 150,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        },
+        {
+          "value": 1,
+          "min": 0,
+          "max": 1,
+          "feeds": "Wasp_Stochastic Aggregation.MODE"
+        }
+      ],
+      "panels": [
+        {
+          "text": "BOTTOM",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "SIDE",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "BLOCK",
+          "feeds": "Wasp_Get Attribute by Name.ID"
+        },
+        {
+          "text": "WIN",
+          "feeds": "Wasp_Get Attribute by Name.ID"
+        },
+        {
+          "text": "P",
+          "feeds": "Wasp_Advanced Part.NAME"
+        },
+        {
+          "text": "SIDE>SIDE\nTOP>BOTTOM\nBOTTOM>TOP",
+          "feeds": "Wasp_Rules Generator.GR"
+        },
+        {
+          "text": "BLOCK",
+          "feeds": "Wasp_Attribute.ID"
+        },
+        {
+          "text": "TOP",
+          "feeds": "Wasp_Connection From Plane.T"
+        },
+        {
+          "text": "WIN",
+          "feeds": "Wasp_Attribute.ID"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh"
+      ]
+    },
+    "global_constraint_plane": {
+      "description": "Plane Constraint bounding the aggregation globally",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Get Part Geometry",
+        "Wasp_Plane Constraint",
+        "Wasp_Rules Generator",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Panel[].Panel -> Wasp_Connection From Direction.T",
+        "XZ Plane[XZ].Plane -> Wasp_Plane Constraint.PLN",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Plane Constraint.POS",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Plane Constraint.SOFT",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Plane Constraint.REQ",
+        "XY Plane[XY].Plane -> Wasp_Plane Constraint.PLN",
+        "Wasp_Basic Part[Part].PART -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.MODE",
+        "Merge[Merge].Result -> Wasp_Stochastic Aggregation.GC",
+        "Button[Button].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[].Panel -> Wasp_Basic Part.NAME",
+        "Geometry[Geo].Geometry -> Wasp_Basic Part.GEO",
+        "Merge[Merge].Result -> Wasp_Basic Part.CONN",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 1",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 2",
+        "Wasp_Basic Part[Part].PART -> Wasp_Rules Generator.PART",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.TYP",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Plane Constraint[PlaneConst].PC -> Merge.Data 1",
+        "Wasp_Plane Constraint[PlaneConst].PC -> Merge.Data 2",
+        "Wasp_Plane Constraint[PlaneConst].PC -> Merge.Data 3",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> List Length.List",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry",
+        "YZ Plane[YZ].Plane -> Wasp_Plane Constraint.PLN"
+      ],
+      "sliders": [
+        {
+          "value": 500,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        },
+        {
+          "value": 2,
+          "min": 0,
+          "max": 10,
+          "feeds": "Wasp_Stochastic Aggregation.MODE"
+        }
+      ],
+      "panels": [
+        {
+          "text": "MID",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "END",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "STICK",
+          "feeds": "Wasp_Basic Part.NAME"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/3.Constraints/4_05_Global_Constraints_Plane.gh"
+      ]
+    },
+    "global_constraint_mesh": {
+      "description": "Mesh Constraint bounding the aggregation globally",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Get Part Geometry",
+        "Wasp_Mesh Constraint",
+        "Wasp_Rules Generator",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Wasp_Basic Part[Part].PART -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.MODE",
+        "Merge[Merge].Result -> Wasp_Stochastic Aggregation.GC",
+        "Button[Button].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Geometry[Geo].Geometry -> Wasp_Mesh Constraint.GEO",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Mesh Constraint.IN",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Mesh Constraint.SOFT",
+        "Panel[].Panel -> Wasp_Basic Part.NAME",
+        "Geometry[Geo].Geometry -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Wasp_Basic Part[Part].PART -> Wasp_Rules Generator.PART",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry",
+        "Wasp_Mesh Constraint[MeshConst].GC -> Merge.Data 1",
+        "Wasp_Mesh Constraint[MeshConst].GC -> Merge.Data 2",
+        "Wasp_Mesh Constraint[MeshConst].GC -> Merge.Data 3"
+      ],
+      "sliders": [
+        {
+          "value": 500,
+          "min": 0,
+          "max": 10000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        },
+        {
+          "value": 2,
+          "min": 0,
+          "max": 10,
+          "feeds": "Wasp_Stochastic Aggregation.MODE"
+        }
+      ],
+      "panels": [
+        {
+          "text": "PENTA",
+          "feeds": "Wasp_Basic Part.NAME"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/3.Constraints/4_06_Global_Constraints_Mesh.gh"
+      ]
+    },
+    "smart_attributes": {
+      "description": "Smart Attribute + Get Valid Smart Attributes workflow",
+      "wasp_components": [
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Deconstruct Connection",
+        "Wasp_Get Part Geometry",
+        "Wasp_Get Valid Smart Attributes",
+        "Wasp_Rules Generator",
+        "Wasp_Smart Attribute",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Panel[].Panel -> Wasp_Connection From Direction.T",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].AGGR -> Wasp_Get Valid Smart Attributes.AGGR",
+        "Panel[].Panel -> Wasp_Get Valid Smart Attributes.ID",
+        "Wasp_Basic Part[Part].PART -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Button[Button].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Panel[].Panel -> Wasp_Basic Part.NAME",
+        "Simple Mesh[SMesh].Mesh -> Wasp_Basic Part.GEO",
+        "Merge[Merge].Result -> Wasp_Basic Part.CONN",
+        "Wasp_Smart Attribute[SmartAttribute].ATTR -> Wasp_Basic Part.ATTR",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 1",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 2",
+        "Wasp_Basic Part[Part].PART -> Wasp_Rules Generator.PART",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.SELF_C",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.TYP",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Get Part Geometry.PART",
+        "Merge[Merge].Result -> Wasp_Deconstruct Connection.CONN",
+        "Wasp_Deconstruct Connection[DeConn].PLN -> Text Tag 3D.Location",
+        "Wasp_Deconstruct Connection[DeConn].ID -> Text Tag 3D.Text",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Deconstruct Mesh.Mesh",
+        "Wasp_Get Valid Smart Attributes[GetSmartAttr].VAL -> Custom Preview.Geometry",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Mesh Edges.Mesh",
+        "Panel[].Panel -> Wasp_Smart Attribute.ID",
+        "Geometry[Geo].Geometry -> Wasp_Smart Attribute.VAL",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Smart Attribute.TR",
+        "Merge[Merge].Result -> Wasp_Smart Attribute.CONN",
+        "Panel[].Panel -> Wasp_Smart Attribute.CM"
+      ],
+      "sliders": [
+        {
+          "value": 100,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        }
+      ],
+      "panels": [
+        {
+          "text": "TB",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "SIDE",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "ROOF",
+          "feeds": "Wasp_Get Valid Smart Attributes.ID"
+        },
+        {
+          "text": "DOOR",
+          "feeds": "Wasp_Get Valid Smart Attributes.ID"
+        },
+        {
+          "text": "BALCONY",
+          "feeds": "Wasp_Get Valid Smart Attributes.ID"
+        },
+        {
+          "text": "TESTP",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "BALCONY",
+          "feeds": "Wasp_Smart Attribute.ID"
+        },
+        {
+          "text": "0\n1\n0\n0\n0\n0",
+          "feeds": "Wasp_Smart Attribute.CM"
+        },
+        {
+          "text": "DOOR",
+          "feeds": "Wasp_Smart Attribute.ID"
+        },
+        {
+          "text": "0\n0\n-1\n0\n0\n0",
+          "feeds": "Wasp_Smart Attribute.CM"
+        },
+        {
+          "text": "ROOF",
+          "feeds": "Wasp_Smart Attribute.ID"
+        },
+        {
+          "text": "1\n0\n0\n1\n0\n0",
+          "feeds": "Wasp_Smart Attribute.CM"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/4.Advanced/4_04_Smart_Attributes.gh"
+      ]
+    },
+    "graph_grammar_aggregation": {
+      "description": "Graph-Grammar Aggregation with textual graph grammar",
+      "wasp_components": [
+        "Wasp_Attribute",
+        "Wasp_Basic Part",
+        "Wasp_Connection From Direction",
+        "Wasp_Get Attribute by Name",
+        "Wasp_Graph-Grammar Aggregation"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Wasp_Graph-Grammar Aggregation[GraphAggr].PART_OUT -> Wasp_Get Attribute by Name.PART",
+        "Panel[].Panel -> Wasp_Get Attribute by Name.ID",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 1",
+        "Wasp_Basic Part[Part].PART -> Merge.Data 2",
+        "Merge[Merge].Result -> Wasp_Graph-Grammar Aggregation.PART",
+        "Panel[].Panel -> Wasp_Graph-Grammar Aggregation.RULES",
+        "Button[Button].Button -> Wasp_Graph-Grammar Aggregation.RESET",
+        "Panel[].Panel -> Wasp_Attribute.ID",
+        "Geometry[Geo].Geometry -> Wasp_Attribute.VAL",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Attribute.TR",
+        "Panel[].Panel -> Wasp_Basic Part.NAME",
+        "Geometry[Geo].Geometry -> Wasp_Basic Part.GEO",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Wasp_Basic Part.CONN",
+        "Wasp_Attribute[Attribute].ATTR -> Wasp_Basic Part.ATTR",
+        "Wasp_Get Attribute by Name[GetAttr].VAL -> Custom Preview.Geometry"
+      ],
+      "sliders": [],
+      "panels": [
+        {
+          "text": "GEO",
+          "feeds": "Wasp_Get Attribute by Name.ID"
+        },
+        {
+          "text": "HEXA|0_HEXA|0>a_b\nb|1_HEXA|2>b_c\nc|1_HEXA|0>c_d\na|1_CUBE|1>a_e",
+          "feeds": "Wasp_Graph-Grammar Aggregation.RULES"
+        },
+        {
+          "text": "GEO",
+          "feeds": "Wasp_Attribute.ID"
+        },
+        {
+          "text": "GEO",
+          "feeds": "Wasp_Attribute.ID"
+        },
+        {
+          "text": "HEXA",
+          "feeds": "Wasp_Basic Part.NAME"
+        },
+        {
+          "text": "CUBE",
+          "feeds": "Wasp_Basic Part.NAME"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/4.Advanced/4_05_Graph_Grammar_Aggregation.gh"
+      ]
+    },
+    "hierarchical_aggregation": {
+      "description": "Hierarchical parts (experimental)",
+      "wasp_components": [
+        "Wasp_Advanced Part",
+        "Wasp_Assemble Part Hierarchy",
+        "Wasp_Attribute",
+        "Wasp_Connection From Direction",
+        "Wasp_Get Attribute by Name",
+        "Wasp_Get Part Geometry",
+        "Wasp_Get Parts Hierarchy",
+        "Wasp_Rules Generator",
+        "Wasp_Stochastic Aggregation"
+      ],
+      "chain": [
+        "Geometry[Geo].Geometry -> Wasp_Connection From Direction.GEO",
+        "Point[Pt].Point -> Wasp_Connection From Direction.CEN",
+        "Curve[Crv].Curve -> Wasp_Connection From Direction.UP",
+        "Panel[].Panel -> Wasp_Connection From Direction.T",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Wasp_Get Attribute by Name.PART",
+        "Panel[].Panel -> Wasp_Get Attribute by Name.ID",
+        "Wasp_Advanced Part[AdvPart].PART -> Wasp_Assemble Part Hierarchy.PART",
+        "Compound[Comp].Compound -> Wasp_Assemble Part Hierarchy.TR",
+        "Panel[].Panel -> Wasp_Advanced Part.NAME",
+        "Geometry[Geo].Geometry -> Wasp_Advanced Part.GEO",
+        "Merge[Merge].Result -> Wasp_Advanced Part.CONN",
+        "Wasp_Advanced Part[AdvPart].PART -> Wasp_Stochastic Aggregation.PART",
+        "Number Slider[].Number Slider -> Wasp_Stochastic Aggregation.N",
+        "Wasp_Rules Generator[RuleGen].R -> Wasp_Stochastic Aggregation.RULES",
+        "Button[Button].Button -> Wasp_Stochastic Aggregation.RESET",
+        "Wasp_Assemble Part Hierarchy[PartHierarchy].HIE -> Wasp_Advanced Part.HI",
+        "Wasp_Attribute[Attribute].ATTR -> Wasp_Advanced Part.ATTR",
+        "Wasp_Get Parts Hierarchy[GetHierarchy].SUB_P -> Wasp_Stochastic Aggregation.PREV",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 1",
+        "Wasp_Connection From Direction[ConnDir].CONN -> Merge.Data 2",
+        "Wasp_Advanced Part[AdvPart].PART -> Wasp_Rules Generator.PART",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Rules Generator.SELF_C",
+        "Split List[Split].List A -> Wasp_Get Part Geometry.PART",
+        "Panel[].Panel -> Wasp_Rules Generator.GR",
+        "Wasp_Assemble Part Hierarchy[PartHierarchy].HIE -> Wasp_Get Part Geometry.PART",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].AGGR -> Wasp_Get Parts Hierarchy.AGGR",
+        "Number Slider[].Number Slider -> Wasp_Get Parts Hierarchy.LEVEL",
+        "Wasp_Stochastic Aggregation[StochasticAggregation].PART_OUT -> Split List.List",
+        "Wasp_Get Parts Hierarchy[GetHierarchy].SUB_P -> List Length.List",
+        "Split List[Split].List B -> Wasp_Get Part Geometry.PART",
+        "Wasp_Get Part Geometry[PartGeo].GEO -> Custom Preview.Geometry",
+        "Panel[].Panel -> Wasp_Attribute.ID",
+        "Brep Edges[Edges].Interior -> Wasp_Attribute.VAL",
+        "Boolean Toggle[Toggle].Boolean Toggle -> Wasp_Attribute.TR",
+        "Wasp_Get Attribute by Name[GetAttr].VAL -> Dash Pattern.Curve"
+      ],
+      "sliders": [
+        {
+          "value": 50,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        },
+        {
+          "value": 500,
+          "min": 0,
+          "max": 1000,
+          "feeds": "Wasp_Stochastic Aggregation.N"
+        },
+        {
+          "value": 1,
+          "min": 0,
+          "max": 1,
+          "feeds": "Wasp_Get Parts Hierarchy.LEVEL"
+        }
+      ],
+      "panels": [
+        {
+          "text": "BOTTOM",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "TOP",
+          "feeds": "Wasp_Connection From Direction.T"
+        },
+        {
+          "text": "EDGES",
+          "feeds": "Wasp_Get Attribute by Name.ID"
+        },
+        {
+          "text": "STICK",
+          "feeds": "Wasp_Advanced Part.NAME"
+        },
+        {
+          "text": "OCTA",
+          "feeds": "Wasp_Advanced Part.NAME"
+        },
+        {
+          "text": "TOP>BOTTOM\nBOTTOM>TOP",
+          "feeds": "Wasp_Rules Generator.GR"
+        },
+        {
+          "text": "EDGES",
+          "feeds": "Wasp_Attribute.ID"
+        }
+      ],
+      "source_files": [
+        "ExampleFiles/5.Experimental/5_01_Hierarchical_Aggregation.gh"
+      ]
+    }
+  },
+  "connection_idioms": [
+    {
+      "idiom": "Point -> Wasp_Connection From Direction.CEN",
+      "count": 72,
+      "files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_06_Part_Attributes.gh",
+        "ExampleFiles/0.Basics/0_07_Save_Load_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh",
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh"
+      ]
+    },
+    {
+      "idiom": "Curve -> Wasp_Connection From Direction.UP",
+      "count": 72,
+      "files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_06_Part_Attributes.gh",
+        "ExampleFiles/0.Basics/0_07_Save_Load_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh",
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh"
+      ]
+    },
+    {
+      "idiom": "Panel -> Wasp_Connection From Direction.T",
+      "count": 50,
+      "files": [
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/1.Rules/1_02_Rules_Connection_Types.gh",
+        "ExampleFiles/1.Rules/1_03_Rules_Grammar.gh",
+        "ExampleFiles/1.Rules/1_04_Rules_Visualizer.gh",
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ]
+    },
+    {
+      "idiom": "Geometry -> Wasp_Connection From Direction.GEO",
+      "count": 48,
+      "files": [
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_06_Part_Attributes.gh",
+        "ExampleFiles/0.Basics/0_07_Save_Load_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh",
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh",
+        "ExampleFiles/1.Rules/1_04_Rules_Visualizer.gh",
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/2.Fields/2_07_Save_Load_Field.gh"
+      ]
+    },
+    {
+      "idiom": "Brep -> Wasp_Connection From Direction.GEO",
+      "count": 32,
+      "files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/0.Basics/0_10_Aggregation_Graph.gh",
+        "ExampleFiles/1.Rules/1_01_Rules_Generator_Basics.gh",
+        "ExampleFiles/1.Rules/1_02_Rules_Connection_Types.gh",
+        "ExampleFiles/1.Rules/1_03_Rules_Grammar.gh",
+        "ExampleFiles/2.Fields/2_01_Field_Basics.gh"
+      ]
+    },
+    {
+      "idiom": "Line SDL -> Wasp_Connection From Direction.UP",
+      "count": 6,
+      "files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh",
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ]
+    },
+    {
+      "idiom": "Area -> Wasp_Connection From Direction.CEN",
+      "count": 4,
+      "files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh"
+      ]
+    },
+    {
+      "idiom": "Construct Plane -> Wasp_Connection From Plane.PLN",
+      "count": 2,
+      "files": [
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh"
+      ]
+    },
+    {
+      "idiom": "Repeat Data -> Wasp_Connection From Direction.CEN",
+      "count": 2,
+      "files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh"
+      ]
+    },
+    {
+      "idiom": "Rotate -> Wasp_Connection From Direction.UP",
+      "count": 2,
+      "files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh"
+      ]
+    },
+    {
+      "idiom": "End Points -> Wasp_Connection From Direction.CEN",
+      "count": 2,
+      "files": [
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ]
+    },
+    {
+      "idiom": "XY Plane -> Wasp_Connection From Plane.PLN",
+      "count": 1,
+      "files": [
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh"
+      ]
+    },
+    {
+      "idiom": "Align Plane -> Wasp_Connection From Plane.PLN",
+      "count": 1,
+      "files": [
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh"
+      ]
+    },
+    {
+      "idiom": "Panel -> Wasp_Connection From Plane.T",
+      "count": 1,
+      "files": [
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh"
+      ]
+    }
+  ],
+  "grammars": [
+    {
+      "text": "TRIANGLE>TRIANGLE\nSQUARE-TOP>SQUARE-BOTTOM\nSQUARE-BOTTOM>SQUARE-TOP",
+      "kind": "connection_type_grammar",
+      "rules": [
+        "TRIANGLE>TRIANGLE",
+        "SQUARE-TOP>SQUARE-BOTTOM",
+        "SQUARE-BOTTOM>SQUARE-TOP"
+      ],
+      "wired_into": [
+        "Wasp_Rules Generator.GR"
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh"
+      ]
+    },
+    {
+      "text": "END>END\nSIDE>SIDE\nSIDE>LONGSIDE\nLONGSIDE>SIDE",
+      "kind": "connection_type_grammar",
+      "rules": [
+        "END>END",
+        "SIDE>SIDE",
+        "SIDE>LONGSIDE",
+        "LONGSIDE>SIDE"
+      ],
+      "wired_into": [
+        "Wasp_Rules Generator.GR"
+      ],
+      "source_files": [
+        "ExampleFiles/1.Rules/1_03_Rules_Grammar.gh"
+      ]
+    },
+    {
+      "text": "SIDE>SIDE\nTOP>BOTTOM\nBOTTOM>TOP",
+      "kind": "connection_type_grammar",
+      "rules": [
+        "SIDE>SIDE",
+        "TOP>BOTTOM",
+        "BOTTOM>TOP"
+      ],
+      "wired_into": [
+        "Wasp_Rules Generator.GR"
+      ],
+      "source_files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh",
+        "devFiles/bin/210422_ExclusionConstraints_FIX2.gh"
+      ]
+    },
+    {
+      "text": "SIDES>SIDES\nTOP>BOTTOM\nBOTTOM>TOP",
+      "kind": "connection_type_grammar",
+      "rules": [
+        "SIDES>SIDES",
+        "TOP>BOTTOM",
+        "BOTTOM>TOP"
+      ],
+      "wired_into": [
+        "Wasp_Rules Generator.GR"
+      ],
+      "source_files": [
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ]
+    },
+    {
+      "text": "TOP>BOTTOM",
+      "kind": "connection_type_grammar",
+      "rules": [
+        "TOP>BOTTOM"
+      ],
+      "wired_into": [
+        "Wasp_Rules Generator.GR"
+      ],
+      "source_files": [
+        "ExampleFiles/3.Constraints/4_01_Local_Constraints_Supports.gh",
+        "devFiles/bin/190208_WASP_Dev_releaseCandidate01.gh",
+        "devFiles/bin/190214_WASP_Dev_releaseCandidate02.gh",
+        "devFiles/bin/190221_WASP_Dev_releaseCandidate03.gh",
+        "devFiles/bin/190226_WASP_Dev_globals.gh",
+        "devFiles/bin/190316_WASP_Dev.gh",
+        "devFiles/bin/190318_WASP_Dev_releaseCandidate04.gh",
+        "devFiles/bin/190321_WASP_Dev_releaseCandidate05.gh",
+        "devFiles/bin/190402_WASP_Dev_releaseCandidate06.gh",
+        "devFiles/bin/190525_WASP_Dev_DisCo.gh",
+        "devFiles/bin/190601_WASP_Dev_releaseCandidate07.gh"
+      ]
+    },
+    {
+      "text": "BSTART>BEND\nBEND>BSTART\nBUP>SBOTTOM\nSSIDE>HSIDE\nHSIDE>HSIDE\nHTOP>HBOTTOM",
+      "kind": "connection_type_grammar",
+      "rules": [
+        "BSTART>BEND",
+        "BEND>BSTART",
+        "BUP>SBOTTOM",
+        "SSIDE>HSIDE",
+        "HSIDE>HSIDE",
+        "HTOP>HBOTTOM"
+      ],
+      "wired_into": [
+        "Wasp_Rules Generator.GR"
+      ],
+      "source_files": [
+        "ExampleFiles/3.Constraints/4_03_Local_Constraints_Adjacencies.gh",
+        "devFiles/bin/210422_ExclusionConstraints_FIX.gh"
+      ]
+    },
+    {
+      "text": "END>END\nSIDE>SIDE\nSIDE>LONGSIDE\nLONGSIDE>SIDE\nSHORTSIDE>SHORTSIDE",
+      "kind": "connection_type_grammar",
+      "rules": [
+        "END>END",
+        "SIDE>SIDE",
+        "SIDE>LONGSIDE",
+        "LONGSIDE>SIDE",
+        "SHORTSIDE>SHORTSIDE"
+      ],
+      "wired_into": [
+        "Wasp_Rules Generator.GR"
+      ],
+      "source_files": [
+        "ExampleFiles/4.Advanced/4_03_Wasp_to_DisCo_VR.gh"
+      ]
+    },
+    {
+      "text": "TOP>BOTTOM\nBOTTOM>TOP",
+      "kind": "connection_type_grammar",
+      "rules": [
+        "TOP>BOTTOM",
+        "BOTTOM>TOP"
+      ],
+      "wired_into": [
+        "Wasp_Rules Generator.GR"
+      ],
+      "source_files": [
+        "ExampleFiles/5.Experimental/5_01_Hierarchical_Aggregation.gh",
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh",
+        "devFiles/210322_WASP_Dev.gh",
+        "devFiles/bin/180717_WASP_Dev.gh",
+        "devFiles/bin/181009_WASP_Dev.gh",
+        "devFiles/bin/181010_WASP_Dev.gh",
+        "devFiles/bin/181025_WASP_Dev.gh",
+        "devFiles/bin/190107_WASP_Dev.gh",
+        "devFiles/bin/190110_WASP_Dev_interactiveAggregation.gh",
+        "devFiles/bin/190616_WASP_Dev.gh",
+        "devFiles/bin/191024_WASP_Dev.gh",
+        "devFiles/bin/191106_WASP_Dev_v_0_3_002.gh",
+        "devFiles/bin/191123_WASP_Dev.gh",
+        "devFiles/bin/200828_WASP_Dev.gh",
+        "devFiles/bin/200903_WASP_Dev.gh",
+        "devFiles/bin/200904_WASP_Dev.gh",
+        "devFiles/bin/200922_WASP_Dev.gh",
+        "devFiles/bin/201002_WASP_Dev.gh",
+        "devFiles/bin/201006_WASP_Dev.gh",
+        "devFiles/bin/201009_WASP_Dev.gh",
+        "devFiles/bin/201010_WASP_Dev.gh",
+        "devFiles/bin/201023_WASP_Dev.gh",
+        "devFiles/bin/201026_WASP_Dev.gh",
+        "devFiles/bin/201028_WASP_Dev.gh",
+        "devFiles/bin/201109_WASP_Dev.gh",
+        "devFiles/bin/201111_WASP_Dev.gh",
+        "devFiles/bin/201122_WASP_Dev.gh",
+        "devFiles/bin/201125_WASP_Dev.gh",
+        "devFiles/bin/201202_WASP_Dev.gh",
+        "devFiles/bin/210105_WASP_Dev.gh",
+        "devFiles/bin/210112_WASP_Dev.gh",
+        "devFiles/bin/210118_WASP_Dev.gh",
+        "devFiles/bin/210209_WASP_Dev.gh",
+        "devFiles/bin/210211_WASP_Dev.gh",
+        "devFiles/bin/RH5/171203_WASP_Dev.gh",
+        "devFiles/bin/RH5/171223_WASP_Dev.gh",
+        "devFiles/bin/RH5/180111_WASP_Dev_sequentialAggregation.gh"
+      ]
+    },
+    {
+      "text": "TSTART>TEND\nTEND>TSTART\nTUP>BBOTTOM\nBSIDE>SHOPSIDE\nSHOPSIDE>SHOPSIDE\nSHOPTOP>SHOPBOTTOM",
+      "kind": "connection_type_grammar",
+      "rules": [
+        "TSTART>TEND",
+        "TEND>TSTART",
+        "TUP>BBOTTOM",
+        "BSIDE>SHOPSIDE",
+        "SHOPSIDE>SHOPSIDE",
+        "SHOPTOP>SHOPBOTTOM"
+      ],
+      "wired_into": [
+        "Wasp_Rules Generator.GR"
+      ],
+      "source_files": [
+        "devFiles/bin/201023_AdjacenciesExclusions.gh"
+      ]
+    },
+    {
+      "text": "BOTTOM>TOP",
+      "kind": "connection_type_grammar",
+      "rules": [
+        "BOTTOM>TOP"
+      ],
+      "wired_into": [
+        "Wasp_Rules Generator.GR"
+      ],
+      "source_files": [
+        "devFiles/bin/RH5/180116_WASP_Dev.gh"
+      ]
+    },
+    {
+      "text": "HEXA|0_HEXA|0>a_b\nb|1_HEXA|2>b_c\nc|1_HEXA|0>c_d\na|1_CUBE|1>a_e",
+      "kind": "graph_grammar",
+      "rules": [
+        "HEXA|0_HEXA|0>a_b",
+        "b|1_HEXA|2>b_c",
+        "c|1_HEXA|0>c_d",
+        "a|1_CUBE|1>a_e"
+      ],
+      "wired_into": [
+        "Wasp_Graph-Grammar Aggregation.RULES"
+      ],
+      "source_files": [
+        "ExampleFiles/4.Advanced/4_05_Graph_Grammar_Aggregation.gh"
+      ]
+    },
+    {
+      "text": "L|1_L|6>a_b\na|4_L|10>a_c\na|3_L|4>a_d\nd|2_L|7>d_e\ne|4_L|7>e_f\na|9_L2|3>a_g",
+      "kind": "graph_grammar",
+      "rules": [
+        "L|1_L|6>a_b",
+        "a|4_L|10>a_c",
+        "a|3_L|4>a_d",
+        "d|2_L|7>d_e",
+        "e|4_L|7>e_f",
+        "a|9_L2|3>a_g"
+      ],
+      "wired_into": [
+        "Wasp_Graph-Grammar Aggregation.RULES"
+      ],
+      "source_files": [
+        "devFiles/210322_WASP_Dev.gh",
+        "devFiles/bin/210211_WASP_Dev.gh"
+      ]
+    },
+    {
+      "text": "L|1_L|6>a_b\na|4_L|10>a_c\na|3_L|4>c_d\nd|2_L|7>d_e\ne|4_L|7>e_f",
+      "kind": "graph_grammar",
+      "rules": [
+        "L|1_L|6>a_b",
+        "a|4_L|10>a_c",
+        "a|3_L|4>c_d",
+        "d|2_L|7>d_e",
+        "e|4_L|7>e_f"
+      ],
+      "wired_into": [
+        "Wasp_Graph-Grammar Aggregation.RULES",
+        "Wasp_Graph-Grammar Aggregation.RULE_S"
+      ],
+      "source_files": [
+        "devFiles/bin/180717_WASP_Dev.gh",
+        "devFiles/bin/181005_WASP_Dev.gh",
+        "devFiles/bin/181009_WASP_Dev.gh",
+        "devFiles/bin/181010_WASP_Dev.gh",
+        "devFiles/bin/181025_WASP_Dev.gh",
+        "devFiles/bin/190107_WASP_Dev.gh",
+        "devFiles/bin/190110_WASP_Dev_interactiveAggregation.gh",
+        "devFiles/bin/190208_WASP_Dev_releaseCandidate01.gh",
+        "devFiles/bin/190214_WASP_Dev_releaseCandidate02.gh",
+        "devFiles/bin/190221_WASP_Dev_releaseCandidate03.gh"
+      ]
+    },
+    {
+      "text": "L|1_L|6>a_b\na|4_L|10>a_c\na|3_L|4>c_d\nd|2_L|7>d_e\ne|4_L|7>e_f\na|9_L|3>a_g",
+      "kind": "graph_grammar",
+      "rules": [
+        "L|1_L|6>a_b",
+        "a|4_L|10>a_c",
+        "a|3_L|4>c_d",
+        "d|2_L|7>d_e",
+        "e|4_L|7>e_f",
+        "a|9_L|3>a_g"
+      ],
+      "wired_into": [
+        "Wasp_Graph-Grammar Aggregation.RULES"
+      ],
+      "source_files": [
+        "devFiles/bin/190226_WASP_Dev_globals.gh",
+        "devFiles/bin/190316_WASP_Dev.gh",
+        "devFiles/bin/190318_WASP_Dev_releaseCandidate04.gh",
+        "devFiles/bin/190321_WASP_Dev_releaseCandidate05.gh",
+        "devFiles/bin/190402_WASP_Dev_releaseCandidate06.gh",
+        "devFiles/bin/190525_WASP_Dev_DisCo.gh",
+        "devFiles/bin/190601_WASP_Dev_releaseCandidate07.gh",
+        "devFiles/bin/190616_WASP_Dev.gh",
+        "devFiles/bin/191024_WASP_Dev.gh",
+        "devFiles/bin/191106_WASP_Dev_v_0_3_002.gh",
+        "devFiles/bin/191123_WASP_Dev.gh",
+        "devFiles/bin/200828_WASP_Dev.gh",
+        "devFiles/bin/200903_WASP_Dev.gh",
+        "devFiles/bin/200904_WASP_Dev.gh",
+        "devFiles/bin/200922_WASP_Dev.gh",
+        "devFiles/bin/201002_WASP_Dev.gh",
+        "devFiles/bin/201006_WASP_Dev.gh",
+        "devFiles/bin/201009_WASP_Dev.gh"
+      ]
+    },
+    {
+      "text": "L|1_L|6>a_b\na|4_L|10>a_c\na|3_L|4>c_d\nd|2_L|7>d_e\ne|4_L|7>e_f\na|9_L2|3>a_g",
+      "kind": "graph_grammar",
+      "rules": [
+        "L|1_L|6>a_b",
+        "a|4_L|10>a_c",
+        "a|3_L|4>c_d",
+        "d|2_L|7>d_e",
+        "e|4_L|7>e_f",
+        "a|9_L2|3>a_g"
+      ],
+      "wired_into": [
+        "Wasp_Graph-Grammar Aggregation.RULES"
+      ],
+      "source_files": [
+        "devFiles/bin/201010_WASP_Dev.gh",
+        "devFiles/bin/201023_WASP_Dev.gh",
+        "devFiles/bin/201026_WASP_Dev.gh",
+        "devFiles/bin/201028_WASP_Dev.gh",
+        "devFiles/bin/201109_WASP_Dev.gh",
+        "devFiles/bin/201111_WASP_Dev.gh",
+        "devFiles/bin/201122_WASP_Dev.gh",
+        "devFiles/bin/201125_WASP_Dev.gh",
+        "devFiles/bin/201202_WASP_Dev.gh",
+        "devFiles/bin/210105_WASP_Dev.gh",
+        "devFiles/bin/210112_WASP_Dev.gh",
+        "devFiles/bin/210118_WASP_Dev.gh",
+        "devFiles/bin/210209_WASP_Dev.gh"
+      ]
+    },
+    {
+      "text": "L|1_L|6>a_b\na|4_L|10>a_c\na|3_C|4>c_d\nd|2_L|7>d_e\ne|4_L|7>e_f",
+      "kind": "graph_grammar",
+      "rules": [
+        "L|1_L|6>a_b",
+        "a|4_L|10>a_c",
+        "a|3_C|4>c_d",
+        "d|2_L|7>d_e",
+        "e|4_L|7>e_f"
+      ],
+      "wired_into": [
+        "Wasp_Graph-Grammar Aggregation.RULE_S"
+      ],
+      "source_files": [
+        "devFiles/bin/RH5/180111_WASP_Dev_sequentialAggregation.gh"
+      ]
+    },
+    {
+      "text": "P|2_P|6\nP|5_P|6\nP|3_P|7\nP|8_P|2\nP|4_P|3",
+      "kind": "rule_text",
+      "rules": [
+        "P|2_P|6",
+        "P|5_P|6",
+        "P|3_P|7",
+        "P|8_P|2",
+        "P|4_P|3"
+      ],
+      "wired_into": [
+        "Wasp_Rule From Text.TXT"
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh"
+      ]
+    },
+    {
+      "text": "P|0_T|0\nP|1_T|1",
+      "kind": "rule_text",
+      "rules": [
+        "P|0_T|0",
+        "P|1_T|1"
+      ],
+      "wired_into": [
+        "Wasp_Rule From Text.TXT"
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh"
+      ]
+    },
+    {
+      "text": "T|2_P|1\nT|3_P|0",
+      "kind": "rule_text",
+      "rules": [
+        "T|2_P|1",
+        "T|3_P|0"
+      ],
+      "wired_into": [
+        "Wasp_Rule From Text.TXT"
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh"
+      ]
+    },
+    {
+      "text": "A|0_A|1\nA|1_A|0",
+      "kind": "rule_text",
+      "rules": [
+        "A|0_A|1",
+        "A|1_A|0"
+      ],
+      "wired_into": [
+        "Wasp_Rule From Text.TXT"
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh"
+      ]
+    },
+    {
+      "text": "A|2_A|3\nA|3_A|2\nA|4_A|5\nA|5_A|4",
+      "kind": "rule_text",
+      "rules": [
+        "A|2_A|3",
+        "A|3_A|2",
+        "A|4_A|5",
+        "A|5_A|4"
+      ],
+      "wired_into": [
+        "Wasp_Rule From Text.TXT"
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh"
+      ]
+    },
+    {
+      "text": "A|0_B|0\nB|0_A|0\nA|1_B|0\nB|0_A|1\nA|2_B|0\nB|0_A|2\nA|0_B|1\nB|1_A|0\nA|1_B|1\nB|1_A|1\nA|2_B|1\nB|1_A|2",
+      "kind": "rule_text",
+      "rules": [
+        "A|0_B|0",
+        "B|0_A|0",
+        "A|1_B|0",
+        "B|0_A|1",
+        "A|2_B|0",
+        "B|0_A|2",
+        "A|0_B|1",
+        "B|1_A|0",
+        "A|1_B|1",
+        "B|1_A|1",
+        "A|2_B|1",
+        "B|1_A|2"
+      ],
+      "wired_into": [
+        "Wasp_Rule From Text.TXT"
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh"
+      ]
+    },
+    {
+      "text": "HEXA|0_HEXA|0\nHEXA|0_HEXA|1\nHEXA|0_HEXA|2\nHEXA|1_HEXA|0",
+      "kind": "rule_text",
+      "rules": [
+        "HEXA|0_HEXA|0",
+        "HEXA|0_HEXA|1",
+        "HEXA|0_HEXA|2",
+        "HEXA|1_HEXA|0"
+      ],
+      "wired_into": [
+        "Wasp_Rule From Text.TXT"
+      ],
+      "source_files": [
+        "ExampleFiles/0.Basics/0_10_Aggregation_Graph.gh"
+      ]
+    },
+    {
+      "text": "OCTA|0_OCTA|6\nOCTA|6_OCTA|0\nOCTA|1_OCTA|7\nOCTA|7_OCTA|1\nOCTA|2_OCTA|4\nOCTA|4_OCTA|2\nOCTA|3_OCTA|5\nOCTA|5_OCTA|3",
+      "kind": "rule_text",
+      "rules": [
+        "OCTA|0_OCTA|6",
+        "OCTA|6_OCTA|0",
+        "OCTA|1_OCTA|7",
+        "OCTA|7_OCTA|1",
+        "OCTA|2_OCTA|4",
+        "OCTA|4_OCTA|2",
+        "OCTA|3_OCTA|5",
+        "OCTA|5_OCTA|3"
+      ],
+      "wired_into": [
+        "Wasp_Rule From Text.TXT"
+      ],
+      "source_files": [
+        "ExampleFiles/2.Fields/2_01_Field_Basics.gh",
+        "ExampleFiles/2.Fields/2_02_Field_Boundaries.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/4.Advanced/_deprecated/4_01_TopOpt_Field_Millipede.gh",
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ]
+    },
+    {
+      "text": "P|0_P|6\nP|6_P|0\nP|1_P|7\nP|7_P|1\nP|2_P|4\nP|4_P|2\nP|3_P|5\nP|5_P|3",
+      "kind": "rule_text",
+      "rules": [
+        "P|0_P|6",
+        "P|6_P|0",
+        "P|1_P|7",
+        "P|7_P|1",
+        "P|2_P|4",
+        "P|4_P|2",
+        "P|3_P|5",
+        "P|5_P|3"
+      ],
+      "wired_into": [
+        "Wasp_Rule From Text.TXT"
+      ],
+      "source_files": [
+        "ExampleFiles/2.Fields/2_04_Field_from_Expression.gh",
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh"
+      ]
+    },
+    {
+      "text": "B|0_B|1\nB|1_B|0\nB|2_B|4\nB|3_B|5\nB|6_B|7",
+      "kind": "rule_text",
+      "rules": [
+        "B|0_B|1",
+        "B|1_B|0",
+        "B|2_B|4",
+        "B|3_B|5",
+        "B|6_B|7"
+      ],
+      "wired_into": [
+        "Wasp_Rule From Text.TXT"
+      ],
+      "source_files": [
+        "ExampleFiles/3.Constraints/4_02_Local_Constraints_Additional_Collider.gh"
+      ]
+    },
+    {
+      "text": "L|0_L|6\nL|2_L|4\nL|1_L|11\nL|5_L|3\nL|2_L|7\nL|4_L|9\nL|6_L|0\nL|4_L|2\nL|11_L|1\nL|3_L|5\nL|7_L|2\nL|9_L|4",
+      "kind": "rule_text",
+      "rules": [
+        "L|0_L|6",
+        "L|2_L|4",
+        "L|1_L|11",
+        "L|5_L|3",
+        "L|2_L|7",
+        "L|4_L|9",
+        "L|6_L|0",
+        "L|4_L|2",
+        "L|11_L|1",
+        "L|3_L|5",
+        "L|7_L|2",
+        "L|9_L|4"
+      ],
+      "wired_into": [
+        "Wasp_Rule From Text.TXT"
+      ],
+      "source_files": [
+        "devFiles/210322_WASP_Dev.gh",
+        "devFiles/bin/180717_WASP_Dev.gh",
+        "devFiles/bin/181005_WASP_Dev.gh",
+        "devFiles/bin/181009_WASP_Dev.gh",
+        "devFiles/bin/181010_WASP_Dev.gh",
+        "devFiles/bin/181025_WASP_Dev.gh",
+        "devFiles/bin/190107_WASP_Dev.gh",
+        "devFiles/bin/190110_WASP_Dev_interactiveAggregation.gh",
+        "devFiles/bin/190208_WASP_Dev_releaseCandidate01.gh",
+        "devFiles/bin/190214_WASP_Dev_releaseCandidate02.gh",
+        "devFiles/bin/190221_WASP_Dev_releaseCandidate03.gh",
+        "devFiles/bin/190226_WASP_Dev_globals.gh",
+        "devFiles/bin/190316_WASP_Dev.gh",
+        "devFiles/bin/190318_WASP_Dev_releaseCandidate04.gh",
+        "devFiles/bin/190321_WASP_Dev_releaseCandidate05.gh",
+        "devFiles/bin/190402_WASP_Dev_releaseCandidate06.gh",
+        "devFiles/bin/190525_WASP_Dev_DisCo.gh",
+        "devFiles/bin/190601_WASP_Dev_releaseCandidate07.gh",
+        "devFiles/bin/190616_WASP_Dev.gh",
+        "devFiles/bin/191024_WASP_Dev.gh",
+        "devFiles/bin/191106_WASP_Dev_v_0_3_002.gh",
+        "devFiles/bin/191123_WASP_Dev.gh",
+        "devFiles/bin/200828_WASP_Dev.gh",
+        "devFiles/bin/200903_WASP_Dev.gh",
+        "devFiles/bin/200904_WASP_Dev.gh",
+        "devFiles/bin/200922_WASP_Dev.gh",
+        "devFiles/bin/201002_WASP_Dev.gh",
+        "devFiles/bin/201006_WASP_Dev.gh",
+        "devFiles/bin/201009_WASP_Dev.gh",
+        "devFiles/bin/201010_WASP_Dev.gh",
+        "devFiles/bin/201023_WASP_Dev.gh",
+        "devFiles/bin/201026_WASP_Dev.gh",
+        "devFiles/bin/201028_WASP_Dev.gh",
+        "devFiles/bin/201109_WASP_Dev.gh",
+        "devFiles/bin/201111_WASP_Dev.gh",
+        "devFiles/bin/201122_WASP_Dev.gh",
+        "devFiles/bin/201125_WASP_Dev.gh",
+        "devFiles/bin/201202_WASP_Dev.gh",
+        "devFiles/bin/210105_WASP_Dev.gh",
+        "devFiles/bin/210112_WASP_Dev.gh",
+        "devFiles/bin/210118_WASP_Dev.gh",
+        "devFiles/bin/210209_WASP_Dev.gh",
+        "devFiles/bin/210211_WASP_Dev.gh",
+        "devFiles/bin/RH5/171112_WASP_Dev.gh",
+        "devFiles/bin/RH5/171203_WASP_Dev.gh",
+        "devFiles/bin/RH5/171223_WASP_Dev.gh",
+        "devFiles/bin/RH5/180111_WASP_Dev_sequentialAggregation.gh",
+        "devFiles/bin/RH5/180116_WASP_Dev.gh"
+      ]
+    }
+  ],
+  "param_aliases": {
+    "Wasp_Actuate Internal Transforms": {
+      "nickname": "ActIntTrans",
+      "inputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        },
+        {
+          "name": "VAL",
+          "nickname": "VAL"
+        },
+        {
+          "name": "RESET",
+          "nickname": "RESET"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AGGR_OUT",
+          "nickname": "AGGR_OUT"
+        },
+        {
+          "name": "PART_OUT",
+          "nickname": "PART_OUT"
+        },
+        {
+          "name": "COLL_ID",
+          "nickname": "COLL_ID"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Add Parts": {
+      "nickname": "AddPart",
+      "inputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        },
+        {
+          "name": "PID",
+          "nickname": "PID"
+        },
+        {
+          "name": "CID",
+          "nickname": "CID"
+        },
+        {
+          "name": "NEXT",
+          "nickname": "NEXT"
+        },
+        {
+          "name": "CHECK",
+          "nickname": "CHECK"
+        },
+        {
+          "name": "ADD",
+          "nickname": "ADD"
+        },
+        {
+          "name": "RESET",
+          "nickname": "RESET"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AGGR_OUT",
+          "nickname": "AGGR_OUT"
+        },
+        {
+          "name": "PART_OUT",
+          "nickname": "PART_OUT"
+        },
+        {
+          "name": "C_PART",
+          "nickname": "C_PART"
+        },
+        {
+          "name": "C_CONN",
+          "nickname": "C_CONN"
+        },
+        {
+          "name": "NEXT_P",
+          "nickname": "NEXT_P"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Adjacency Exclusion Constraint": {
+      "nickname": "AdjExcConst",
+      "inputs": [
+        {
+          "name": "DIR",
+          "nickname": "DIR"
+        },
+        {
+          "name": "PN",
+          "nickname": "PN"
+        },
+        {
+          "name": "AE",
+          "nickname": "AE"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AEC",
+          "nickname": "AEC"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Advanced Part": {
+      "nickname": "AdvPart",
+      "inputs": [
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        },
+        {
+          "name": "GEO",
+          "nickname": "GEO"
+        },
+        {
+          "name": "CONN",
+          "nickname": "CONN"
+        },
+        {
+          "name": "COLL",
+          "nickname": "COLL"
+        },
+        {
+          "name": "FIELD",
+          "nickname": "FIELD"
+        },
+        {
+          "name": "HI",
+          "nickname": "HI"
+        },
+        {
+          "name": "ATTR",
+          "nickname": "ATTR"
+        },
+        {
+          "name": "E_COLL",
+          "nickname": "E_COLL"
+        },
+        {
+          "name": "SUP",
+          "nickname": "SUP"
+        },
+        {
+          "name": "AEC",
+          "nickname": "AEC"
+        },
+        {
+          "name": "OC",
+          "nickname": "OC"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Aggregation Graph": {
+      "nickname": "AggregationGraph",
+      "inputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        },
+        {
+          "name": "FG",
+          "nickname": "FG"
+        },
+        {
+          "name": "TOL",
+          "nickname": "TOL"
+        },
+        {
+          "name": "FR",
+          "nickname": "FR"
+        },
+        {
+          "name": "CR",
+          "nickname": "CR"
+        },
+        {
+          "name": "F",
+          "nickname": "F"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "G",
+          "nickname": "G"
+        },
+        {
+          "name": "N",
+          "nickname": "N"
+        },
+        {
+          "name": "E",
+          "nickname": "E"
+        },
+        {
+          "name": "ES_ID",
+          "nickname": "ES_ID"
+        },
+        {
+          "name": "EE_ID",
+          "nickname": "EE_ID"
+        },
+        {
+          "name": "CS_ID",
+          "nickname": "CS_ID"
+        },
+        {
+          "name": "CE_ID",
+          "nickname": "CE_ID"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Assemble Part Hierarchy": {
+      "nickname": "PartHierarchy",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        },
+        {
+          "name": "TR",
+          "nickname": "TR"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "HIE",
+          "nickname": "HIE"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Attribute": {
+      "nickname": "Attribute",
+      "inputs": [
+        {
+          "name": "ID",
+          "nickname": "ID"
+        },
+        {
+          "name": "VAL",
+          "nickname": "VAL"
+        },
+        {
+          "name": "TR",
+          "nickname": "TR"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "ATTR",
+          "nickname": "ATTR"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Basic Part": {
+      "nickname": "Part",
+      "inputs": [
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        },
+        {
+          "name": "GEO",
+          "nickname": "GEO"
+        },
+        {
+          "name": "CONN",
+          "nickname": "CONN"
+        },
+        {
+          "name": "COLL",
+          "nickname": "COLL"
+        },
+        {
+          "name": "ATTR",
+          "nickname": "ATTR"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Collider": {
+      "nickname": "Collider",
+      "inputs": [
+        {
+          "name": "GEO",
+          "nickname": "GEO"
+        },
+        {
+          "name": "MUL",
+          "nickname": "MUL"
+        },
+        {
+          "name": "ALL",
+          "nickname": "ALL"
+        },
+        {
+          "name": "CONN",
+          "nickname": "CONN"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "COLL",
+          "nickname": "COLL"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Connection From Direction": {
+      "nickname": "ConnDir",
+      "inputs": [
+        {
+          "name": "GEO",
+          "nickname": "GEO"
+        },
+        {
+          "name": "CEN",
+          "nickname": "CEN"
+        },
+        {
+          "name": "UP",
+          "nickname": "UP"
+        },
+        {
+          "name": "T",
+          "nickname": "T"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONN",
+          "nickname": "CONN"
+        },
+        {
+          "name": "PLN_OUT",
+          "nickname": "PLN_OUT"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Connection From Plane": {
+      "nickname": "ConnPln",
+      "inputs": [
+        {
+          "name": "PLN",
+          "nickname": "PLN"
+        },
+        {
+          "name": "T",
+          "nickname": "T"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONN",
+          "nickname": "CONN"
+        },
+        {
+          "name": "PLN_OUT",
+          "nickname": "PLN_OUT"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Count Transformable Parts": {
+      "nickname": "CountTrParts",
+      "inputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "COUNT",
+          "nickname": "COUNT"
+        },
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Deconstruct Aggregation": {
+      "nickname": "DeAggregation",
+      "inputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        },
+        {
+          "name": "PARTS",
+          "nickname": "PARTS"
+        },
+        {
+          "name": "RULES",
+          "nickname": "RULES"
+        },
+        {
+          "name": "AGGR_PARTS",
+          "nickname": "AGGR_PARTS"
+        },
+        {
+          "name": "GRAPH",
+          "nickname": "GRAPH"
+        },
+        {
+          "name": "FIELD",
+          "nickname": "FIELD"
+        },
+        {
+          "name": "GC",
+          "nickname": "GC"
+        },
+        {
+          "name": "SEED",
+          "nickname": "SEED"
+        },
+        {
+          "name": "CAT",
+          "nickname": "CAT"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Deconstruct Attribute": {
+      "nickname": "DeAttr",
+      "inputs": [
+        {
+          "name": "ATTR",
+          "nickname": "ATTR"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "ID",
+          "nickname": "ID"
+        },
+        {
+          "name": "VAL",
+          "nickname": "VAL"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Deconstruct Collider": {
+      "nickname": "DeColl",
+      "inputs": [
+        {
+          "name": "COLL",
+          "nickname": "COLL"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GEO",
+          "nickname": "GEO"
+        },
+        {
+          "name": "CONN",
+          "nickname": "CONN"
+        },
+        {
+          "name": "VC",
+          "nickname": "VC"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Deconstruct Connection": {
+      "nickname": "DeConn",
+      "inputs": [
+        {
+          "name": "CONN",
+          "nickname": "CONN"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "PLN",
+          "nickname": "PLN"
+        },
+        {
+          "name": "ID",
+          "nickname": "ID"
+        },
+        {
+          "name": "PART",
+          "nickname": "PART"
+        },
+        {
+          "name": "T",
+          "nickname": "T"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Deconstruct Field": {
+      "nickname": "DeField",
+      "inputs": [
+        {
+          "name": "FIELD",
+          "nickname": "FIELD"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        },
+        {
+          "name": "PTS",
+          "nickname": "PTS"
+        },
+        {
+          "name": "COUNT",
+          "nickname": "COUNT"
+        },
+        {
+          "name": "RES",
+          "nickname": "RES"
+        },
+        {
+          "name": "PLN",
+          "nickname": "PLN"
+        },
+        {
+          "name": "VAL",
+          "nickname": "VAL"
+        },
+        {
+          "name": "BOU",
+          "nickname": "BOU"
+        },
+        {
+          "name": "BB",
+          "nickname": "BB"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Deconstruct Part": {
+      "nickname": "DePart",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        },
+        {
+          "name": "ID",
+          "nickname": "ID"
+        },
+        {
+          "name": "GEO",
+          "nickname": "GEO"
+        },
+        {
+          "name": "CENTER",
+          "nickname": "CENTER"
+        },
+        {
+          "name": "CONN",
+          "nickname": "CONN"
+        },
+        {
+          "name": "COLL",
+          "nickname": "COLL"
+        },
+        {
+          "name": "TR",
+          "nickname": "TR"
+        },
+        {
+          "name": "PARENT",
+          "nickname": "PARENT"
+        },
+        {
+          "name": "CHILD",
+          "nickname": "CHILD"
+        },
+        {
+          "name": "ADD_COLL",
+          "nickname": "ADD_COLL"
+        },
+        {
+          "name": "ATTR",
+          "nickname": "ATTR"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Deconstruct Rule": {
+      "nickname": "DeRule",
+      "inputs": [
+        {
+          "name": "R",
+          "nickname": "R"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "P1",
+          "nickname": "P1"
+        },
+        {
+          "name": "C1",
+          "nickname": "C1"
+        },
+        {
+          "name": "P2",
+          "nickname": "P2"
+        },
+        {
+          "name": "C2",
+          "nickname": "C2"
+        },
+        {
+          "name": "TXT",
+          "nickname": "TXT"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Deserialize Object from File": {
+      "nickname": "DeSerialize",
+      "inputs": [
+        {
+          "name": "FILE",
+          "nickname": "FILE"
+        },
+        {
+          "name": "LOAD",
+          "nickname": "LOAD"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "OBJ",
+          "nickname": "OBJ"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_DisCo Aggregation Setup": {
+      "nickname": "DisCoSetup",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        },
+        {
+          "name": "RULES",
+          "nickname": "RULES"
+        },
+        {
+          "name": "RULE_G",
+          "nickname": "RULE_G"
+        },
+        {
+          "name": "PROB",
+          "nickname": "PROB"
+        },
+        {
+          "name": "SPAWN_N",
+          "nickname": "SPAWN_N"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "SETUP",
+          "nickname": "SETUP"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_DisCo Environment": {
+      "nickname": "DisCoEnv",
+      "inputs": [
+        {
+          "name": "GA",
+          "nickname": "GA"
+        },
+        {
+          "name": "EG",
+          "nickname": "EG"
+        },
+        {
+          "name": "BPG",
+          "nickname": "BPG"
+        },
+        {
+          "name": "GP",
+          "nickname": "GP"
+        },
+        {
+          "name": "FR",
+          "nickname": "FR"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "ENV",
+          "nickname": "ENV"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_DisCo IO Settings": {
+      "nickname": "DisCoIO",
+      "inputs": [
+        {
+          "name": "SAVE",
+          "nickname": "SAVE"
+        },
+        {
+          "name": "LOAD",
+          "nickname": "LOAD"
+        },
+        {
+          "name": "NEWG",
+          "nickname": "NEWG"
+        },
+        {
+          "name": "FIELD",
+          "nickname": "FIELD"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IOS",
+          "nickname": "IOS"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_DisCo Placement Settings": {
+      "nickname": "DisCoPlace",
+      "inputs": [
+        {
+          "name": "PLACE",
+          "nickname": "PLACE"
+        },
+        {
+          "name": "CHOREO",
+          "nickname": "CHOREO"
+        },
+        {
+          "name": "SHOOT",
+          "nickname": "SHOOT"
+        },
+        {
+          "name": "GROW",
+          "nickname": "GROW"
+        },
+        {
+          "name": "PICK",
+          "nickname": "PICK"
+        },
+        {
+          "name": "DEL",
+          "nickname": "DEL"
+        },
+        {
+          "name": "DEL_R",
+          "nickname": "DEL_R"
+        },
+        {
+          "name": "DEL_SP",
+          "nickname": "DEL_SP"
+        },
+        {
+          "name": "DIS",
+          "nickname": "DIS"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "PS",
+          "nickname": "PS"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_DisCo Player": {
+      "nickname": "DisCoPlayer",
+      "inputs": [
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        },
+        {
+          "name": "VRFPS",
+          "nickname": "VRFPS"
+        },
+        {
+          "name": "SCALE",
+          "nickname": "SCALE"
+        },
+        {
+          "name": "TS",
+          "nickname": "TS"
+        },
+        {
+          "name": "PS",
+          "nickname": "PS"
+        },
+        {
+          "name": "IOS",
+          "nickname": "IOS"
+        },
+        {
+          "name": "PC",
+          "nickname": "PC"
+        },
+        {
+          "name": "BC",
+          "nickname": "BC"
+        },
+        {
+          "name": "CC",
+          "nickname": "CC"
+        },
+        {
+          "name": "CCS",
+          "nickname": "CCS"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "PLAY",
+          "nickname": "PLAY"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_DisCo Rule Group": {
+      "nickname": "RuleG",
+      "inputs": [
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        },
+        {
+          "name": "GR",
+          "nickname": "GR"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "RULE_G",
+          "nickname": "RULE_G"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_DisCo Tool Settings": {
+      "nickname": "DisCoTool",
+      "inputs": [
+        {
+          "name": "NP",
+          "nickname": "NP"
+        },
+        {
+          "name": "PF",
+          "nickname": "PF"
+        },
+        {
+          "name": "RF",
+          "nickname": "RF"
+        },
+        {
+          "name": "PLACE",
+          "nickname": "PLACE"
+        },
+        {
+          "name": "FIELD",
+          "nickname": "FIELD"
+        },
+        {
+          "name": "SL",
+          "nickname": "SL"
+        },
+        {
+          "name": "SIM",
+          "nickname": "SIM"
+        },
+        {
+          "name": "CHAR",
+          "nickname": "CHAR"
+        },
+        {
+          "name": "SCALE",
+          "nickname": "SCALE"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "TS",
+          "nickname": "TS"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Export to DisCo": {
+      "nickname": "Wasp2DisCo",
+      "inputs": [
+        {
+          "name": "SETUP",
+          "nickname": "SETUP"
+        },
+        {
+          "name": "ENV",
+          "nickname": "ENV"
+        },
+        {
+          "name": "PLAY",
+          "nickname": "PLAY"
+        },
+        {
+          "name": "PATH",
+          "nickname": "PATH"
+        },
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        },
+        {
+          "name": "SAVE",
+          "nickname": "SAVE"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "FILES",
+          "nickname": "FILES"
+        },
+        {
+          "name": "SF",
+          "nickname": "SF"
+        },
+        {
+          "name": "PF",
+          "nickname": "PF"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Field": {
+      "nickname": "Field",
+      "inputs": [
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        },
+        {
+          "name": "E_FIELD",
+          "nickname": "E_FIELD"
+        },
+        {
+          "name": "VAL",
+          "nickname": "VAL"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "FIELD",
+          "nickname": "FIELD"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Field Iso Voxels": {
+      "nickname": "FieldVox",
+      "inputs": [
+        {
+          "name": "FIELD",
+          "nickname": "FIELD"
+        },
+        {
+          "name": "ISO",
+          "nickname": "ISO"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VM",
+          "nickname": "VM"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Field Isolines": {
+      "nickname": "FieldIso",
+      "inputs": [
+        {
+          "name": "FIELD",
+          "nickname": "FIELD"
+        },
+        {
+          "name": "PLN",
+          "nickname": "PLN"
+        },
+        {
+          "name": "T",
+          "nickname": "T"
+        },
+        {
+          "name": "ISO",
+          "nickname": "ISO"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CRV",
+          "nickname": "CRV"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Field Points": {
+      "nickname": "FieldPts",
+      "inputs": [
+        {
+          "name": "BOU",
+          "nickname": "BOU"
+        },
+        {
+          "name": "RES",
+          "nickname": "RES"
+        },
+        {
+          "name": "PLN",
+          "nickname": "PLN"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "E_FIELD",
+          "nickname": "E_FIELD"
+        },
+        {
+          "name": "PTS",
+          "nickname": "PTS"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Field-driven Aggregation": {
+      "nickname": "FieldAggregation",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        },
+        {
+          "name": "PREV",
+          "nickname": "PREV"
+        },
+        {
+          "name": "N",
+          "nickname": "N"
+        },
+        {
+          "name": "RULES",
+          "nickname": "RULES"
+        },
+        {
+          "name": "FIELD",
+          "nickname": "FIELD"
+        },
+        {
+          "name": "CAT",
+          "nickname": "CAT"
+        },
+        {
+          "name": "MODE",
+          "nickname": "MODE"
+        },
+        {
+          "name": "GC",
+          "nickname": "GC"
+        },
+        {
+          "name": "ID",
+          "nickname": "ID"
+        },
+        {
+          "name": "RESET",
+          "nickname": "RESET"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        },
+        {
+          "name": "PART_OUT",
+          "nickname": "PART_OUT"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Filter Parts by Name": {
+      "nickname": "NameFilter",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        },
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "PART_OUT",
+          "nickname": "PART_OUT"
+        },
+        {
+          "name": "MASK",
+          "nickname": "MASK"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Get Attribute by Name": {
+      "nickname": "GetAttr",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        },
+        {
+          "name": "ID",
+          "nickname": "ID"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VAL",
+          "nickname": "VAL"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Get Part Geometry": {
+      "nickname": "PartGeo",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GEO",
+          "nickname": "GEO"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Get Parts Hierarchy": {
+      "nickname": "GetHierarchy",
+      "inputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        },
+        {
+          "name": "LEVEL",
+          "nickname": "LEVEL"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "SUB_P",
+          "nickname": "SUB_P"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Get Valid Smart Attributes": {
+      "nickname": "GetSmartAttr",
+      "inputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        },
+        {
+          "name": "ID",
+          "nickname": "ID"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VAL",
+          "nickname": "VAL"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Graph-Grammar Aggregation": {
+      "nickname": "GraphAggr",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        },
+        {
+          "name": "PREV",
+          "nickname": "PREV"
+        },
+        {
+          "name": "RULES",
+          "nickname": "RULES"
+        },
+        {
+          "name": "ID",
+          "nickname": "ID"
+        },
+        {
+          "name": "RESET",
+          "nickname": "RESET"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        },
+        {
+          "name": "PART_OUT",
+          "nickname": "PART_OUT"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Internal Transformation": {
+      "nickname": "InternalTr",
+      "inputs": [
+        {
+          "name": "ID",
+          "nickname": "ID"
+        },
+        {
+          "name": "L1",
+          "nickname": "L1"
+        },
+        {
+          "name": "L2",
+          "nickname": "L2"
+        },
+        {
+          "name": "TYP",
+          "nickname": "TYP"
+        },
+        {
+          "name": "AX",
+          "nickname": "AX"
+        },
+        {
+          "name": "TD",
+          "nickname": "TD"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "TA",
+          "nickname": "TA"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Load Aggregation from File": {
+      "nickname": "LoadAggr",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        },
+        {
+          "name": "FILE",
+          "nickname": "FILE"
+        },
+        {
+          "name": "RENUM",
+          "nickname": "RENUM"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "PART_OUT",
+          "nickname": "PART_OUT"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Load Field from File": {
+      "nickname": "LoadField",
+      "inputs": [
+        {
+          "name": "FILE",
+          "nickname": "FILE"
+        },
+        {
+          "name": "LOAD",
+          "nickname": "LOAD"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "FIELD",
+          "nickname": "FIELD"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Load From DisCo": {
+      "nickname": "DisCoLoad",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        },
+        {
+          "name": "FILE",
+          "nickname": "FILE"
+        },
+        {
+          "name": "RENUM",
+          "nickname": "RENUM"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        },
+        {
+          "name": "PART_OUT",
+          "nickname": "PART_OUT"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Mesh Constraint": {
+      "nickname": "MeshConst",
+      "inputs": [
+        {
+          "name": "GEO",
+          "nickname": "GEO"
+        },
+        {
+          "name": "IN",
+          "nickname": "IN"
+        },
+        {
+          "name": "SOFT",
+          "nickname": "SOFT"
+        },
+        {
+          "name": "REQ",
+          "nickname": "REQ"
+        },
+        {
+          "name": "PART",
+          "nickname": "PART"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GC",
+          "nickname": "GC"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Orient Field": {
+      "nickname": "FieldOrient",
+      "inputs": [
+        {
+          "name": "FIELD",
+          "nickname": "FIELD"
+        },
+        {
+          "name": "PLN",
+          "nickname": "PLN"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "F_TR",
+          "nickname": "F_TR"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Orientation Constraint": {
+      "nickname": "AdjExcConst",
+      "inputs": [
+        {
+          "name": "DIR",
+          "nickname": "DIR"
+        },
+        {
+          "name": "R",
+          "nickname": "R"
+        },
+        {
+          "name": "PLN",
+          "nickname": "PLN"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "OC",
+          "nickname": "OC"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Parts Catalog": {
+      "nickname": "PartCat",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        },
+        {
+          "name": "NUM",
+          "nickname": "NUM"
+        },
+        {
+          "name": "LIM",
+          "nickname": "LIM"
+        },
+        {
+          "name": "AD",
+          "nickname": "AD"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CAT",
+          "nickname": "CAT"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Plane Constraint": {
+      "nickname": "PlaneConst",
+      "inputs": [
+        {
+          "name": "PLN",
+          "nickname": "PLN"
+        },
+        {
+          "name": "POS",
+          "nickname": "POS"
+        },
+        {
+          "name": "SOFT",
+          "nickname": "SOFT"
+        },
+        {
+          "name": "REQ",
+          "nickname": "REQ"
+        },
+        {
+          "name": "PART",
+          "nickname": "PART"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "PC",
+          "nickname": "PC"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Remove Parts": {
+      "nickname": "RemovePart",
+      "inputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        },
+        {
+          "name": "ID",
+          "nickname": "ID"
+        },
+        {
+          "name": "CHILD",
+          "nickname": "CHILD"
+        },
+        {
+          "name": "REM",
+          "nickname": "REM"
+        },
+        {
+          "name": "RESET",
+          "nickname": "RESET"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AGGR_OUT",
+          "nickname": "AGGR_OUT"
+        },
+        {
+          "name": "PART_OUT",
+          "nickname": "PART_OUT"
+        },
+        {
+          "name": "C_PART",
+          "nickname": "C_PART"
+        },
+        {
+          "name": "C_CHILD",
+          "nickname": "C_CHILD"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Rule": {
+      "nickname": "Rule",
+      "inputs": [
+        {
+          "name": "P1",
+          "nickname": "P1"
+        },
+        {
+          "name": "C1",
+          "nickname": "C1"
+        },
+        {
+          "name": "P2",
+          "nickname": "P2"
+        },
+        {
+          "name": "C2",
+          "nickname": "C2"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "R",
+          "nickname": "R"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Rule From Text": {
+      "nickname": "RuleTxt",
+      "inputs": [
+        {
+          "name": "TXT",
+          "nickname": "TXT"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "R",
+          "nickname": "R"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Rules Generator": {
+      "nickname": "RuleGen",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        },
+        {
+          "name": "SELF_P",
+          "nickname": "SELF_P"
+        },
+        {
+          "name": "SELF_C",
+          "nickname": "SELF_C"
+        },
+        {
+          "name": "TYP",
+          "nickname": "TYP"
+        },
+        {
+          "name": "GR",
+          "nickname": "GR"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "R",
+          "nickname": "R"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Rules Visualizer": {
+      "nickname": "RuleViz",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        },
+        {
+          "name": "R",
+          "nickname": "R"
+        },
+        {
+          "name": "SF",
+          "nickname": "SF"
+        },
+        {
+          "name": "PLN",
+          "nickname": "PLN"
+        },
+        {
+          "name": "SI",
+          "nickname": "SI"
+        },
+        {
+          "name": "ST",
+          "nickname": "ST"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "BP",
+          "nickname": "BP"
+        },
+        {
+          "name": "NP",
+          "nickname": "NP"
+        },
+        {
+          "name": "RTL",
+          "nickname": "RTL"
+        },
+        {
+          "name": "RT",
+          "nickname": "RT"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Rules from Aggregation": {
+      "nickname": "GraphRules",
+      "inputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        },
+        {
+          "name": "ON",
+          "nickname": "ON"
+        },
+        {
+          "name": "NN",
+          "nickname": "NN"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GR",
+          "nickname": "GR"
+        },
+        {
+          "name": "PREV",
+          "nickname": "PREV"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Save Aggregation to File": {
+      "nickname": "SaveAggr",
+      "inputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        },
+        {
+          "name": "PATH",
+          "nickname": "PATH"
+        },
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        },
+        {
+          "name": "SAVE",
+          "nickname": "SAVE"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "TXT",
+          "nickname": "TXT"
+        },
+        {
+          "name": "FILE",
+          "nickname": "FILE"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Save Field to File": {
+      "nickname": "SaveField",
+      "inputs": [
+        {
+          "name": "FIELD",
+          "nickname": "FIELD"
+        },
+        {
+          "name": "PATH",
+          "nickname": "PATH"
+        },
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        },
+        {
+          "name": "SAVE",
+          "nickname": "SAVE"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "FILE",
+          "nickname": "FILE"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Save Graph to File": {
+      "nickname": "SaveGraph",
+      "inputs": [
+        {
+          "name": "G",
+          "nickname": "G"
+        },
+        {
+          "name": "PATH",
+          "nickname": "PATH"
+        },
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        },
+        {
+          "name": "SAVE",
+          "nickname": "SAVE"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "TXT",
+          "nickname": "TXT"
+        },
+        {
+          "name": "FILE",
+          "nickname": "FILE"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Save to DisCo": {
+      "nickname": "DisCoSave",
+      "inputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        },
+        {
+          "name": "PATH",
+          "nickname": "PATH"
+        },
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        },
+        {
+          "name": "SAVE",
+          "nickname": "SAVE"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "TXT",
+          "nickname": "TXT"
+        },
+        {
+          "name": "FILE",
+          "nickname": "FILE"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Serialize Object to File": {
+      "nickname": "Serialize",
+      "inputs": [
+        {
+          "name": "OBJ",
+          "nickname": "OBJ"
+        },
+        {
+          "name": "FILTER",
+          "nickname": "FILTER"
+        },
+        {
+          "name": "PATH",
+          "nickname": "PATH"
+        },
+        {
+          "name": "NAME",
+          "nickname": "NAME"
+        },
+        {
+          "name": "SAVE",
+          "nickname": "SAVE"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "KEY",
+          "nickname": "KEY"
+        },
+        {
+          "name": "FILE",
+          "nickname": "FILE"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Smart Attribute": {
+      "nickname": "SmartAttribute",
+      "inputs": [
+        {
+          "name": "ID",
+          "nickname": "ID"
+        },
+        {
+          "name": "VAL",
+          "nickname": "VAL"
+        },
+        {
+          "name": "TR",
+          "nickname": "TR"
+        },
+        {
+          "name": "CONN",
+          "nickname": "CONN"
+        },
+        {
+          "name": "CM",
+          "nickname": "CM"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "ATTR",
+          "nickname": "ATTR"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Stochastic Aggregation": {
+      "nickname": "StochasticAggregation",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        },
+        {
+          "name": "PREV",
+          "nickname": "PREV"
+        },
+        {
+          "name": "N",
+          "nickname": "N"
+        },
+        {
+          "name": "RULES",
+          "nickname": "RULES"
+        },
+        {
+          "name": "SEED",
+          "nickname": "SEED"
+        },
+        {
+          "name": "CAT",
+          "nickname": "CAT"
+        },
+        {
+          "name": "MODE",
+          "nickname": "MODE"
+        },
+        {
+          "name": "GC",
+          "nickname": "GC"
+        },
+        {
+          "name": "ID",
+          "nickname": "ID"
+        },
+        {
+          "name": "RESET",
+          "nickname": "RESET"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AGGR",
+          "nickname": "AGGR"
+        },
+        {
+          "name": "PART_OUT",
+          "nickname": "PART_OUT"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Support": {
+      "nickname": "Support",
+      "inputs": [
+        {
+          "name": "DIR",
+          "nickname": "DIR"
+        },
+        {
+          "name": "GEO",
+          "nickname": "GEO"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "SUP",
+          "nickname": "SUP"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Transform Part": {
+      "nickname": "PartTr",
+      "inputs": [
+        {
+          "name": "PART",
+          "nickname": "PART"
+        },
+        {
+          "name": "TR",
+          "nickname": "TR"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "PART_OUT",
+          "nickname": "PART_OUT"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    },
+    "Wasp_Update File": {
+      "nickname": "UpdateFile",
+      "inputs": [
+        {
+          "name": "UPDATE",
+          "nickname": "UPDATE"
+        },
+        {
+          "name": "SUB_FOL",
+          "nickname": "SUB_FOL"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LOG",
+          "nickname": "LOG"
+        }
+      ],
+      "source": "devFiles/Wasp_ComponentsRep_260704.gh"
+    }
+  },
+  "param_alias_conflicts": [
+    {
+      "component": "Wasp_Connection From Direction",
+      "canonical_inputs": [
+        "GEO",
+        "CEN",
+        "UP",
+        "T"
+      ],
+      "variant_inputs": [],
+      "canonical_outputs": [
+        "CONN",
+        "PLN_OUT"
+      ],
+      "variant_outputs": [
+        [
+          "out",
+          "CONN",
+          "PLN_OUT"
+        ]
+      ],
+      "example_files_with_variant": [
+        "ExampleFiles/3.Constraints/4_03_Local_Constraints_Adjacencies.json"
+      ]
+    },
+    {
+      "component": "Wasp_Update File",
+      "canonical_inputs": [
+        "UPDATE",
+        "SUB_FOL"
+      ],
+      "variant_inputs": [
+        [
+          "UPDATE"
+        ]
+      ],
+      "canonical_outputs": [
+        "LOG"
+      ],
+      "variant_outputs": [],
+      "example_files_with_variant": [
+        "ExampleFiles/4.Advanced/_deprecated/4_01_TopOpt_Field_Millipede.json",
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.json"
+      ]
+    }
+  ],
+  "templates": {
+    "_provenance": "Machine-parseable stage templates for the v0.5 expander (same wire syntax as arch_patterns.json: 'slot:<name> -> <ref>.<Param>' / '<ref>.<Out> -> <ref>.<In>'). Wasp components are placed via the local registry ('wasp': <registry key>), never by stock-component name/guid; param names are the exact recorded names from the corpus chains and param_aliases (PART/RULES/N/SEED/RESET, outputs AGGR then PART_OUT).",
+    "wasp.stochastic_aggregation": {
+      "id": "wasp.stochastic_aggregation",
+      "stage_name": "AGGREGATION",
+      "explainer": "Grows the structure: places N copies of the part(s) one by one, each placement chosen randomly among rule-legal, collision-free options.\nSame seed = same growth; change the seed for a different but equally legal result.",
+      "slots": {
+        "parts": {
+          "kind": "wasp_part",
+          "arity": "1..n",
+          "note": "PART output(s) of Wasp Basic/Advanced Part (create_wasp_part part_id)"
+        },
+        "rules": {
+          "kind": "wasp_rules",
+          "arity": "1",
+          "note": "R output of Rule From Text / Rules Generator (define_rules rules_component_id)"
+        },
+        "count": {
+          "kind": "driver_int",
+          "default": 100,
+          "range_evidence": [
+            0,
+            1000
+          ],
+          "note": "corpus N sliders: 100 [0,1000] in 0_01 and 0_08"
+        },
+        "seed": {
+          "kind": "driver_int",
+          "default": 1,
+          "optional": true,
+          "note": "0_08 feeds SEED from a Series sweep (no slider range evidence); the expander derives the slider range from the bound value"
+        }
+      },
+      "body": {
+        "components": [
+          {
+            "ref": "agg",
+            "wasp": "stochastic_aggregation"
+          },
+          {
+            "ref": "reset",
+            "type": "Boolean Toggle",
+            "note": "corpus RESET feeders: Button (0_01) / Boolean Toggle (0_08); the toggle is the bridge-settable one (set_toggle). Pulse it (reset_aggregation macro) before reading PART_OUT."
+          }
+        ],
+        "wires": [
+          "slot:parts -> agg.PART",
+          "slot:rules -> agg.RULES",
+          "slot:count -> agg.N",
+          "slot:seed -> agg.SEED",
+          "reset.Boolean Toggle -> agg.RESET"
+        ]
+      },
+      "outputs": {
+        "parts_out": "agg.PART_OUT",
+        "aggregation": "agg.AGGR"
+      },
+      "notes": "Wire evidence (corpus chains): Wasp_Basic Part.PART -> .PART, Number Slider -> .N, rules .R -> .RULES, Series -> .SEED, Button/Boolean Toggle -> .RESET, .PART_OUT -> Wasp_Get Part Geometry.PART (PART_OUT is what extraction reads; AGGR only feeds graph/save components). run_aggregation remains the full-service macro (auto RESET pulse); this template is the composable stage form.",
+      "source_files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh"
+      ]
+    }
+  }
+}

@@ -1,0 +1,4806 @@
+{
+  "version": "0.1",
+  "generated": "2026-07-10",
+  "provenance": "corpus-derived: non-Wasp Grasshopper components observed in corpus/dumps/ExampleFiles (official Wasp curriculum). Live introspection via v0.3 get_component_schema will extend this.",
+  "components": {
+    "Panel": {
+      "guid": "59e0b89a-e487-49f8-bab8-b5bab16be14c",
+      "instances": 319,
+      "file_count": 39,
+      "files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh",
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_06_Part_Attributes.gh",
+        "ExampleFiles/0.Basics/0_07_Save_Load_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh",
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh",
+        "ExampleFiles/0.Basics/0_10_Aggregation_Graph.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Connection From Direction.T",
+          "count": 50
+        },
+        {
+          "target": "Wasp_Basic Part.NAME",
+          "count": 44
+        },
+        {
+          "target": "Wasp_Filter Parts by Name.NAME",
+          "count": 21
+        },
+        {
+          "target": "Wasp_Get Attribute by Name.ID",
+          "count": 21
+        },
+        {
+          "target": "Wasp_Attribute.ID",
+          "count": 20
+        },
+        {
+          "target": "Wasp_Rule From Text.TXT",
+          "count": 15
+        },
+        {
+          "target": "Wasp_Rules Generator.GR",
+          "count": 12
+        },
+        {
+          "target": "Wasp_Field.NAME",
+          "count": 12
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Rules from Aggregation.GR",
+          "count": 2
+        },
+        {
+          "source": "Wasp_Save Aggregation to File.FILE",
+          "count": 1
+        },
+        {
+          "source": "CudaCtx.FreeMemory",
+          "count": 1
+        },
+        {
+          "source": "Model Statistics.Model Resolution",
+          "count": 1
+        },
+        {
+          "source": "Model Statistics.Element Count",
+          "count": 1
+        },
+        {
+          "source": "Model Statistics.Element Size",
+          "count": 1
+        },
+        {
+          "source": "Model Statistics.Node Count",
+          "count": 1
+        },
+        {
+          "source": "Model Statistics.DoFs",
+          "count": 1
+        }
+      ]
+    },
+    "Number Slider": {
+      "guid": "57da07bd-ecab-415d-9d86-af36d7073abc",
+      "instances": 203,
+      "file_count": 38,
+      "files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh",
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_06_Part_Attributes.gh",
+        "ExampleFiles/0.Basics/0_07_Save_Load_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh",
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh",
+        "ExampleFiles/0.Basics/0_10_Aggregation_Graph.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Stochastic Aggregation.N",
+          "count": 27
+        },
+        {
+          "target": "Point List.Size",
+          "count": 19
+        },
+        {
+          "target": "Wasp_Field-driven Aggregation.N",
+          "count": 13
+        },
+        {
+          "target": "Wasp_Field Points.RES",
+          "count": 11
+        },
+        {
+          "target": "Scale NU.Scale X",
+          "count": 7
+        },
+        {
+          "target": "Scale NU.Scale Y",
+          "count": 7
+        },
+        {
+          "target": "Scale NU.Scale Z",
+          "count": 7
+        },
+        {
+          "target": "Wasp_Stochastic Aggregation.MODE",
+          "count": 6
+        }
+      ],
+      "typical_fed_by": []
+    },
+    "Custom Preview": {
+      "guid": "537b0419-bbc2-4ff4-bf08-afe526367b2c",
+      "instances": 97,
+      "file_count": 38,
+      "files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh",
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_06_Part_Attributes.gh",
+        "ExampleFiles/0.Basics/0_07_Save_Load_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh",
+        "ExampleFiles/0.Basics/0_10_Aggregation_Graph.gh",
+        "ExampleFiles/1.Rules/1_01_Rules_Generator_Basics.gh"
+      ],
+      "typical_feeds": [],
+      "typical_fed_by": [
+        {
+          "source": "Colour Swatch.Colour Swatch",
+          "count": 67
+        },
+        {
+          "source": "Wasp_Get Part Geometry.GEO",
+          "count": 38
+        },
+        {
+          "source": "Wasp_Get Attribute by Name.VAL",
+          "count": 20
+        },
+        {
+          "source": "Gradient.Colour",
+          "count": 18
+        },
+        {
+          "source": "Cull Pattern.List",
+          "count": 6
+        },
+        {
+          "source": "Merge.Result",
+          "count": 4
+        },
+        {
+          "source": "Wasp_Deconstruct Field.PTS",
+          "count": 4
+        },
+        {
+          "source": "Wasp_Field Points.PTS",
+          "count": 3
+        }
+      ]
+    },
+    "Colour Swatch": {
+      "guid": "9c53bac0-ba66-40bd-8154-ce9829b9db1a",
+      "instances": 91,
+      "file_count": 34,
+      "files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh",
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/0.Basics/0_06_Part_Attributes.gh",
+        "ExampleFiles/0.Basics/0_07_Save_Load_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh",
+        "ExampleFiles/0.Basics/0_10_Aggregation_Graph.gh",
+        "ExampleFiles/1.Rules/1_01_Rules_Generator_Basics.gh",
+        "ExampleFiles/1.Rules/1_02_Rules_Connection_Types.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Custom Preview.Material",
+          "count": 61
+        },
+        {
+          "target": "Merge.Data 1",
+          "count": 7
+        },
+        {
+          "target": "Merge.Data 2",
+          "count": 7
+        },
+        {
+          "target": "Custom Preview.Shader",
+          "count": 6
+        },
+        {
+          "target": "Merge.Data 3",
+          "count": 6
+        },
+        {
+          "target": "Wasp_Attribute.VAL",
+          "count": 1
+        },
+        {
+          "target": "Custom Preview Lineweights.Shader",
+          "count": 1
+        },
+        {
+          "target": "Entwine.Branch {0;0}",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": []
+    },
+    "Curve": {
+      "guid": "d5967b9f-e8ee-436b-a8ad-29fdcecf32d5",
+      "instances": 87,
+      "file_count": 37,
+      "files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_06_Part_Attributes.gh",
+        "ExampleFiles/0.Basics/0_07_Save_Load_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh",
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh",
+        "ExampleFiles/0.Basics/0_10_Aggregation_Graph.gh",
+        "ExampleFiles/1.Rules/1_01_Rules_Generator_Basics.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Connection From Direction.UP",
+          "count": 72
+        },
+        {
+          "target": "Bounding Box.Content",
+          "count": 3
+        },
+        {
+          "target": "Wasp_Adjacency Exclusion Constraint.DIR",
+          "count": 3
+        },
+        {
+          "target": "Curve Closest Point.Curve",
+          "count": 2
+        },
+        {
+          "target": "Pull Point.Geometry",
+          "count": 2
+        },
+        {
+          "target": "Custom Preview.Geometry",
+          "count": 1
+        },
+        {
+          "target": "Project.Curve",
+          "count": 1
+        },
+        {
+          "target": "List Item.List",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Aggregation Graph.E",
+          "count": 1
+        }
+      ]
+    },
+    "Button": {
+      "guid": "a8b97322-2d53-47cd-905e-b932c3ccd74e",
+      "instances": 86,
+      "file_count": 39,
+      "files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh",
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_06_Part_Attributes.gh",
+        "ExampleFiles/0.Basics/0_07_Save_Load_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh",
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh",
+        "ExampleFiles/0.Basics/0_10_Aggregation_Graph.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Update File.UPDATE",
+          "count": 39
+        },
+        {
+          "target": "Wasp_Stochastic Aggregation.RESET",
+          "count": 26
+        },
+        {
+          "target": "Wasp_Field-driven Aggregation.RESET",
+          "count": 13
+        },
+        {
+          "target": "Wasp_Save Aggregation to File.SAVE",
+          "count": 1
+        },
+        {
+          "target": "Wasp_Save Field to File.SAVE",
+          "count": 1
+        },
+        {
+          "target": "Wasp_Load Field from File.LOAD",
+          "count": 1
+        },
+        {
+          "target": "Wasp_Save to DisCo.SAVE",
+          "count": 1
+        },
+        {
+          "target": "Wasp_Export to DisCo.SAVE",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": []
+    },
+    "Point": {
+      "guid": "fbac3e32-f100-4292-8692-77240a42fd1a",
+      "instances": 80,
+      "file_count": 37,
+      "files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_06_Part_Attributes.gh",
+        "ExampleFiles/0.Basics/0_07_Save_Load_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh",
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh",
+        "ExampleFiles/0.Basics/0_10_Aggregation_Graph.gh",
+        "ExampleFiles/1.Rules/1_01_Rules_Generator_Basics.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Connection From Direction.CEN",
+          "count": 72
+        },
+        {
+          "target": "Point List.Points",
+          "count": 19
+        },
+        {
+          "target": "Custom Preview.Geometry",
+          "count": 2
+        },
+        {
+          "target": "Curve Closest Point.Point",
+          "count": 1
+        },
+        {
+          "target": "Deconstruct.Point",
+          "count": 1
+        },
+        {
+          "target": "Pull Point.Point",
+          "count": 1
+        },
+        {
+          "target": "Surface Closest Point.Point",
+          "count": 1
+        },
+        {
+          "target": "Wasp_DisCo Player.PC",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Field Points.PTS",
+          "count": 4
+        },
+        {
+          "source": "Wasp_Aggregation Graph.N",
+          "count": 1
+        }
+      ]
+    },
+    "Boolean Toggle": {
+      "guid": "2e78987b-9dfb-42a2-8b76-3923ac8bd91a",
+      "instances": 73,
+      "file_count": 27,
+      "files": [
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_06_Part_Attributes.gh",
+        "ExampleFiles/0.Basics/0_07_Save_Load_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh",
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh",
+        "ExampleFiles/0.Basics/0_10_Aggregation_Graph.gh",
+        "ExampleFiles/1.Rules/1_01_Rules_Generator_Basics.gh",
+        "ExampleFiles/1.Rules/1_02_Rules_Connection_Types.gh",
+        "ExampleFiles/1.Rules/1_03_Rules_Grammar.gh",
+        "ExampleFiles/1.Rules/1_04_Rules_Visualizer.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Attribute.TR",
+          "count": 20
+        },
+        {
+          "target": "Wasp_Rules Generator.TYP",
+          "count": 6
+        },
+        {
+          "target": "Wasp_Rules Generator.SELF_C",
+          "count": 5
+        },
+        {
+          "target": "Wasp_Rules Generator.SELF_P",
+          "count": 4
+        },
+        {
+          "target": "Wasp_Mesh Constraint.IN",
+          "count": 4
+        },
+        {
+          "target": "Wasp_Adjacency Exclusion Constraint.AE",
+          "count": 3
+        },
+        {
+          "target": "Wasp_Plane Constraint.POS",
+          "count": 3
+        },
+        {
+          "target": "Wasp_Plane Constraint.SOFT",
+          "count": 3
+        }
+      ],
+      "typical_fed_by": []
+    },
+    "Geometry": {
+      "guid": "ac2bc2cb-70fb-4dd5-9c78-7e1ea97fe278",
+      "instances": 62,
+      "file_count": 23,
+      "files": [
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_06_Part_Attributes.gh",
+        "ExampleFiles/0.Basics/0_07_Save_Load_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh",
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh",
+        "ExampleFiles/1.Rules/1_04_Rules_Visualizer.gh",
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/2.Fields/2_07_Save_Load_Field.gh",
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Connection From Direction.GEO",
+          "count": 48
+        },
+        {
+          "target": "Wasp_Basic Part.GEO",
+          "count": 20
+        },
+        {
+          "target": "Wasp_Attribute.VAL",
+          "count": 13
+        },
+        {
+          "target": "Wasp_Advanced Part.GEO",
+          "count": 6
+        },
+        {
+          "target": "Mesh Brep.Brep",
+          "count": 5
+        },
+        {
+          "target": "Deconstruct Brep.Brep",
+          "count": 4
+        },
+        {
+          "target": "Geometry.Geometry",
+          "count": 4
+        },
+        {
+          "target": "Wasp_Mesh Constraint.GEO",
+          "count": 4
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Geometry.Geometry",
+          "count": 4
+        },
+        {
+          "source": "Wasp_Deconstruct Field.BB",
+          "count": 1
+        }
+      ]
+    },
+    "Merge": {
+      "guid": "3cadddef-1e2b-4c09-9390-0e8f78f7609f",
+      "instances": 50,
+      "file_count": 27,
+      "files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh",
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_06_Part_Attributes.gh",
+        "ExampleFiles/0.Basics/0_07_Save_Load_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh",
+        "ExampleFiles/1.Rules/1_01_Rules_Generator_Basics.gh",
+        "ExampleFiles/1.Rules/1_02_Rules_Connection_Types.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Basic Part.CONN",
+          "count": 13
+        },
+        {
+          "target": "Wasp_Stochastic Aggregation.PART",
+          "count": 10
+        },
+        {
+          "target": "Wasp_Rules Generator.PART",
+          "count": 9
+        },
+        {
+          "target": "Custom Preview.Material",
+          "count": 4
+        },
+        {
+          "target": "Wasp_Stochastic Aggregation.RULES",
+          "count": 3
+        },
+        {
+          "target": "List Item.List",
+          "count": 3
+        },
+        {
+          "target": "Wasp_Advanced Part.CONN",
+          "count": 3
+        },
+        {
+          "target": "Wasp_Smart Attribute.CONN",
+          "count": 3
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Connection From Direction.CONN",
+          "count": 37
+        },
+        {
+          "source": "Wasp_Basic Part.PART",
+          "count": 21
+        },
+        {
+          "source": "Colour Swatch.Colour Swatch",
+          "count": 20
+        },
+        {
+          "source": "Wasp_Advanced Part.PART",
+          "count": 6
+        },
+        {
+          "source": "Wasp_Rule From Text.R",
+          "count": 5
+        },
+        {
+          "source": "Wasp_Support.SUP",
+          "count": 4
+        },
+        {
+          "source": "Box.Box",
+          "count": 4
+        },
+        {
+          "source": "Wasp_Rule.R",
+          "count": 3
+        }
+      ]
+    },
+    "Brep": {
+      "guid": "919e146f-30ae-4aae-be34-4d72f555e7da",
+      "instances": 33,
+      "file_count": 19,
+      "files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh",
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/0.Basics/0_10_Aggregation_Graph.gh",
+        "ExampleFiles/1.Rules/1_01_Rules_Generator_Basics.gh",
+        "ExampleFiles/1.Rules/1_02_Rules_Connection_Types.gh",
+        "ExampleFiles/1.Rules/1_03_Rules_Grammar.gh",
+        "ExampleFiles/2.Fields/2_01_Field_Basics.gh",
+        "ExampleFiles/2.Fields/2_02_Field_Boundaries.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Connection From Direction.GEO",
+          "count": 32
+        },
+        {
+          "target": "Wasp_Basic Part.GEO",
+          "count": 18
+        },
+        {
+          "target": "Wasp_Advanced Part.GEO",
+          "count": 4
+        },
+        {
+          "target": "Wasp_Support.GEO",
+          "count": 4
+        },
+        {
+          "target": "Mesh Brep.Brep",
+          "count": 3
+        },
+        {
+          "target": "Wasp_Field Points.BOU",
+          "count": 3
+        },
+        {
+          "target": "Simple Mesh.Brep",
+          "count": 2
+        },
+        {
+          "target": "Brep Wireframe.Brep",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Brep.Brep",
+          "count": 1
+        }
+      ]
+    },
+    "Point List": {
+      "guid": "cc14daa5-911a-4fcc-8b3b-1149bf7f2eeb",
+      "instances": 19,
+      "file_count": 15,
+      "files": [
+        "ExampleFiles/0.Basics/0_01_Basic_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_02_MultiPart_Aggregation.gh",
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/0.Basics/0_10_Aggregation_Graph.gh",
+        "ExampleFiles/1.Rules/1_01_Rules_Generator_Basics.gh",
+        "ExampleFiles/1.Rules/1_02_Rules_Connection_Types.gh",
+        "ExampleFiles/2.Fields/2_01_Field_Basics.gh",
+        "ExampleFiles/2.Fields/2_02_Field_Boundaries.gh",
+        "ExampleFiles/2.Fields/2_03_Field_from_Curves.gh",
+        "ExampleFiles/2.Fields/2_04_Field_from_Expression.gh"
+      ],
+      "typical_feeds": [],
+      "typical_fed_by": [
+        {
+          "source": "Point.Point",
+          "count": 19
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 19
+        }
+      ]
+    },
+    "Gradient": {
+      "guid": "6da9f120-3ad0-4b6e-9fe0-f8cde3a649b7",
+      "instances": 19,
+      "file_count": 14,
+      "files": [
+        "ExampleFiles/2.Fields/2_01_Field_Basics.gh",
+        "ExampleFiles/2.Fields/2_02_Field_Boundaries.gh",
+        "ExampleFiles/2.Fields/2_03_Field_from_Curves.gh",
+        "ExampleFiles/2.Fields/2_04_Field_from_Expression.gh",
+        "ExampleFiles/2.Fields/2_07_Save_Load_Field.gh",
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_10_Volumetric_Field.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh",
+        "ExampleFiles/3.Constraints/4_01_Local_Constraints_Supports.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Custom Preview.Material",
+          "count": 11
+        },
+        {
+          "target": "Custom Preview.Shader",
+          "count": 7
+        },
+        {
+          "target": "Cull Pattern.List",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Deconstruct Field.VAL",
+          "count": 6
+        },
+        {
+          "source": "Random.Random",
+          "count": 4
+        },
+        {
+          "source": "Cull Pattern.List",
+          "count": 2
+        },
+        {
+          "source": "Weave.Weave",
+          "count": 2
+        },
+        {
+          "source": "Graph Mapper.Graph Mapper",
+          "count": 2
+        },
+        {
+          "source": "Range.Range",
+          "count": 1
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 1
+        },
+        {
+          "source": "Multiplication.Result",
+          "count": 1
+        }
+      ]
+    },
+    "List Item": {
+      "guid": "59daf374-bc21-4a5e-8282-5504fb7ae9ae",
+      "instances": 16,
+      "file_count": 11,
+      "files": [
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh",
+        "ExampleFiles/1.Rules/1_04_Rules_Visualizer.gh",
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_10_Volumetric_Field.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh",
+        "ExampleFiles/3.Constraints/4_01_Local_Constraints_Supports.gh",
+        "ExampleFiles/3.Constraints/4_02_Local_Constraints_Additional_Collider.gh",
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Support.DIR",
+          "count": 9
+        },
+        {
+          "target": "Area.Geometry",
+          "count": 8
+        },
+        {
+          "target": "Custom Preview.Material",
+          "count": 3
+        },
+        {
+          "target": "XY Plane.Origin",
+          "count": 2
+        },
+        {
+          "target": "Point On Curve.Point On Curve",
+          "count": 1
+        },
+        {
+          "target": "Construct Plane.Y-Axis",
+          "count": 1
+        },
+        {
+          "target": "Wasp_Stochastic Aggregation.RULES",
+          "count": 1
+        },
+        {
+          "target": "Bounding Box.Content",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Panel.Panel",
+          "count": 6
+        },
+        {
+          "source": "Deconstruct Brep.Faces",
+          "count": 5
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 5
+        },
+        {
+          "source": "Merge.Result",
+          "count": 3
+        },
+        {
+          "source": "Random.Random",
+          "count": 3
+        },
+        {
+          "source": "Deconstruct Brep.Vertices",
+          "count": 2
+        },
+        {
+          "source": "Deconstruct Brep.Edges",
+          "count": 1
+        },
+        {
+          "source": "Wasp_Rules Generator.R",
+          "count": 1
+        }
+      ]
+    },
+    "List Length": {
+      "guid": "1817fd29-20ae-4503-b542-f0fb651e67d7",
+      "instances": 15,
+      "file_count": 11,
+      "files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_10_Volumetric_Field.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh",
+        "ExampleFiles/3.Constraints/4_01_Local_Constraints_Supports.gh",
+        "ExampleFiles/3.Constraints/4_02_Local_Constraints_Additional_Collider.gh",
+        "ExampleFiles/3.Constraints/4_05_Global_Constraints_Plane.gh",
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh",
+        "ExampleFiles/5.Experimental/5_01_Hierarchical_Aggregation.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Random.Number",
+          "count": 6
+        },
+        {
+          "target": "Repeat Data.Length",
+          "count": 5
+        },
+        {
+          "target": "Split List.Index",
+          "count": 4
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Field-driven Aggregation.PART_OUT",
+          "count": 3
+        },
+        {
+          "source": "Panel.Panel",
+          "count": 2
+        },
+        {
+          "source": "Dispatch.List A",
+          "count": 2
+        },
+        {
+          "source": "Wasp_Get Parts Hierarchy.SUB_P",
+          "count": 2
+        },
+        {
+          "source": "Remap Numbers.Mapped",
+          "count": 1
+        },
+        {
+          "source": "Wasp_Get Part Geometry.GEO",
+          "count": 1
+        },
+        {
+          "source": "Data.Data",
+          "count": 1
+        },
+        {
+          "source": "Wasp_Transform Part.PART_OUT",
+          "count": 1
+        }
+      ]
+    },
+    "Remap Numbers": {
+      "guid": "2fcc2743-8339-4cdf-a046-a1f17439191d",
+      "instances": 15,
+      "file_count": 11,
+      "files": [
+        "ExampleFiles/2.Fields/2_01_Field_Basics.gh",
+        "ExampleFiles/2.Fields/2_02_Field_Boundaries.gh",
+        "ExampleFiles/2.Fields/2_03_Field_from_Curves.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh",
+        "ExampleFiles/2.Fields/2_07_Save_Load_Field.gh",
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_10_Volumetric_Field.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Graph Mapper.Graph Mapper",
+          "count": 12
+        },
+        {
+          "target": "Merge.Data 1",
+          "count": 1
+        },
+        {
+          "target": "Merge.Data 2",
+          "count": 1
+        },
+        {
+          "target": "List Length.List",
+          "count": 1
+        },
+        {
+          "target": "GhPython Script.D",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Bounds.Domain",
+          "count": 15
+        },
+        {
+          "source": "Pull Point.Distance",
+          "count": 6
+        },
+        {
+          "source": "Panel.Panel",
+          "count": 6
+        },
+        {
+          "source": "Construct Domain.Domain",
+          "count": 3
+        },
+        {
+          "source": "Curve Closest Point.Distance",
+          "count": 2
+        },
+        {
+          "source": "Deconstruct.Y component",
+          "count": 2
+        },
+        {
+          "source": "Dispatch.List B",
+          "count": 2
+        },
+        {
+          "source": "Surface Closest Point.Distance",
+          "count": 1
+        }
+      ]
+    },
+    "Bounds": {
+      "guid": "f44b92b0-3b5b-493a-86f4-fd7408c3daf3",
+      "instances": 14,
+      "file_count": 11,
+      "files": [
+        "ExampleFiles/2.Fields/2_01_Field_Basics.gh",
+        "ExampleFiles/2.Fields/2_02_Field_Boundaries.gh",
+        "ExampleFiles/2.Fields/2_03_Field_from_Curves.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh",
+        "ExampleFiles/2.Fields/2_07_Save_Load_Field.gh",
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_10_Volumetric_Field.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Remap Numbers.Source",
+          "count": 15
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Pull Point.Distance",
+          "count": 5
+        },
+        {
+          "source": "Dispatch.List B",
+          "count": 3
+        },
+        {
+          "source": "Curve Closest Point.Distance",
+          "count": 2
+        },
+        {
+          "source": "Deconstruct.Y component",
+          "count": 1
+        },
+        {
+          "source": "Surface Closest Point.Distance",
+          "count": 1
+        },
+        {
+          "source": "Angle.Angle",
+          "count": 1
+        },
+        {
+          "source": "Node Data.Density",
+          "count": 1
+        }
+      ]
+    },
+    "Graph Mapper": {
+      "guid": "bc984576-7aa6-491f-a91d-e444c33675a7",
+      "instances": 14,
+      "file_count": 11,
+      "files": [
+        "ExampleFiles/2.Fields/2_01_Field_Basics.gh",
+        "ExampleFiles/2.Fields/2_02_Field_Boundaries.gh",
+        "ExampleFiles/2.Fields/2_03_Field_from_Curves.gh",
+        "ExampleFiles/2.Fields/2_04_Field_from_Expression.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh",
+        "ExampleFiles/2.Fields/2_07_Save_Load_Field.gh",
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_10_Volumetric_Field.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Field.VAL",
+          "count": 8
+        },
+        {
+          "target": "Multiplication.A",
+          "count": 2
+        },
+        {
+          "target": "Weave.Stream 0",
+          "count": 2
+        },
+        {
+          "target": "Gradient.Parameter",
+          "count": 2
+        },
+        {
+          "target": "Split List.List",
+          "count": 1
+        },
+        {
+          "target": "Multiplication.B",
+          "count": 1
+        },
+        {
+          "target": "Multiplication.C",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Remap Numbers.Mapped",
+          "count": 12
+        },
+        {
+          "source": "Expression.Result",
+          "count": 1
+        },
+        {
+          "source": "Merge.Result",
+          "count": 1
+        }
+      ]
+    },
+    "Cull Pattern": {
+      "guid": "008e9a6f-478a-4813-8c8a-546273bc3a6b",
+      "instances": 11,
+      "file_count": 6,
+      "files": [
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/2.Fields/2_02_Field_Boundaries.gh",
+        "ExampleFiles/2.Fields/2_04_Field_from_Expression.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh",
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Custom Preview.Geometry",
+          "count": 5
+        },
+        {
+          "target": "Transform.Transform",
+          "count": 2
+        },
+        {
+          "target": "Gradient.Parameter",
+          "count": 2
+        },
+        {
+          "target": "Custom Preview.Material",
+          "count": 1
+        },
+        {
+          "target": "Mesh Brep.Brep",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Larger Than.Larger than",
+          "count": 7
+        },
+        {
+          "source": "Wasp_Deconstruct Field.VAL",
+          "count": 4
+        },
+        {
+          "source": "Wasp_Deconstruct Field.PTS",
+          "count": 3
+        },
+        {
+          "source": "Wasp_Deconstruct Part.TR",
+          "count": 2
+        },
+        {
+          "source": "Wasp_Filter Parts by Name.MASK",
+          "count": 2
+        },
+        {
+          "source": "Wasp_Field Points.PTS",
+          "count": 2
+        },
+        {
+          "source": "Gradient.Colour",
+          "count": 1
+        },
+        {
+          "source": "Isotrim.Surface",
+          "count": 1
+        }
+      ]
+    },
+    "Move": {
+      "guid": "e9eb1dcf-92f6-4d4d-84ae-96222d60f56b",
+      "instances": 11,
+      "file_count": 8,
+      "files": [
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh",
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/3.Constraints/4_01_Local_Constraints_Supports.gh",
+        "ExampleFiles/3.Constraints/4_02_Local_Constraints_Additional_Collider.gh",
+        "ExampleFiles/3.Constraints/4_03_Local_Constraints_Adjacencies.gh",
+        "ExampleFiles/4.Advanced/4_03_Wasp_to_DisCo_VR.gh",
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Transform Part.TR",
+          "count": 10
+        },
+        {
+          "target": "Wasp_Assemble Part Hierarchy.TR",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Unit X.Unit vector",
+          "count": 5
+        },
+        {
+          "source": "Unit Y.Unit vector",
+          "count": 2
+        },
+        {
+          "source": "Multiplication.Result",
+          "count": 2
+        },
+        {
+          "source": "Wasp_Get Part Geometry.GEO",
+          "count": 1
+        },
+        {
+          "source": "Vector XYZ.Vector",
+          "count": 1
+        },
+        {
+          "source": "Unit Z.Unit vector",
+          "count": 1
+        }
+      ]
+    },
+    "Unit X": {
+      "guid": "79f9fbb3-8f1d-4d9a-88a9-f7961b1012cd",
+      "instances": 11,
+      "file_count": 6,
+      "files": [
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh",
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh",
+        "ExampleFiles/3.Constraints/4_02_Local_Constraints_Additional_Collider.gh",
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Move.Motion",
+          "count": 5
+        },
+        {
+          "target": "Rotate 3D.Axis",
+          "count": 2
+        },
+        {
+          "target": "Line SDL.Direction",
+          "count": 2
+        },
+        {
+          "target": "Addition.A",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Panel.Panel",
+          "count": 4
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 1
+        },
+        {
+          "source": "Multiplication.Result",
+          "count": 1
+        },
+        {
+          "source": "Series.Series",
+          "count": 1
+        }
+      ]
+    },
+    "Area": {
+      "guid": "2e205f24-9279-47b2-b414-d06dcd0b21a7",
+      "instances": 11,
+      "file_count": 4,
+      "files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh",
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Line SDL.Start",
+          "count": 8
+        },
+        {
+          "target": "Wasp_Connection From Direction.CEN",
+          "count": 4
+        },
+        {
+          "target": "Rotate.Plane",
+          "count": 2
+        },
+        {
+          "target": "Repeat Data.Data",
+          "count": 2
+        },
+        {
+          "target": "Distance.Point A",
+          "count": 1
+        },
+        {
+          "target": "Distance.Point B",
+          "count": 1
+        },
+        {
+          "target": "Line.End Point",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "List Item.Item",
+          "count": 5
+        },
+        {
+          "source": "List Item.Item +1",
+          "count": 3
+        },
+        {
+          "source": "Sub List.List",
+          "count": 1
+        },
+        {
+          "source": "Plane Surface.Plane",
+          "count": 1
+        },
+        {
+          "source": "Isotrim.Surface",
+          "count": 1
+        }
+      ]
+    },
+    "Unit Y": {
+      "guid": "d3d195ea-2d59-4ffa-90b1-8b7ff3369f69",
+      "instances": 11,
+      "file_count": 5,
+      "files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/3.Constraints/4_02_Local_Constraints_Additional_Collider.gh",
+        "ExampleFiles/3.Constraints/4_03_Local_Constraints_Adjacencies.gh",
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh",
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Line SDL.Direction",
+          "count": 7
+        },
+        {
+          "target": "Move.Motion",
+          "count": 2
+        },
+        {
+          "target": "Addition.B",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Series.Series",
+          "count": 2
+        },
+        {
+          "source": "Panel.Panel",
+          "count": 2
+        }
+      ]
+    },
+    "XY Plane": {
+      "guid": "17b7152b-d30d-4d50-b9ef-c9fe25576fc2",
+      "instances": 9,
+      "file_count": 7,
+      "files": [
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh",
+        "ExampleFiles/1.Rules/1_04_Rules_Visualizer.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh",
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh",
+        "ExampleFiles/3.Constraints/4_05_Global_Constraints_Plane.gh",
+        "ExampleFiles/5.Experimental/5_01_Hierarchical_Aggregation.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Plane Constraint.PLN",
+          "count": 2
+        },
+        {
+          "target": "Deconstruct Plane.Plane",
+          "count": 1
+        },
+        {
+          "target": "Wasp_Connection From Plane.PLN",
+          "count": 1
+        },
+        {
+          "target": "Wasp_Rules Visualizer.PLN",
+          "count": 1
+        },
+        {
+          "target": "Rotate Plane.Plane",
+          "count": 1
+        },
+        {
+          "target": "Align Plane.Plane",
+          "count": 1
+        },
+        {
+          "target": "Wasp_Orientation Constraint.PLN",
+          "count": 1
+        },
+        {
+          "target": "Plane Surface.Plane",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "List Item.Item",
+          "count": 2
+        },
+        {
+          "source": "Construct Point.Point",
+          "count": 1
+        },
+        {
+          "source": "Deconstruct Brep.Vertices",
+          "count": 1
+        },
+        {
+          "source": "Point.Point",
+          "count": 1
+        }
+      ]
+    },
+    "Mesh Brep": {
+      "guid": "60e7defa-8b21-4ee1-99aa-a9223d6134ff",
+      "instances": 9,
+      "file_count": 6,
+      "files": [
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh",
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/0.Basics/0_09_Parts_Catalog.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Basic Part.GEO",
+          "count": 3
+        },
+        {
+          "target": "Weaverbird's Catmull-Clark Subdivision.Mesh/Curves",
+          "count": 2
+        },
+        {
+          "target": "Mesh Join.Meshes",
+          "count": 1
+        },
+        {
+          "target": "Volume Load.Load Mesh",
+          "count": 1
+        },
+        {
+          "target": "Boundary Conditions.Support",
+          "count": 1
+        },
+        {
+          "target": "Boundary Domain.Domain Mesh",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Geometry.Geometry",
+          "count": 5
+        },
+        {
+          "source": "Brep.Brep",
+          "count": 3
+        },
+        {
+          "source": "Cull Pattern.List",
+          "count": 1
+        }
+      ]
+    },
+    "Construct Point": {
+      "guid": "3581f42a-9592-4549-bd6b-1c0fc39d067b",
+      "instances": 9,
+      "file_count": 5,
+      "files": [
+        "ExampleFiles/1.Rules/1_04_Rules_Visualizer.gh",
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh",
+        "ExampleFiles/2.Fields/2_10_Volumetric_Field.gh",
+        "ExampleFiles/3.Constraints/4_05_Global_Constraints_Plane.gh",
+        "ExampleFiles/3.Constraints/4_06_Global_Constraints_Mesh.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Iso Curve.UV point",
+          "count": 6
+        },
+        {
+          "target": "XZ Plane.Origin",
+          "count": 2
+        },
+        {
+          "target": "XY Plane.Origin",
+          "count": 1
+        },
+        {
+          "target": "YZ Plane.Origin",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Range.Range",
+          "count": 10
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 3
+        },
+        {
+          "source": "Negative.Result",
+          "count": 2
+        },
+        {
+          "source": "Panel.Panel",
+          "count": 1
+        }
+      ]
+    },
+    "Multiplication": {
+      "guid": "ce46b74e-00c9-43c4-805a-193b69ea4a11",
+      "instances": 8,
+      "file_count": 5,
+      "files": [
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh",
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh",
+        "ExampleFiles/3.Constraints/4_01_Local_Constraints_Supports.gh",
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Field.VAL",
+          "count": 3
+        },
+        {
+          "target": "Larger Than.First Number",
+          "count": 2
+        },
+        {
+          "target": "Move.Motion",
+          "count": 2
+        },
+        {
+          "target": "Unit X.Factor",
+          "count": 1
+        },
+        {
+          "target": "Gradient.Parameter",
+          "count": 1
+        },
+        {
+          "target": "Vector XYZ.X component",
+          "count": 1
+        },
+        {
+          "target": "Vector XYZ.Y component",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 5
+        },
+        {
+          "source": "Graph Mapper.Graph Mapper",
+          "count": 4
+        },
+        {
+          "source": "Addition.Result",
+          "count": 2
+        },
+        {
+          "source": "Series.Series",
+          "count": 1
+        },
+        {
+          "source": "Split List.List A",
+          "count": 1
+        },
+        {
+          "source": "Split List.List B",
+          "count": 1
+        },
+        {
+          "source": "Weave.Weave",
+          "count": 1
+        },
+        {
+          "source": "Random.Random",
+          "count": 1
+        }
+      ]
+    },
+    "Line SDL": {
+      "guid": "4c619bc9-39fd-4717-82a6-1e07ea237bbe",
+      "instances": 8,
+      "file_count": 3,
+      "files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh",
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Connection From Direction.UP",
+          "count": 6
+        },
+        {
+          "target": "Rotate.Geometry",
+          "count": 2
+        },
+        {
+          "target": "End Points.Curve",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Area.Centroid",
+          "count": 8
+        },
+        {
+          "source": "Unit Y.Unit vector",
+          "count": 7
+        },
+        {
+          "source": "Unit X.Unit vector",
+          "count": 2
+        },
+        {
+          "source": "Unit Z.Unit vector",
+          "count": 1
+        }
+      ]
+    },
+    "Bounding Box": {
+      "guid": "0bb3d234-9097-45db-9998-621639c87d3b",
+      "instances": 8,
+      "file_count": 8,
+      "files": [
+        "ExampleFiles/2.Fields/2_01_Field_Basics.gh",
+        "ExampleFiles/2.Fields/2_02_Field_Boundaries.gh",
+        "ExampleFiles/2.Fields/2_03_Field_from_Curves.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh",
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Volume.Geometry",
+          "count": 6
+        },
+        {
+          "target": "Scale NU.Geometry",
+          "count": 6
+        },
+        {
+          "target": "Populate 3D.Region",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Curve.Curve",
+          "count": 3
+        },
+        {
+          "source": "Wasp_Field Points.PTS",
+          "count": 2
+        },
+        {
+          "source": "Geometry.Geometry",
+          "count": 2
+        },
+        {
+          "source": "List Item.Item",
+          "count": 1
+        }
+      ]
+    },
+    "Pull Point": {
+      "guid": "902289da-28dc-454b-98d4-b8f8aa234516",
+      "instances": 8,
+      "file_count": 7,
+      "files": [
+        "ExampleFiles/2.Fields/2_01_Field_Basics.gh",
+        "ExampleFiles/2.Fields/2_02_Field_Boundaries.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/2.Fields/2_07_Save_Load_Field.gh",
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Remap Numbers.Value",
+          "count": 6
+        },
+        {
+          "target": "Bounds.Numbers",
+          "count": 5
+        },
+        {
+          "target": "Dispatch.List",
+          "count": 2
+        },
+        {
+          "target": "Deconstruct.Point",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Field Points.PTS",
+          "count": 7
+        },
+        {
+          "source": "Populate 3D.Population",
+          "count": 2
+        },
+        {
+          "source": "Curve.Curve",
+          "count": 2
+        },
+        {
+          "source": "Geometry.Geometry",
+          "count": 2
+        },
+        {
+          "source": "List Item.Item",
+          "count": 1
+        },
+        {
+          "source": "Point.Point",
+          "count": 1
+        },
+        {
+          "source": "Project.Curve",
+          "count": 1
+        }
+      ]
+    },
+    "Range": {
+      "guid": "9445ca40-cc73-4861-a455-146308676855",
+      "instances": 8,
+      "file_count": 5,
+      "files": [
+        "ExampleFiles/2.Fields/2_02_Field_Boundaries.gh",
+        "ExampleFiles/2.Fields/2_03_Field_from_Curves.gh",
+        "ExampleFiles/2.Fields/2_10_Volumetric_Field.gh",
+        "ExampleFiles/3.Constraints/4_05_Global_Constraints_Plane.gh",
+        "ExampleFiles/3.Constraints/4_06_Global_Constraints_Mesh.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Construct Point.X coordinate",
+          "count": 5
+        },
+        {
+          "target": "Construct Point.Y coordinate",
+          "count": 5
+        },
+        {
+          "target": "Wasp_Field Isolines.T",
+          "count": 1
+        },
+        {
+          "target": "Wasp_Field Isolines.ISO",
+          "count": 1
+        },
+        {
+          "target": "Gradient.Parameter",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 4
+        }
+      ]
+    },
+    "Random": {
+      "guid": "2ab17f9a-d852-4405-80e1-938c5e57e78d",
+      "instances": 8,
+      "file_count": 7,
+      "files": [
+        "ExampleFiles/2.Fields/2_04_Field_from_Expression.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_10_Volumetric_Field.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh",
+        "ExampleFiles/3.Constraints/4_01_Local_Constraints_Supports.gh",
+        "ExampleFiles/3.Constraints/4_02_Local_Constraints_Additional_Collider.gh",
+        "ExampleFiles/3.Constraints/4_05_Global_Constraints_Plane.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Gradient.Parameter",
+          "count": 4
+        },
+        {
+          "target": "List Item.Index",
+          "count": 3
+        },
+        {
+          "target": "Jitter.List",
+          "count": 1
+        },
+        {
+          "target": "Multiplication.A",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 6
+        },
+        {
+          "source": "List Length.Length",
+          "count": 6
+        }
+      ]
+    },
+    "Scale NU": {
+      "guid": "290f418a-65ee-406a-a9d0-35699815b512",
+      "instances": 7,
+      "file_count": 7,
+      "files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/2.Fields/2_03_Field_from_Curves.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh",
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Field Points.BOU",
+          "count": 6
+        },
+        {
+          "target": "Wasp_Transform Part.TR",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 21
+        },
+        {
+          "source": "Volume.Centroid",
+          "count": 7
+        },
+        {
+          "source": "Bounding Box.Box",
+          "count": 6
+        }
+      ]
+    },
+    "Volume": {
+      "guid": "224f7648-5956-4b26-80d9-8d771f3dfd5d",
+      "instances": 7,
+      "file_count": 7,
+      "files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/2.Fields/2_03_Field_from_Curves.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh",
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Scale NU.Plane",
+          "count": 7
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Bounding Box.Box",
+          "count": 6
+        },
+        {
+          "source": "Geometry.Geometry",
+          "count": 1
+        }
+      ]
+    },
+    "Deconstruct Brep": {
+      "guid": "8d372bdc-9800-45e9-8a26-6e33c5253e21",
+      "instances": 6,
+      "file_count": 4,
+      "files": [
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh",
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh",
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "List Item.List",
+          "count": 8
+        },
+        {
+          "target": "Sub List.List",
+          "count": 1
+        },
+        {
+          "target": "Line.Start Point",
+          "count": 1
+        },
+        {
+          "target": "XY Plane.Origin",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Geometry.Geometry",
+          "count": 4
+        },
+        {
+          "source": "Brep.Brep",
+          "count": 1
+        },
+        {
+          "source": "List Item.Item +1",
+          "count": 1
+        }
+      ]
+    },
+    "Unit Z": {
+      "guid": "9103c240-a6a9-4223-9b42-dbd19bf38e2b",
+      "instances": 6,
+      "file_count": 6,
+      "files": [
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh",
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh",
+        "ExampleFiles/4.Advanced/4_03_Wasp_to_DisCo_VR.gh",
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Construct Plane.X-Axis",
+          "count": 1
+        },
+        {
+          "target": "Line SDL.Direction",
+          "count": 1
+        },
+        {
+          "target": "Load.Force vector",
+          "count": 1
+        },
+        {
+          "target": "Angle.Vector A",
+          "count": 1
+        },
+        {
+          "target": "Move.Motion",
+          "count": 1
+        },
+        {
+          "target": "Volume Load.Load Vector",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 3
+        }
+      ]
+    },
+    "Mesh Edges": {
+      "guid": "2b9bf01d-5fe5-464c-b0b3-b469eb5f2efb",
+      "instances": 6,
+      "file_count": 5,
+      "files": [
+        "ExampleFiles/1.Rules/1_04_Rules_Visualizer.gh",
+        "ExampleFiles/2.Fields/2_04_Field_from_Expression.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/4.Advanced/4_04_Smart_Attributes.gh",
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Custom Preview.Geometry",
+          "count": 4
+        },
+        {
+          "target": "Trim Tree.Tree",
+          "count": 1
+        },
+        {
+          "target": "Join Curves.Curves",
+          "count": 1
+        },
+        {
+          "target": "Merge.Data 1",
+          "count": 1
+        },
+        {
+          "target": "Merge.Data 2",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Get Part Geometry.GEO",
+          "count": 2
+        },
+        {
+          "source": "Wasp_Field Iso Voxels.VM",
+          "count": 1
+        },
+        {
+          "source": "Mesh WeldVertices.Mesh",
+          "count": 1
+        },
+        {
+          "source": "List Item.Item",
+          "count": 1
+        },
+        {
+          "source": "Iso Mesh.Mesh",
+          "count": 1
+        }
+      ]
+    },
+    "Data": {
+      "guid": "8ec86459-bf01-4409-baee-174d0d2b13d0",
+      "instances": 6,
+      "file_count": 3,
+      "files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/3.Constraints/4_02_Local_Constraints_Additional_Collider.gh",
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Get Attribute by Name.PART",
+          "count": 6
+        },
+        {
+          "target": "Wasp_Get Part Geometry.PART",
+          "count": 2
+        },
+        {
+          "target": "List Length.List",
+          "count": 1
+        },
+        {
+          "target": "List Item.List",
+          "count": 1
+        },
+        {
+          "target": "Wasp_Field-driven Aggregation.FIELD",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Transform Part.PART_OUT",
+          "count": 2
+        },
+        {
+          "source": "Wasp_Stochastic Aggregation.PART_OUT",
+          "count": 1
+        },
+        {
+          "source": "Split List.List A",
+          "count": 1
+        },
+        {
+          "source": "Split List.List B",
+          "count": 1
+        },
+        {
+          "source": "GhPython Script.F_OUT",
+          "count": 1
+        }
+      ]
+    },
+    "Deconstruct": {
+      "guid": "9abae6b7-fa1d-448c-9209-4a8155345841",
+      "instances": 6,
+      "file_count": 4,
+      "files": [
+        "ExampleFiles/2.Fields/2_04_Field_from_Expression.gh",
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Remap Numbers.Value",
+          "count": 2
+        },
+        {
+          "target": "Smaller Than.First Number",
+          "count": 2
+        },
+        {
+          "target": "Smaller Than.Second Number",
+          "count": 2
+        },
+        {
+          "target": "Expression.Variable x",
+          "count": 1
+        },
+        {
+          "target": "Expression.Variable y",
+          "count": 1
+        },
+        {
+          "target": "Expression.Variable z",
+          "count": 1
+        },
+        {
+          "target": "Bounds.Numbers",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Field Points.PTS",
+          "count": 3
+        },
+        {
+          "source": "Pull Point.Closest Point",
+          "count": 2
+        },
+        {
+          "source": "Point.Point",
+          "count": 1
+        }
+      ]
+    },
+    "Iso Curve": {
+      "guid": "d1d57181-d594-41e8-8efb-041e29f8a5ca",
+      "instances": 6,
+      "file_count": 3,
+      "files": [
+        "ExampleFiles/2.Fields/2_10_Volumetric_Field.gh",
+        "ExampleFiles/3.Constraints/4_05_Global_Constraints_Plane.gh",
+        "ExampleFiles/3.Constraints/4_06_Global_Constraints_Mesh.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Custom Preview.Geometry",
+          "count": 4
+        },
+        {
+          "target": "Custom Preview Lineweights.Geometry",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Construct Point.Point",
+          "count": 6
+        },
+        {
+          "source": "Plane Surface.Plane",
+          "count": 3
+        },
+        {
+          "source": "Geometry.Geometry",
+          "count": 2
+        },
+        {
+          "source": "Merge.Result",
+          "count": 1
+        }
+      ]
+    },
+    "Series": {
+      "guid": "e64c5fb1-845c-4ab1-8911-5f338516ba67",
+      "instances": 5,
+      "file_count": 3,
+      "files": [
+        "ExampleFiles/0.Basics/0_08_Aggregation_w_Fixed_Seed.gh",
+        "ExampleFiles/3.Constraints/4_02_Local_Constraints_Additional_Collider.gh",
+        "ExampleFiles/3.Constraints/4_03_Local_Constraints_Adjacencies.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Unit Y.Factor",
+          "count": 2
+        },
+        {
+          "target": "Wasp_Stochastic Aggregation.SEED",
+          "count": 1
+        },
+        {
+          "target": "Multiplication.A",
+          "count": 1
+        },
+        {
+          "target": "Unit X.Factor",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 9
+        }
+      ]
+    },
+    "Repeat Data": {
+      "guid": "c40dc145-9e36-4a69-ac1a-6d825c654993",
+      "instances": 5,
+      "file_count": 4,
+      "files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh",
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Connection From Direction.CEN",
+          "count": 2
+        },
+        {
+          "target": "Weave.Stream 1",
+          "count": 2
+        },
+        {
+          "target": "Wasp_Field.VAL",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "List Length.Length",
+          "count": 5
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 3
+        },
+        {
+          "source": "Area.Centroid",
+          "count": 2
+        }
+      ]
+    },
+    "Larger Than": {
+      "guid": "30d58600-1aab-42db-80a3-f1ea6c4269a0",
+      "instances": 5,
+      "file_count": 4,
+      "files": [
+        "ExampleFiles/2.Fields/2_04_Field_from_Expression.gh",
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh",
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Cull Pattern.Cull Pattern",
+          "count": 7
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 5
+        },
+        {
+          "source": "Wasp_Deconstruct Field.VAL",
+          "count": 2
+        },
+        {
+          "source": "Multiplication.Result",
+          "count": 2
+        },
+        {
+          "source": "Distance.Distance",
+          "count": 1
+        }
+      ]
+    },
+    "Box": {
+      "guid": "c9482db6-bea9-448d-98ff-fed6d69a8efc",
+      "instances": 5,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/4_03_Wasp_to_DisCo_VR.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_DisCo Environment.GA",
+          "count": 1
+        },
+        {
+          "target": "Merge.Data 1",
+          "count": 1
+        },
+        {
+          "target": "Merge.Data 2",
+          "count": 1
+        },
+        {
+          "target": "Merge.Data 3",
+          "count": 1
+        },
+        {
+          "target": "Merge.Data 4",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": []
+    },
+    "Rotate": {
+      "guid": "b7798b74-037e-4f0c-8ac7-dc1043d093e0",
+      "instances": 4,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh",
+        "ExampleFiles/5.Experimental/5_01_Hierarchical_Aggregation.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Connection From Direction.UP",
+          "count": 2
+        },
+        {
+          "target": "Cross Reference.List (A)",
+          "count": 1
+        },
+        {
+          "target": "Cross Reference.List (B)",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Panel.Panel",
+          "count": 4
+        },
+        {
+          "source": "Line SDL.Line",
+          "count": 2
+        },
+        {
+          "source": "Area.Centroid",
+          "count": 2
+        },
+        {
+          "source": "XY Plane.Plane",
+          "count": 1
+        },
+        {
+          "source": "XZ Plane.Plane",
+          "count": 1
+        }
+      ]
+    },
+    "Plane Surface": {
+      "guid": "439a55a5-2f9e-4f66-9de2-32f24fec2ef5",
+      "instances": 4,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/3.Constraints/4_05_Global_Constraints_Plane.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Iso Curve.Surface",
+          "count": 3
+        },
+        {
+          "target": "Isotrim.Surface",
+          "count": 1
+        },
+        {
+          "target": "Divide Domain².Domain",
+          "count": 1
+        },
+        {
+          "target": "Area.Geometry",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Panel.Panel",
+          "count": 6
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 2
+        },
+        {
+          "source": "XY Plane.Plane",
+          "count": 1
+        },
+        {
+          "source": "XZ Plane.Plane",
+          "count": 1
+        },
+        {
+          "source": "YZ Plane.Plane",
+          "count": 1
+        }
+      ]
+    },
+    "Split List": {
+      "guid": "9ab93e1a-ebdf-4090-9296-b000cff7b202",
+      "instances": 4,
+      "file_count": 4,
+      "files": [
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh",
+        "ExampleFiles/3.Constraints/4_02_Local_Constraints_Additional_Collider.gh",
+        "ExampleFiles/5.Experimental/5_01_Hierarchical_Aggregation.gh",
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Multiplication.B",
+          "count": 2
+        },
+        {
+          "target": "Data.Data",
+          "count": 2
+        },
+        {
+          "target": "Wasp_Get Part Geometry.PART",
+          "count": 2
+        },
+        {
+          "target": "Wasp_Get Attribute by Name.PART",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "List Length.Length",
+          "count": 4
+        },
+        {
+          "source": "Wasp_Stochastic Aggregation.PART_OUT",
+          "count": 3
+        },
+        {
+          "source": "Graph Mapper.Graph Mapper",
+          "count": 1
+        }
+      ]
+    },
+    "Construct Domain": {
+      "guid": "d1a28e95-cf96-4936-bf34-8bf142d731bf",
+      "instances": 4,
+      "file_count": 3,
+      "files": [
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh",
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Remap Numbers.Target",
+          "count": 3
+        },
+        {
+          "target": "Wasp_Orientation Constraint.R",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 8
+        }
+      ]
+    },
+    "Simple Mesh": {
+      "guid": "c3f9cea5-6fd4-4db5-959b-08cd08ed9fe1",
+      "instances": 3,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh",
+        "ExampleFiles/4.Advanced/4_04_Smart_Attributes.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Basic Part.GEO",
+          "count": 3
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Brep.Brep",
+          "count": 2
+        },
+        {
+          "source": "Geometry.Geometry",
+          "count": 1
+        }
+      ]
+    },
+    "Brep Wireframe": {
+      "guid": "ac750e41-2450-4f98-9658-98fef97b01b2",
+      "instances": 3,
+      "file_count": 3,
+      "files": [
+        "ExampleFiles/2.Fields/2_01_Field_Basics.gh",
+        "ExampleFiles/2.Fields/2_02_Field_Boundaries.gh",
+        "ExampleFiles/2.Fields/2_10_Volumetric_Field.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Custom Preview.Geometry",
+          "count": 2
+        },
+        {
+          "target": "Wasp_Attribute.VAL",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Brep.Brep",
+          "count": 2
+        },
+        {
+          "source": "Geometry.Geometry",
+          "count": 1
+        }
+      ]
+    },
+    "Value List": {
+      "guid": "00027467-0d24-4fa7-b178-8dc0ac5f42ec",
+      "instances": 3,
+      "file_count": 3,
+      "files": [
+        "ExampleFiles/2.Fields/2_03_Field_from_Curves.gh",
+        "ExampleFiles/2.Fields/2_04_Field_from_Expression.gh",
+        "ExampleFiles/3.Constraints/4_01_Local_Constraints_Supports.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Field Isolines.PLN",
+          "count": 2
+        },
+        {
+          "target": "Wasp_Stochastic Aggregation.MODE",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": []
+    },
+    "XZ Plane": {
+      "guid": "8cc3a196-f6a0-49ea-9ed9-0cb343a3ae64",
+      "instances": 3,
+      "file_count": 3,
+      "files": [
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh",
+        "ExampleFiles/3.Constraints/4_05_Global_Constraints_Plane.gh",
+        "ExampleFiles/5.Experimental/5_01_Hierarchical_Aggregation.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Rotate Plane.Plane",
+          "count": 1
+        },
+        {
+          "target": "Wasp_Plane Constraint.PLN",
+          "count": 1
+        },
+        {
+          "target": "Plane Surface.Plane",
+          "count": 1
+        },
+        {
+          "target": "Rotate.Plane",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Construct Point.Point",
+          "count": 2
+        },
+        {
+          "source": "Point.Point",
+          "count": 1
+        }
+      ]
+    },
+    "Entwine": {
+      "guid": "c9785b8e-2f30-4f90-8ee3-cca710f82402",
+      "instances": 3,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/3.Constraints/4_02_Local_Constraints_Additional_Collider.gh",
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Support.DIR",
+          "count": 1
+        },
+        {
+          "target": "Custom Preview.Geometry",
+          "count": 1
+        },
+        {
+          "target": "Custom Preview.Shader",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Curve.Curve",
+          "count": 2
+        },
+        {
+          "source": "Colour Swatch.Colour Swatch",
+          "count": 2
+        },
+        {
+          "source": "Merge.Result",
+          "count": 1
+        },
+        {
+          "source": "Iso Mesh.Mesh",
+          "count": 1
+        }
+      ]
+    },
+    "Construct Plane": {
+      "guid": "bc3e379e-7206-4e7b-b63a-ff61f4b38a3e",
+      "instances": 2,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Connection From Plane.PLN",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Point On Curve.Point On Curve",
+          "count": 1
+        },
+        {
+          "source": "Unit Z.Unit vector",
+          "count": 1
+        },
+        {
+          "source": "List Item.Item",
+          "count": 1
+        },
+        {
+          "source": "Deconstruct Plane.Origin",
+          "count": 1
+        },
+        {
+          "source": "Deconstruct Plane.Y-Axis",
+          "count": 1
+        },
+        {
+          "source": "Deconstruct Plane.X-Axis",
+          "count": 1
+        }
+      ]
+    },
+    "Transform": {
+      "guid": "610e689b-5adc-47b3-af8f-e3a32b7ea341",
+      "instances": 2,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Custom Preview.Geometry",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Weaverbird's Catmull-Clark Subdivision.Output Mesh/Curves",
+          "count": 2
+        },
+        {
+          "source": "Cull Pattern.List",
+          "count": 2
+        }
+      ]
+    },
+    "Weaverbird's Catmull-Clark Subdivision": {
+      "guid": "4098ec7a-819a-4ced-9eee-86835d7e21c9",
+      "instances": 2,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/0.Basics/0_04_Part_Geometry_Replacement.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Transform.Geometry",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Mesh Brep.Mesh",
+          "count": 2
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 2
+        }
+      ]
+    },
+    "Rotate 3D": {
+      "guid": "3dfb9a77-6e05-4016-9f20-94f78607d672",
+      "instances": 2,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/0.Basics/0_05_Transform_Part_Aggregation_Start.gh",
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Transform Part.TR",
+          "count": 1
+        },
+        {
+          "target": "Wasp_Field Points.PLN",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 2
+        },
+        {
+          "source": "Unit X.Unit vector",
+          "count": 2
+        },
+        {
+          "source": "Rotate Plane.Plane",
+          "count": 1
+        }
+      ]
+    },
+    "Text Tag 3D": {
+      "guid": "5a41528b-12b9-40dc-a3f2-842034d267c4",
+      "instances": 2,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/1.Rules/1_04_Rules_Visualizer.gh",
+        "ExampleFiles/4.Advanced/4_04_Smart_Attributes.gh"
+      ],
+      "typical_feeds": [],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Rules Visualizer.RTL",
+          "count": 1
+        },
+        {
+          "source": "Wasp_Rules Visualizer.RT",
+          "count": 1
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 1
+        },
+        {
+          "source": "Wasp_Deconstruct Connection.PLN",
+          "count": 1
+        },
+        {
+          "source": "Wasp_Deconstruct Connection.ID",
+          "count": 1
+        }
+      ]
+    },
+    "Populate 3D": {
+      "guid": "e202025b-dc8e-4c51-ae19-4415b172886f",
+      "instances": 2,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/2.Fields/2_01_Field_Basics.gh",
+        "ExampleFiles/2.Fields/2_02_Field_Boundaries.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Pull Point.Geometry",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Bounding Box.Box",
+          "count": 2
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 2
+        }
+      ]
+    },
+    "Curve Closest Point": {
+      "guid": "2dc44b22-b1dd-460a-a704-6462d6e91096",
+      "instances": 2,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/2.Fields/2_03_Field_from_Curves.gh",
+        "ExampleFiles/2.Fields/2_06_MultiChannel_Field.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Remap Numbers.Value",
+          "count": 2
+        },
+        {
+          "target": "Bounds.Numbers",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Curve.Curve",
+          "count": 2
+        },
+        {
+          "source": "Point.Point",
+          "count": 1
+        },
+        {
+          "source": "Wasp_Field Points.PTS",
+          "count": 1
+        }
+      ]
+    },
+    "Mesh Join": {
+      "guid": "4bc9dbbf-fec8-4348-a3af-e33e7edc8e7b",
+      "instances": 2,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/3.Constraints/4_02_Local_Constraints_Additional_Collider.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Mesh WeldVertices.Mesh",
+          "count": 1
+        },
+        {
+          "target": "Wasp_Collider.GEO",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Mesh Brep.Mesh",
+          "count": 1
+        },
+        {
+          "source": "Clean Tree.Tree",
+          "count": 1
+        }
+      ]
+    },
+    "Deconstruct Mesh": {
+      "guid": "ba2d8f57-0738-42b4-b5a5-fe4d853517eb",
+      "instances": 2,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/4.Advanced/4_04_Smart_Attributes.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Load.Point",
+          "count": 1
+        },
+        {
+          "target": "Construct Mesh.Vertices",
+          "count": 1
+        },
+        {
+          "target": "Construct Mesh.Faces",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Mesh WeldVertices.Mesh",
+          "count": 1
+        },
+        {
+          "source": "Wasp_Get Part Geometry.GEO",
+          "count": 1
+        }
+      ]
+    },
+    "Clean Tree": {
+      "guid": "071c3940-a12d-4b77-bb23-42b5d3314a0d",
+      "instances": 2,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh",
+        "ExampleFiles/3.Constraints/4_02_Local_Constraints_Additional_Collider.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "List Item.List",
+          "count": 1
+        },
+        {
+          "target": "Mesh Join.Meshes",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "ZombieSolver.O",
+          "count": 1
+        },
+        {
+          "source": "Geometry.Geometry",
+          "count": 1
+        }
+      ]
+    },
+    "Rotate Plane": {
+      "guid": "f6f14b09-6497-4564-8403-09e4eb5a6b82",
+      "instances": 2,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Rotate 3D.Geometry",
+          "count": 1
+        },
+        {
+          "target": "Wasp_Orient Field.PLN",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 2
+        },
+        {
+          "source": "XY Plane.Plane",
+          "count": 1
+        },
+        {
+          "source": "XZ Plane.Plane",
+          "count": 1
+        }
+      ]
+    },
+    "Dispatch": {
+      "guid": "d8332545-21b2-4716-96e3-8559a9876e17",
+      "instances": 2,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Bounds.Numbers",
+          "count": 3
+        },
+        {
+          "target": "List Length.List",
+          "count": 2
+        },
+        {
+          "target": "Remap Numbers.Value",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Pull Point.Distance",
+          "count": 2
+        },
+        {
+          "source": "Smaller Than.Smaller than",
+          "count": 2
+        }
+      ]
+    },
+    "Weave": {
+      "guid": "50faccbd-9c92-4175-a5fa-d65e36013db6",
+      "instances": 2,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Gradient.Parameter",
+          "count": 2
+        },
+        {
+          "target": "Wasp_Field.VAL",
+          "count": 1
+        },
+        {
+          "target": "Multiplication.A",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Smaller Than.Smaller than",
+          "count": 2
+        },
+        {
+          "source": "Graph Mapper.Graph Mapper",
+          "count": 2
+        },
+        {
+          "source": "Repeat Data.Data",
+          "count": 2
+        }
+      ]
+    },
+    "Contour": {
+      "guid": "3b112fb6-3eba-42d2-ba75-0f903c18faab",
+      "instances": 2,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Custom Preview.Geometry",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Geometry.Geometry",
+          "count": 2
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 2
+        }
+      ]
+    },
+    "Smaller Than": {
+      "guid": "ae840986-cade-4e5a-96b0-570f007d4fc0",
+      "instances": 2,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/2.Fields/2_09_Field_From_Surface.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Dispatch.Dispatch pattern",
+          "count": 2
+        },
+        {
+          "target": "Weave.Pattern",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Deconstruct.Z component",
+          "count": 4
+        }
+      ]
+    },
+    "Surface Closest Point": {
+      "guid": "4a9e9a8e-0943-4438-b360-129c30f2bb0f",
+      "instances": 2,
+      "file_count": 2,
+      "files": [
+        "ExampleFiles/2.Fields/2_10_Volumetric_Field.gh",
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Remap Numbers.Value",
+          "count": 1
+        },
+        {
+          "target": "Bounds.Numbers",
+          "count": 1
+        },
+        {
+          "target": "Evaluate Surface.Point",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Geometry.Geometry",
+          "count": 2
+        },
+        {
+          "source": "Wasp_Field Points.PTS",
+          "count": 1
+        },
+        {
+          "source": "Point.Point",
+          "count": 1
+        }
+      ]
+    },
+    "Negative": {
+      "guid": "a3371040-e552-4bc8-b0ff-10a840258e88",
+      "instances": 2,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/3.Constraints/4_05_Global_Constraints_Plane.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Construct Point.Y coordinate",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 2
+        }
+      ]
+    },
+    "Subtraction": {
+      "guid": "9c007a04-d0d9-48e4-9da3-9ba142bc4d46",
+      "instances": 2,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_01_TopOpt_Field_Millipede.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Division.A",
+          "count": 1
+        },
+        {
+          "target": "Division.B",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Deconstruct Domain.End",
+          "count": 1
+        },
+        {
+          "source": "Deconstruct Domain.Start",
+          "count": 1
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 1
+        },
+        {
+          "source": "Panel.Panel",
+          "count": 1
+        }
+      ]
+    },
+    "Model Statistics": {
+      "guid": "ea4eb98d-8374-4ff6-a0c1-b986f4ca7658",
+      "instances": 2,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Panel.Panel",
+          "count": 5
+        },
+        {
+          "target": "Wasp_Field Points.RES",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Model.Model",
+          "count": 2
+        }
+      ]
+    },
+    "End Points": {
+      "guid": "11bbd48b-bb0a-4f1b-8167-fa297590390d",
+      "instances": 2,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Connection From Direction.CEN",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Line SDL.Line",
+          "count": 2
+        }
+      ]
+    },
+    "Solid Union": {
+      "guid": "10434a15-da85-4281-bb64-a2b3a995b9c6",
+      "instances": 2,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Merge Faces.Brep",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Deconstruct Attribute.VAL",
+          "count": 2
+        }
+      ]
+    },
+    "Merge Faces": {
+      "guid": "d6b43673-55dd-4e2f-95c4-6c69a14513a6",
+      "instances": 2,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Attribute.VAL",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Solid Union.Result",
+          "count": 2
+        }
+      ]
+    },
+    "Addition": {
+      "guid": "a0d62394-a118-422d-abb3-6af115c75b25",
+      "instances": 2,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Multiplication.A",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Unit X.Unit vector",
+          "count": 2
+        },
+        {
+          "source": "Unit Y.Unit vector",
+          "count": 2
+        }
+      ]
+    },
+    "Mesh Union": {
+      "guid": "88060a82-0bf7-46bb-9af8-bdc860cf7e1d",
+      "instances": 2,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/5.Experimental/5_02_Hierarchical_Aggregation_LEGO.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Advanced Part.GEO",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Deconstruct Part.GEO",
+          "count": 2
+        }
+      ]
+    },
+    "Point On Curve": {
+      "guid": "7f6a9d34-0470-4bb7-aadd-07496bcbe572",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Construct Plane.Origin",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "List Item.Item",
+          "count": 1
+        }
+      ]
+    },
+    "Deconstruct Plane": {
+      "guid": "3cd2949b-4ea8-4ffb-a70c-5c380f9f46ea",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/0.Basics/0_03_Vertex_Edge_Connections.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Construct Plane.Origin",
+          "count": 1
+        },
+        {
+          "target": "Construct Plane.X-Axis",
+          "count": 1
+        },
+        {
+          "target": "Construct Plane.Y-Axis",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "XY Plane.Plane",
+          "count": 1
+        }
+      ]
+    },
+    "Trim Tree": {
+      "guid": "1177d6ee-3993-4226-9558-52b7fd63e1e3",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/1.Rules/1_04_Rules_Visualizer.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Custom Preview.Geometry",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Mesh Edges.Interior Edges",
+          "count": 1
+        }
+      ]
+    },
+    "Rectangle": {
+      "guid": "d93100b6-d50b-40b2-831a-814659dc38e3",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/1.Rules/1_04_Rules_Visualizer.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "List Item.List",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 2
+        },
+        {
+          "source": "Wasp_Rules Visualizer.RTL",
+          "count": 1
+        }
+      ]
+    },
+    "Sub List": {
+      "guid": "b333ff42-93bd-406b-8e17-15780719b6ec",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/1.Rules/1_05_Rules_From_Aggregation.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Area.Geometry",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Deconstruct Brep.Faces",
+          "count": 1
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 1
+        }
+      ]
+    },
+    "Domain Box": {
+      "guid": "79aa7f47-397c-4d3f-9761-aaf421bb7f5f",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_04_Field_from_Expression.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Field Points.BOU",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 3
+        }
+      ]
+    },
+    "Expression": {
+      "guid": "9df5e896-552d-4c8c-b9ca-4fc147ffa022",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_04_Field_from_Expression.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Graph Mapper.Graph Mapper",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Deconstruct.X component",
+          "count": 1
+        },
+        {
+          "source": "Deconstruct.Y component",
+          "count": 1
+        },
+        {
+          "source": "Deconstruct.Z component",
+          "count": 1
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 1
+        }
+      ]
+    },
+    "Isotrim": {
+      "guid": "6a9ccaab-1b03-484e-bbda-be9c81584a66",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Area.Geometry",
+          "count": 1
+        },
+        {
+          "target": "Cull Pattern.List",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Plane Surface.Plane",
+          "count": 1
+        },
+        {
+          "source": "Divide Domain².Segments",
+          "count": 1
+        }
+      ]
+    },
+    "Divide Domain²": {
+      "guid": "75ac008b-1bc2-4edd-b967-667d628b9d24",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Isotrim.Domain",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 2
+        },
+        {
+          "source": "Plane Surface.Plane",
+          "count": 1
+        }
+      ]
+    },
+    "Mesh WeldVertices": {
+      "guid": "f1f51397-fc4b-44cf-b4b0-0ab80a80a6e1",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "EdgeLengths.Mesh",
+          "count": 1
+        },
+        {
+          "target": "Deconstruct Mesh.Mesh",
+          "count": 1
+        },
+        {
+          "target": "Show.G",
+          "count": 1
+        },
+        {
+          "target": "Mesh Edges.Mesh",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Mesh Join.Mesh",
+          "count": 1
+        }
+      ]
+    },
+    "EdgeLengths": {
+      "guid": "24e2b0d2-d7b8-4478-8a83-1f04cba701a1",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "ZombieSolver.GoalObjects",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Mesh WeldVertices.Mesh",
+          "count": 1
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 1
+        }
+      ]
+    },
+    "Load": {
+      "guid": "2019c995-53af-4eb2-976d-95b1fdc823fa",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "ZombieSolver.GoalObjects",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Deconstruct Mesh.Vertices",
+          "count": 1
+        },
+        {
+          "source": "Unit Z.Unit vector",
+          "count": 1
+        }
+      ]
+    },
+    "Anchor": {
+      "guid": "3c30b1a1-4473-4ad4-a700-ea9770726c03",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "ZombieSolver.GoalObjects",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Explode.Vertices",
+          "count": 1
+        }
+      ]
+    },
+    "ZombieSolver": {
+      "guid": "4408343b-577e-4fd8-96ff-df7549189186",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Clean Tree.Tree",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "EdgeLengths.EL",
+          "count": 1
+        },
+        {
+          "source": "Load.Unary",
+          "count": 1
+        },
+        {
+          "source": "Anchor.A",
+          "count": 1
+        },
+        {
+          "source": "Show.G",
+          "count": 1
+        }
+      ]
+    },
+    "Show": {
+      "guid": "0ed5e67d-539d-480e-88cb-d81fa795d66c",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "ZombieSolver.GoalObjects",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Mesh WeldVertices.Mesh",
+          "count": 1
+        }
+      ]
+    },
+    "Distance": {
+      "guid": "93b8e93d-f932-402c-b435-84be04d87666",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Larger Than.First Number",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Area.Centroid",
+          "count": 2
+        }
+      ]
+    },
+    "Join Curves": {
+      "guid": "8073a420-6bec-49e3-9b18-367f6fd76ac3",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Explode.Curve",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Mesh Edges.Naked Edges",
+          "count": 1
+        }
+      ]
+    },
+    "Explode": {
+      "guid": "afb96615-c59a-45c9-9cac-e27acb1c7ca0",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_05_Field_from_Kangaroo.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Anchor.Point",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Join Curves.Curves",
+          "count": 1
+        }
+      ]
+    },
+    "File Path": {
+      "guid": "06953bda-1d37-4d58-9b38-4b3c74e54c8f",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_07_Save_Load_Field.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Load Field from File.FILE",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": []
+    },
+    "Plane": {
+      "guid": "4f8984c4-7c7a-4d69-b0a2-183cbb330d20",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_08_Orientable_Field.gh"
+      ],
+      "typical_feeds": [],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Deconstruct Field.PLN",
+          "count": 1
+        }
+      ]
+    },
+    "Custom Preview Lineweights": {
+      "guid": "a77d0879-94c2-4101-be44-e4a616ffeb0c",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_10_Volumetric_Field.gh"
+      ],
+      "typical_feeds": [],
+      "typical_fed_by": [
+        {
+          "source": "Iso Curve.U Isocurve",
+          "count": 1
+        },
+        {
+          "source": "Iso Curve.V Isocurve",
+          "count": 1
+        },
+        {
+          "source": "Colour Swatch.Colour Swatch",
+          "count": 1
+        }
+      ]
+    },
+    "Project": {
+      "guid": "d7ee52ff-89b8-4d1a-8662-3e0dd391d0af",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Pull Point.Geometry",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Curve.Curve",
+          "count": 1
+        },
+        {
+          "source": "Geometry.Geometry",
+          "count": 1
+        }
+      ]
+    },
+    "Evaluate Surface": {
+      "guid": "353b206e-bde5-4f02-a913-b3b8a977d4b9",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Angle.Vector B",
+          "count": 1
+        },
+        {
+          "target": "Custom Preview.Geometry",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Geometry.Geometry",
+          "count": 1
+        },
+        {
+          "source": "Surface Closest Point.UV Point",
+          "count": 1
+        }
+      ]
+    },
+    "Angle": {
+      "guid": "b464fccb-50e7-41bd-9789-8438db9bea9f",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/2.Fields/2_11_Combining_Fields.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Remap Numbers.Value",
+          "count": 1
+        },
+        {
+          "target": "Bounds.Numbers",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Unit Z.Unit vector",
+          "count": 1
+        },
+        {
+          "source": "Evaluate Surface.Normal",
+          "count": 1
+        }
+      ]
+    },
+    "Jitter": {
+      "guid": "f02a20f6-bb49-4e3d-b155-8ed5d3c6b000",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/3.Constraints/4_01_Local_Constraints_Supports.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Multiplication.A",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Random.Random",
+          "count": 1
+        }
+      ]
+    },
+    "Vector XYZ": {
+      "guid": "56b92eab-d121-43f7-94d3-6cd8f0ddead8",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/3.Constraints/4_01_Local_Constraints_Supports.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Move.Motion",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Multiplication.Result",
+          "count": 2
+        }
+      ]
+    },
+    "Line": {
+      "guid": "4c4e56eb-2f04-43f9-95a3-cc46a14f495a",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Align Plane.Direction",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Deconstruct Brep.Vertices",
+          "count": 1
+        },
+        {
+          "source": "Area.Centroid",
+          "count": 1
+        }
+      ]
+    },
+    "Align Plane": {
+      "guid": "e76040ec-3b91-41e1-8e00-c74c23b89391",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/3.Constraints/4_04_Local_Constraints_Orientation.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Connection From Plane.PLN",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "XY Plane.Plane",
+          "count": 1
+        },
+        {
+          "source": "Line.Line",
+          "count": 1
+        }
+      ]
+    },
+    "YZ Plane": {
+      "guid": "fad344bc-09b1-4855-a2e6-437ef5715fe3",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/3.Constraints/4_05_Global_Constraints_Plane.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Plane Constraint.PLN",
+          "count": 1
+        },
+        {
+          "target": "Plane Surface.Plane",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Construct Point.Point",
+          "count": 1
+        }
+      ]
+    },
+    "Construct Mesh": {
+      "guid": "e2c0f9db-a862-4bd9-810c-ef2610e7a56f",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/4_04_Smart_Attributes.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Custom Preview.Geometry",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Deconstruct Mesh.Vertices",
+          "count": 1
+        },
+        {
+          "source": "Deconstruct Mesh.Faces",
+          "count": 1
+        }
+      ]
+    },
+    "Topostruct 3D model": {
+      "guid": "2f3771fd-a41e-4fba-b890-1b0b66b48484",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_01_TopOpt_Field_Millipede.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Topostruct 3D solver.FE Model",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "3D boundary Region.Boundary Region",
+          "count": 1
+        },
+        {
+          "source": "3D Load Region.Load Region",
+          "count": 1
+        },
+        {
+          "source": "3D Support Region.Support Region",
+          "count": 1
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 1
+        }
+      ]
+    },
+    "3D boundary Region": {
+      "guid": "26ae7d91-3db7-4a06-9e26-42e790819d42",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_01_TopOpt_Field_Millipede.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Topostruct 3D model.Model Components",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Brep.Brep",
+          "count": 1
+        }
+      ]
+    },
+    "3D Load Region": {
+      "guid": "39a8e8ea-60dd-4a84-af01-1b5e8ba02d8a",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_01_TopOpt_Field_Millipede.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Topostruct 3D model.Model Components",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Brep.Brep",
+          "count": 1
+        }
+      ]
+    },
+    "3D Support Region": {
+      "guid": "7e332f0d-6c4f-45cd-b3ca-dc81e3fdc014",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_01_TopOpt_Field_Millipede.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Topostruct 3D model.Model Components",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Brep.Brep",
+          "count": 1
+        }
+      ]
+    },
+    "Topostruct 3D solver": {
+      "guid": "4811877a-1b77-443a-8be3-9b2f7eafeb03",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_01_TopOpt_Field_Millipede.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "3D Cell Results.FE Model",
+          "count": 1
+        },
+        {
+          "target": "3D Iso Mesh.FE Model",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 2
+        },
+        {
+          "source": "Topostruct 3D model.FE Model",
+          "count": 1
+        }
+      ]
+    },
+    "3D Cell Results": {
+      "guid": "85b709b5-f9f8-4f91-84b8-002ee483444b",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_01_TopOpt_Field_Millipede.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Field.VAL",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Topostruct 3D solver.FE Model",
+          "count": 1
+        }
+      ]
+    },
+    "3D Iso Mesh": {
+      "guid": "9aaaf1f4-28b2-4fb5-93e2-f0a4bf3895ab",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_01_TopOpt_Field_Millipede.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Face Boundaries.Mesh",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Topostruct 3D solver.FE Model",
+          "count": 1
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 1
+        }
+      ]
+    },
+    "Deconstruct Box": {
+      "guid": "db7d83b1-2898-4ef9-9be5-4e94b4e2048d",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_01_TopOpt_Field_Millipede.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Deconstruct Domain.Domain",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Brep.Brep",
+          "count": 1
+        }
+      ]
+    },
+    "Deconstruct Domain": {
+      "guid": "825ea536-aebb-41e9-af32-8baeb2ecb590",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_01_TopOpt_Field_Millipede.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Subtraction.A",
+          "count": 1
+        },
+        {
+          "target": "Subtraction.B",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Deconstruct Box.X",
+          "count": 1
+        }
+      ]
+    },
+    "Division": {
+      "guid": "9c85271f-89fa-4e9f-9f4a-d75802120ccc",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_01_TopOpt_Field_Millipede.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Field Points.RES",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Subtraction.Result",
+          "count": 2
+        }
+      ]
+    },
+    "Face Boundaries": {
+      "guid": "0b4ac802-fc4a-4201-9c66-0078b837c1eb",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_01_TopOpt_Field_Millipede.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Custom Preview.Geometry",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "3D Iso Mesh.Mesh",
+          "count": 1
+        }
+      ]
+    },
+    "Volume Load": {
+      "guid": "5c2cba66-c81d-4baa-afe0-5fe4d0be4f93",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Boundary Conditions.Load",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Mesh Brep.Mesh",
+          "count": 1
+        },
+        {
+          "source": "Unit Z.Unit vector",
+          "count": 1
+        }
+      ]
+    },
+    "Boundary Conditions": {
+      "guid": "ce61205c-5d8e-429e-a0a2-e1dc3e10febc",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Model.Boundary Condition",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Volume Load.Volume Load",
+          "count": 1
+        },
+        {
+          "source": "Mesh Brep.Mesh",
+          "count": 1
+        }
+      ]
+    },
+    "Boundary Domain": {
+      "guid": "c28233aa-2c4b-4865-8916-f2fa4b2f390f",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Model.Boundary Domain",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 3
+        },
+        {
+          "source": "Mesh Brep.Mesh",
+          "count": 1
+        }
+      ]
+    },
+    "Resolution": {
+      "guid": "f2880342-70fe-41c2-bb4e-2d9277d4daeb",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Model.Model Resolution",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 1
+        }
+      ]
+    },
+    "Optimus": {
+      "guid": "7252bec6-68cf-4a13-9990-e1cb16d4c8ce",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Quick Graph.Quick Graph",
+          "count": 1
+        },
+        {
+          "target": "Performance.Performance",
+          "count": 1
+        },
+        {
+          "target": "Data Dam.Data A",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Model.Model",
+          "count": 1
+        },
+        {
+          "source": "Analyser Parameters.Analyser Parameters",
+          "count": 1
+        },
+        {
+          "source": "Optimius Parameters.Optimus Parameter",
+          "count": 1
+        },
+        {
+          "source": "Button.Button",
+          "count": 1
+        },
+        {
+          "source": "Boolean Toggle.Boolean Toggle",
+          "count": 1
+        }
+      ]
+    },
+    "Analyser Parameters": {
+      "guid": "f5fcfdc9-d2dd-42cd-9e90-579e7c5b3497",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Optimus.Analyser Parameters",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": []
+    },
+    "Iso Mesh": {
+      "guid": "d73fc809-3b8c-4420-a70c-f17fd9edb825",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Mesh Edges.Mesh",
+          "count": 1
+        },
+        {
+          "target": "Entwine.Branch {0;1}",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Data Dam.Data A",
+          "count": 1
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 1
+        }
+      ]
+    },
+    "PrincipalStress": {
+      "guid": "38a19be1-f4b4-486c-8d47-c5f9dbf89e2b",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [],
+      "typical_fed_by": [
+        {
+          "source": "Data Dam.Data A",
+          "count": 1
+        }
+      ]
+    },
+    "Quick Graph": {
+      "guid": "2b69bf71-4e69-43aa-b7be-4f6ce7e45bef",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [],
+      "typical_fed_by": [
+        {
+          "source": "Optimus.Compliance",
+          "count": 1
+        }
+      ]
+    },
+    "Performance": {
+      "guid": "d3bb176b-137e-46c3-bc2f-6f90b9fb9b8f",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Panel.Panel",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Optimus.Performance",
+          "count": 1
+        }
+      ]
+    },
+    "Optimius Parameters": {
+      "guid": "30a92849-8387-4fdc-afab-4c0081e5cffe",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Optimus.Optimus Parameters",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 2
+        }
+      ]
+    },
+    "CudaCtx": {
+      "guid": "fc276159-87f4-4f90-b1c3-ab941e699c28",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Panel.Panel",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Button.Button",
+          "count": 1
+        }
+      ]
+    },
+    "Model": {
+      "guid": "80a2b490-03cc-4d01-8115-121c7ceefa95",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Model Statistics.Model",
+          "count": 2
+        },
+        {
+          "target": "Optimus.Model",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Boundary Domain.Boundary Domain",
+          "count": 1
+        },
+        {
+          "source": "Boundary Conditions.Boundary Condition Setup",
+          "count": 1
+        },
+        {
+          "source": "Resolution.Resolution",
+          "count": 1
+        }
+      ]
+    },
+    "DensPreview": {
+      "guid": "f31d8d7a-7536-4ac8-9c96-fde6ecda4d0a",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [],
+      "typical_fed_by": [
+        {
+          "source": "Data Dam.Data A",
+          "count": 1
+        }
+      ]
+    },
+    "Element Data Preview": {
+      "guid": "f31d8d7a-7536-4ac8-9c96-fde6ecda4d0a",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [],
+      "typical_fed_by": [
+        {
+          "source": "Data Dam.Data A",
+          "count": 1
+        },
+        {
+          "source": "Number Slider.Number Slider",
+          "count": 1
+        }
+      ]
+    },
+    "Data Dam": {
+      "guid": "65283518-ad00-49d3-87fb-f76823ebb162",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Iso Mesh.Model",
+          "count": 1
+        },
+        {
+          "target": "PrincipalStress.Model",
+          "count": 1
+        },
+        {
+          "target": "DensPreview.Model",
+          "count": 1
+        },
+        {
+          "target": "Element Data Preview.Model",
+          "count": 1
+        },
+        {
+          "target": "Node Data.Model",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Optimus.Model",
+          "count": 1
+        }
+      ]
+    },
+    "Node Data": {
+      "guid": "52a8ef7b-517f-46a4-acc9-afa8842ac028",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "GhPython Script.L",
+          "count": 1
+        },
+        {
+          "target": "Remap Numbers.Value",
+          "count": 1
+        },
+        {
+          "target": "Bounds.Numbers",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Data Dam.Data A",
+          "count": 1
+        }
+      ]
+    },
+    "GhPython Script": {
+      "guid": "410755b1-224a-4c1e-a407-bf32fb45ea7e",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/4.Advanced/_deprecated/4_02_TopOpt_Field_tOpos.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Deconstruct Field.FIELD",
+          "count": 1
+        },
+        {
+          "target": "Data.Data",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Field.FIELD",
+          "count": 1
+        },
+        {
+          "source": "Node Data.Location",
+          "count": 1
+        },
+        {
+          "source": "Remap Numbers.Mapped",
+          "count": 1
+        }
+      ]
+    },
+    "Cross Reference": {
+      "guid": "36947590-f0cb-4807-a8f9-9c90c9b20621",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/5.Experimental/5_01_Hierarchical_Aggregation.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Compound.Transforms",
+          "count": 2
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Rotate.Transform",
+          "count": 2
+        }
+      ]
+    },
+    "Compound": {
+      "guid": "ca80054a-cde0-4f69-a132-10502b24866d",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/5.Experimental/5_01_Hierarchical_Aggregation.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Assemble Part Hierarchy.TR",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Cross Reference.List (A)",
+          "count": 1
+        },
+        {
+          "source": "Cross Reference.List (B)",
+          "count": 1
+        }
+      ]
+    },
+    "Brep Edges": {
+      "guid": "0148a65d-6f42-414a-9db7-9a9b2eb78437",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/5.Experimental/5_01_Hierarchical_Aggregation.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Wasp_Attribute.VAL",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Geometry.Geometry",
+          "count": 1
+        }
+      ]
+    },
+    "Dash Pattern": {
+      "guid": "95866bbe-648e-4e2b-a97c-7d04679e94e0",
+      "instances": 1,
+      "file_count": 1,
+      "files": [
+        "ExampleFiles/5.Experimental/5_01_Hierarchical_Aggregation.gh"
+      ],
+      "typical_feeds": [
+        {
+          "target": "Custom Preview.Geometry",
+          "count": 1
+        }
+      ],
+      "typical_fed_by": [
+        {
+          "source": "Wasp_Get Attribute by Name.VAL",
+          "count": 1
+        },
+        {
+          "source": "Panel.Panel",
+          "count": 1
+        }
+      ]
+    }
+  }
+}

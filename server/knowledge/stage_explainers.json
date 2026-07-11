@@ -1,0 +1,25 @@
+{
+  "version": "0.1",
+  "generated": "2026-07-10",
+  "provenance": "Explainer texts for the v0.4 canvas-organization conventions (PROTOCOL.md 'Generation conventions'). Written for an architecture student reading the canvas cold: 1-3 lines, WHAT the stage does + WHY it exists. Wasp claims cross-checked against knowledge/wasp_patterns.json (mined from the official example corpus, corpus/wasp-upstream) and docs/cookbook.md; per-key evidence listed in 'evidence'.",
+  "explainers": {
+    "part_definition": "Turns a Rhino mesh into a named Wasp part: the unit geometry plus numbered connection planes (0, 1, 2, ...) where other parts are allowed to attach. Every module the aggregation places is a copy of this part.",
+    "rules": "Rules list the permitted pairings between connections: P|1_P|0 means connection 1 of an existing part P hosts connection 0 of a new P. Rules are directional - write both directions if you want both. More rules = more legal moves = richer, less predictable growth.",
+    "aggregation_stochastic": "The growth engine: starting from one part, each step picks a random rule-legal, collision-free placement and attaches a new part, until N parts are placed or no legal moves remain. Same parts + rules + seed reproduce the same structure.",
+    "aggregation_field": "The growth engine, steered by a field: candidate placements are ranked by the field value at their location, so the structure grows toward where the field is strong. N caps the part count; colliding placements are always rejected.",
+    "aggregation_graph": "The growth engine, driven by a graph grammar: rules like P|0_P|0>a_b both mate two connections and rewrite graph-node labels, so growth follows the programmed sequence instead of random choice. No part count or seed - the grammar decides what gets built.",
+    "inputs": "User-tweakable drivers for the aggregation - change these, not the wiring. Drag the sliders to explore variants; flip reset to True and back to False to force a clean re-grow after editing parts or rules.",
+    "output_geometry": "Reads the built result out of the solver: Get Part Geometry pulls each placed part's mesh from the aggregation's PART_OUT output, ready to preview or bake into Rhino. (PART_OUT carries the parts; the AGGR output is the aggregation object itself.)",
+    "output_transforms": "Reads the built result as transforms: Deconstruct Part pulls each placed part's 4x4 placement matrix from PART_OUT - lighter than meshes when you want to instance the base geometry yourself."
+  },
+  "evidence": {
+    "part_definition": ["wasp_patterns.json patterns.basic_aggregation", "docs/cookbook.md 'Wasp in 60 seconds' (Part/Connection definitions)"],
+    "rules": ["wasp_patterns.json rule_syntax.rule_text (form PART|CONN_PART|CONN)", "wasp_patterns.json rule_syntax.direction_note (0_01 scribble: 'NB: Rules are directional!')", "docs/cookbook.md 'Rule grammar'"],
+    "aggregation_stochastic": ["docs/cookbook.md 'Aggregation' (attaches parts until N or no collision-free moves)", "wasp_patterns.json patterns.fixed_seed (SEED slider for reproducibility)"],
+    "aggregation_field": ["wasp_patterns.json patterns.field_driven_aggregation (field from points + values driving Field-driven Aggregation)", "PROTOCOL.md corpus addendum 3 (field mode swaps SEED for FIELD, keeps N)"],
+    "aggregation_graph": ["wasp_patterns.json rule_syntax.graph_grammar (PART|CONN_PART|CONN>node_node, panel wired directly)", "PROTOCOL.md corpus addendum 3 (graph mode has NO N and NO SEED)"],
+    "inputs": ["docs/generation-principles.md section 2 (INPUTS group, sliders nicknamed by role)", "macros.reset_aggregation docstring (Wasp resets while RESET is true, re-aggregates when it drops back to false)"],
+    "output_geometry": ["PROTOCOL.md corpus addendum 2 (extraction binds PART_OUT; AGGR feeds only graph/save components)", "wasp_patterns.json patterns.basic_aggregation (geometry extracted via Get Part Geometry)"],
+    "output_transforms": ["wasp_patterns.json patterns.part_geometry_replacement (Deconstruct Part TR output used to transform replacement geometry)", "docs/cookbook.md section (f) (one 4x4 matrix per placed part)"]
+  }
+}

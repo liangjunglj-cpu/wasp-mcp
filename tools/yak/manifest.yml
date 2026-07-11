@@ -1,0 +1,19 @@
+---
+name: wasp-mcp-bridge
+version: 0.5.0
+authors:
+  - Liang Jung
+description: >
+  Grasshopper bridge component (WaspMCP) for wasp-mcp. Exposes the live
+  Grasshopper canvas over localhost TCP (default port 8090) so the wasp-mcp
+  MCP server can place and wire Wasp discrete-aggregation components,
+  set sliders/panels, read outputs, and bake geometry. Requires the Wasp
+  plugin (Food4Rhino) for the high-level macros; optional shared-secret
+  auth via the component's Token input (PROTOCOL v0.5).
+url: https://www.food4rhino.com/en/app/wasp
+keywords:
+  - mcp
+  - wasp
+  - claude
+  - automation
+  - aggregation
