@@ -12,32 +12,22 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <NoWarn>NU1701</NoWarn>
-    <Version>0.5.0</Version>
+    <Version>0.5.1</Version>
     <Title>GH_MCP_Wasp</Title>
     <Company>wasp-mcp</Company>
     <Description>Wasp MCP Bridge - TCP command bridge for driving Wasp components on the Grasshopper canvas</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Reference Rhino/Grasshopper assemblies from the local Rhino 8 install.
-         Private=False so the .gha does not bundle copies (Rhino provides them at runtime). -->
-    <Reference Include="RhinoCommon">
-      <HintPath>C:\Program Files\Rhino 8\System\RhinoCommon.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Grasshopper">
-      <HintPath>C:\Program Files\Rhino 8\Plug-ins\Grasshopper\Grasshopper.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="GH_IO">
-      <HintPath>C:\Program Files\Rhino 8\Plug-ins\Grasshopper\GH_IO.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <!-- Grasshopper ships Newtonsoft.Json; do not bundle a conflicting copy -->
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\Program Files\Rhino 8\System\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <!-- Compile against the Rhino 8.0 NuGet baseline (not the locally installed
+         Rhino) so the yak package is tagged rh8_0 and installs on EVERY Rhino 8
+         service release. NuGet packages are compile-only; Rhino provides the
+         assemblies at runtime. -->
+    <PackageReference Include="RhinoCommon" Version="8.0.23304.9001" ExcludeAssets="runtime" />
+    <PackageReference Include="Grasshopper" Version="8.0.23304.9001" ExcludeAssets="runtime" />
+    <!-- Grasshopper ships Newtonsoft.Json; compile against a matching contract,
+         never bundle a copy -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" ExcludeAssets="runtime" />
   </ItemGroup>
 
   <ItemGroup>
