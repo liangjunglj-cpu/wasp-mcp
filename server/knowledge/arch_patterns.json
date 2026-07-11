@@ -1412,141 +1412,6 @@
       ],
       "expansion_blocked": "slot heightmap drives an Image Sampler, and the E.29 dump records the image as per-component state (values.FilePath), NOT a wired input - there is no corpus evidence of a wire-settable path and no bridge command can set Image Sampler state (set_panel/set_slider/set_geometry_ref do not apply). Blocked until GH_MCP_Wasp grows an image-sampler command; do not invent values."
     },
-    "arch.twist_tower": {
-      "id": "arch.twist_tower",
-      "stage_name": "TWIST TOWER",
-      "explainer": "Stacks copies of a floor profile up a series of heights, rotates each copy a bit more than the last, and lofts the profiles into a skin.\nTwist = total rotation spread across the floors; the tower reads as continuous once floors are dense enough.",
-      "slots": {
-        "profile": {
-          "kind": "geometry",
-          "arity": "1",
-          "note": "closed floor-plate curve; Polygon in corpus, any closed curve works",
-          "ref_param": "Curve"
-        },
-        "floors": {
-          "kind": "count",
-          "default": 10,
-          "note": "corpus instance has 3 explicit levels; Series generalization - see abstraction_note",
-          "range_evidence": [
-            0,
-            50
-          ]
-        },
-        "floor_height": {
-          "kind": "driver_num",
-          "default": 10,
-          "note": "corpus z-panels at 0/10/20",
-          "range_evidence": [
-            0,
-            30
-          ]
-        },
-        "twist": {
-          "kind": "driver_num",
-          "default": 0.69,
-          "range_evidence": [
-            0,
-            1
-          ],
-          "note": "total twist in half-turns: fed to Pi.Factor, so 1.0 = 180 degrees over the run"
-        }
-      },
-      "body": {
-        "components": [
-          {
-            "ref": "heights",
-            "type": "Series",
-            "guid": "e64c5fb1-845c-4ab1-8911-5f338516ba67",
-            "note": "Step=floor_height, Count=floors (Series -> Unit Z -> Move stacking idiom, E.9/E.20/E.29)"
-          },
-          {
-            "ref": "uz",
-            "type": "Unit Z",
-            "guid": "9103c240-a6a9-4223-9b42-dbd19bf38e2b"
-          },
-          {
-            "ref": "stack",
-            "type": "Move",
-            "guid": "e9eb1dcf-92f6-4d4d-84ae-96222d60f56b"
-          },
-          {
-            "ref": "const_one",
-            "type": "Panel",
-            "panel_text": "1"
-          },
-          {
-            "ref": "fm1",
-            "type": "Subtraction",
-            "guid": "9c007a04-d0d9-48e4-9da3-9ba142bc4d46",
-            "note": "floors - 1 via panel constant (panel-fed arithmetic constant idiom, E.29)"
-          },
-          {
-            "ref": "ang_step",
-            "type": "Division",
-            "guid": "9c85271f-89fa-4e9f-9f4a-d75802120ccc",
-            "note": "per-floor twist increment = twist / (floors - 1)"
-          },
-          {
-            "ref": "angles",
-            "type": "Series",
-            "guid": "e64c5fb1-845c-4ab1-8911-5f338516ba67"
-          },
-          {
-            "ref": "pi",
-            "type": "Pi",
-            "guid": "0d2ccfb3-9d41-4759-9452-da6a522c3eaa",
-            "note": "ibrahimxxs verbatim: slider 0..1 -> Pi.Factor -> Rotate.Angle (twist in half-turns)"
-          },
-          {
-            "ref": "rot",
-            "type": "Rotate",
-            "guid": "b7798b74-037e-4f0c-8ac7-dc1043d093e0"
-          },
-          {
-            "ref": "flat",
-            "type": "Flatten Tree",
-            "guid": "f80cfe18-9510-4b89-8301-8e58faf423bb",
-            "note": "flatten-into-Loft idiom recorded in E.17"
-          },
-          {
-            "ref": "skin",
-            "type": "Loft",
-            "guid": "a7a41d0a-2188-4f7a-82cc-1a2c4e4ec850"
-          }
-        ],
-        "wires": [
-          "slot:floor_height -> heights.Step",
-          "slot:floors -> heights.Count",
-          "heights.Series -> uz.Factor",
-          "slot:profile -> stack.Geometry",
-          "uz.Unit vector -> stack.Motion",
-          "slot:floors -> fm1.A",
-          "const_one.Panel -> fm1.B",
-          "slot:twist -> ang_step.A",
-          "fm1.Result -> ang_step.B",
-          "ang_step.Result -> angles.Step",
-          "slot:floors -> angles.Count",
-          "angles.Series -> pi.Factor",
-          "stack.Geometry -> rot.Geometry",
-          "pi.Output -> rot.Angle",
-          "rot.Geometry -> flat.Tree",
-          "flat.Tree -> skin.Curves"
-        ]
-      },
-      "outputs": {
-        "skin": "skin.Loft",
-        "floor_curves": "rot.Geometry"
-      },
-      "abstraction_note": "The rotate-then-loft core (Polygon -> Rotate(Pi.Factor slider 0.69 [0,1]) -> Loft) is verbatim from ibrahimxxs (guids + param names from that dump: Pi.Factor/Output, Rotate.Geometry/Angle, Loft.Curves). The Series-driven floor stack generalizes that file's 3 explicit levels using the 'Series -> Unit Z -> Move' stacking idiom evidenced in E.9/E.20/E.29 (Series.Step/Count/Series param names from the E.20/E.29 dumps); the per-floor angle Series (Step = twist/(floors-1)) is part of the same FLAGGED abstraction, realized with Division + panel-constant Subtraction (components/params evidenced in E.17/E.29) because Expression state is not settable over the bridge. Flatten Tree before Loft is the E.17 idiom. raplab's tower confirms the stage decomposition (LEVEL 1..3 profile clusters + BUILDING CORE + MATERIAL THICKNESS slider 0.003 [0,0.01]) but its cluster internals are opaque to gh_dump.",
-      "source_files": [
-        "ibrahimxxs-parametric-tower/Grasshopper.gh",
-        "raplab-parametric-tower/parametric_tower_V0.1.1.gh",
-        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.9 3D Grids.gh",
-        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.17 Warren Spatial Truss.gh",
-        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.20 Sections.gh",
-        "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.29 Terrain from Heighfield Image.gh"
-      ]
-    },
     "arch.waffle_ribs": {
       "id": "arch.waffle_ribs",
       "stage_name": "WAFFLE STRUCTURE",
@@ -1582,7 +1447,7 @@
             0,
             0.01
           ],
-          "note": "material thickness; raplab tower carries the same driver ('MATERIAL THICKNESS' 0.003)"
+          "note": "material thickness driver; corpus value 0.003 (WAFFLE STRUCTURES.gh)"
         }
       },
       "body": {
@@ -1637,8 +1502,7 @@
       },
       "notes": "Body is condensed: the corpus file runs ~300 components of tree bookkeeping (Shift Paths, Match Tree, Entwine) around this core; treat those as expansion details, not structure. Sheet nesting in corpus uses OpenNest (PLUGIN-DEPENDENT) - keep nesting out of the core template.",
       "source_files": [
-        "waffle-structure-cnc/WAFFLE STRUCTURES.gh",
-        "raplab-parametric-tower/parametric_tower_V0.1.1.gh"
+        "waffle-structure-cnc/WAFFLE STRUCTURES.gh"
       ]
     },
     "arch.sun_oriented_paneling": {

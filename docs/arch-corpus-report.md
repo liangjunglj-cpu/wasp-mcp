@@ -30,7 +30,7 @@ components from 107 architecturally-relevant dumps).
 | arch.spatial_truss | E.17 (single file, 80 components, fully traced) | Good |
 | arch.section_contours | E.20 + E.29 + terrain-mesh + WAFFLE (4 files, Brep\|Plane / Mesh\|Plane / Contour variants) | **Strong** |
 | arch.terrain_from_image | E.29 + terrain-mesh (heightfield + Delaunay variants) | Good |
-| arch.twist_tower | ibrahimxxs (rotate+loft core, verbatim) + raplab (stage decomposition, cluster internals opaque) + E.9 (Series-stack idiom). Series generalization of a 3-floor instance is an **abstraction, flagged in the template** | Moderate |
+| arch.twist_tower | **RETRACTED (v0.5.2)** — core evidence came from two unlicensed repos; removed from the shipped KB pending re-evidencing from licensed material (the E.9 Series-stack idiom remains valid evidence) | — |
 | arch.waffle_ribs | WAFFLE STRUCTURES.gh (complete workflow; body condensed from ~300 components of tree bookkeeping; OpenNest nesting excluded as plugin-dependent) | Good |
 | arch.sun_oriented_paneling | E.11 + E.12 (openings + tilted-panel siblings) | **Strong** |
 | arch.grid_box_field | E.7 + AM_001 p1–p3 (minimal + full live-stream build with random tilt/cull perturbation) | **Strong** |
@@ -49,9 +49,10 @@ Cross-cutting idioms the corpus repeats (worth macro-level reuse):
 
 ## Gaps (no corpus evidence — candidates for hand-authoring)
 
-1. **True twisting tower with floor slabs** — corpus has skin loft only; no
-   per-floor slab extraction (Contour on the loft would do it; combining
-   arch.twist_tower + arch.section_contours covers it, but no corpus file does).
+1. **Twist tower** — the template was retracted (v0.5.2, unlicensed evidence);
+   re-author a twist-tower definition from licensed idioms (E.9 Series stack +
+   Rotate/Pi/Loft, all evidenced in ParametricCamp files), validate it live,
+   and re-mine. Floor slabs (Contour on the loft) remain unevidenced too.
 2. **Diagrid on a closed tower surface** (wrap-around paneling with seam
    handling) — E.19 is an open surface; closed/periodic UV handling unevidenced.
 3. **Voronoi 3D / cellular volumes** (Populate 3D + Voronoi 3D) — users will ask

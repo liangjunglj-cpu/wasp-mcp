@@ -109,8 +109,11 @@ def test_parse_wire_rejects_prose():
 # ── knowledge base state ───────────────────────────────────────────────────
 
 
+# arch.twist_tower was retracted in v0.5.2: its core wiring was evidenced by
+# an unlicensed corpus repo (see wasp-mcp-lab/retracted/). Re-add once
+# re-evidenced from licensed material.
 UPGRADED = ["arch.attractor_scale_grid", "arch.spatial_truss",
-            "arch.section_contours", "arch.twist_tower",
+            "arch.section_contours",
             "wasp.stochastic_aggregation"]
 
 
@@ -391,7 +394,6 @@ MINIMAL_BINDINGS = {
     "arch.spatial_truss": {"start_support": {"rhino_ids": ["p-1"]},
                            "end_support": {"rhino_ids": ["p-2"]}},
     "arch.section_contours": {"solid": {"rhino_ids": ["brep-1"]}},
-    "arch.twist_tower": {"profile": {"rhino_ids": ["crv-1"]}},
 }
 
 

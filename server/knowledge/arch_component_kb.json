@@ -294,7 +294,7 @@
     "Construct Point": {
       "guid": "3581f42a-9592-4549-bd6b-1c0fc39d067b",
       "instances": 68,
-      "file_count": 28,
+      "file_count": 27,
       "files": [
         "computational-design-library/02-visual-programming/fundamentals.gh",
         "computational-design-library/09-waves/waves.gh",
@@ -304,7 +304,6 @@
         "computational-design-library/11-patterns/planting-pattern-xl.gh",
         "computational-design-library/12-attractor/wave-attractor.gh",
         "computational-design-library/14-biome/biome.gh",
-        "ibrahimxxs-parametric-tower/Grasshopper.gh",
         "parametriccamp-tutorialfiles/Algorithmic_Modeling/AM_002_LUmbracle/LUmbracle_p1_200521_WK.gh"
       ],
       "typical_feeds": [
@@ -1069,7 +1068,7 @@
     "Pi": {
       "guid": "0d2ccfb3-9d41-4759-9452-da6a522c3eaa",
       "instances": 32,
-      "file_count": 11,
+      "file_count": 10,
       "files": [
         "computational-design-library/02-visual-programming/fundamentals.gh",
         "computational-design-library/09-waves/waves.gh",
@@ -1077,7 +1076,6 @@
         "computational-design-library/11-patterns/planting-pattern.gh",
         "computational-design-library/11-patterns/planting-pattern-xl.gh",
         "computational-design-library/12-attractor/wave-attractor.gh",
-        "ibrahimxxs-parametric-tower/Grasshopper.gh",
         "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/3.3 Basic Arithmetic - Introduction to Parametric Modeling.gh",
         "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/3.4 Keeping your Definitions Tidy and Clean! - Introduction to Parametric Modeling.gh",
         "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/3.5 Advanced Arithmetic.gh"
@@ -1645,14 +1643,13 @@
     "Geometry": {
       "guid": "ac2bc2cb-70fb-4dd5-9c78-7e1ea97fe278",
       "instances": 19,
-      "file_count": 7,
+      "file_count": 6,
       "files": [
         "parametriccamp-tutorialfiles/Algorithmic_Modeling/AM_002_LUmbracle/LUmbracle_p2_200526_WK.gh",
         "parametriccamp-tutorialfiles/Algorithmic_Modeling/AM_004_VisualizingMotion/AM_004_VisualizingMotion.gh",
         "parametriccamp-tutorialfiles/Algorithmic_Modeling/AM_005_KochSnowflake/AM_005_KochSnowflake.gh",
         "parametriccamp-tutorialfiles/Algorithmic_Modeling/AM_006_SierpinskiTriangle/AM_006_SierpinskiTriangle.gh",
         "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.20 Sections.gh",
-        "raplab-parametric-tower/parametric_tower_V0.1.1.gh",
         "waffle-structure-cnc/WAFFLE STRUCTURES.gh"
       ],
       "typical_feeds": [
@@ -2059,13 +2056,12 @@
     "Cluster": {
       "guid": "f31d8d7a-7536-4ac8-9c96-fde6ecda4d0a",
       "instances": 15,
-      "file_count": 5,
+      "file_count": 4,
       "files": [
         "computational-design-library/11-patterns/lowpoly-planting.gh",
         "computational-design-library/14-biome/biome.gh",
         "computational-design-library/14-biome/ecosystem.gh",
-        "computational-design-library/14-biome/lowpoly-tree.gh",
-        "raplab-parametric-tower/parametric_tower_V0.1.1.gh"
+        "computational-design-library/14-biome/lowpoly-tree.gh"
       ],
       "typical_feeds": [
         {"target": "Cluster.Plane", "count": 8},
@@ -2222,14 +2218,13 @@
     "Rotate": {
       "guid": "b7798b74-037e-4f0c-8ac7-dc1043d093e0",
       "instances": 13,
-      "file_count": 9,
+      "file_count": 8,
       "files": [
         "computational-design-library/02-visual-programming/fundamentals.gh",
         "computational-design-library/07-point-clouds/point-cloud-planting.gh",
         "computational-design-library/08-grove/random-grove.gh",
         "computational-design-library/11-patterns/planting-pattern.gh",
         "computational-design-library/11-patterns/planting-pattern-xl.gh",
-        "ibrahimxxs-parametric-tower/Grasshopper.gh",
         "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/6.4 Transformations.gh",
         "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.10 Park Benches.gh",
         "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/E.21 Landscape with Random Vegetation.gh"
@@ -2519,9 +2514,8 @@
     "Loft": {
       "guid": "a7a41d0a-2188-4f7a-82cc-1a2c4e4ec850",
       "instances": 10,
-      "file_count": 9,
+      "file_count": 8,
       "files": [
-        "ibrahimxxs-parametric-tower/Grasshopper.gh",
         "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/4.4 Importing Rhino Geometry.gh",
         "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/4.5 NURBS Surfaces.gh",
         "parametriccamp-tutorialfiles/Intro_Parametric_Modeling/6.2 Planes.gh",
@@ -4062,20 +4056,6 @@
         {"source": "Subtraction.Result", "count": 1}
       ]
     },
-    "Gene Pool": {
-      "guid": "21553c44-ea62-475e-a8bb-62b2a3ee5ca5",
-      "instances": 4,
-      "file_count": 1,
-      "files": [
-        "raplab-parametric-tower/parametric_tower_V0.1.1.gh"
-      ],
-      "typical_feeds": [
-        {"target": "Cluster.List", "count": 4},
-        {"target": "Cluster.position", "count": 4}
-      ],
-      "typical_fed_by": [
-      ]
-    },
     "Tree Branch": {
       "guid": "3a710c1e-1809-4e19-8c15-82adce31cd62",
       "instances": 4,
@@ -4378,21 +4358,6 @@
         {"source": "Deconstruct Plane.Z-Axis", "count": 2},
         {"source": "Point.Point", "count": 1},
         {"source": "Unit Z.Unit vector", "count": 1}
-      ]
-    },
-    "Polygon": {
-      "guid": "845527a6-5cea-4ae9-a667-96ae1667a4e8",
-      "instances": 3,
-      "file_count": 1,
-      "files": [
-        "ibrahimxxs-parametric-tower/Grasshopper.gh"
-      ],
-      "typical_feeds": [
-        {"target": "Loft.Curves", "count": 2},
-        {"target": "Rotate.Geometry", "count": 1}
-      ],
-      "typical_fed_by": [
-        {"source": "Construct Point.Point", "count": 2}
       ]
     },
     "Edge Surface": {

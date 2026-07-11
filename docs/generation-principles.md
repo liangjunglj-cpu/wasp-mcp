@@ -61,12 +61,14 @@ A **stage template** is a mined-and-abstracted subgraph with declared SLOTS:
 
 `expand_template(template_id, bindings, x, y)` + `list_templates()` are live
 MCP tools (offline coverage: server/tests/test_v05.py). What shipped:
-1. The four prose-slot templates were upgraded to the machine-parseable
+1. The prose-slot templates were upgraded to the machine-parseable
    `slot:<name> -> <ref>.<Param>` wire syntax with GUIDs/param names taken
    from the corpus dumps: `arch.spatial_truss` (E.17, fully traced),
    `arch.section_contours` (E.20 core + optional Contour/layout tails),
-   `arch.twist_tower` (ibrahimxxs core; Series stack stays a FLAGGED
-   abstraction), plus `arch.attractor_scale_grid` (E.5.2).
+   plus `arch.attractor_scale_grid` (E.5.2). (`arch.twist_tower` was
+   upgraded too but RETRACTED in v0.5.2 — its core wiring was evidenced by
+   an unlicensed corpus repo; it returns once re-evidenced from licensed
+   material.)
    `arch.terrain_from_image` is marked **`expansion_blocked`** instead: the
    E.29 dump stores the heightmap as Image Sampler component state
    (values.FilePath), not a wire, and no bridge command can set it —
