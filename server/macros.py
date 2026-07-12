@@ -40,6 +40,17 @@ AGG_COUNT_IN = ["N", "NUM", "COUNT", "ITERATIONS"]
 AGG_SEED_IN = ["SEED", "S"]
 AGG_FIELD_IN = ["FIELD", "F"]
 AGG_RESET_IN = ["RESET", "RES"]
+AGG_MODE_IN = ["MODE"]
+AGG_GC_IN = ["GC"]
+# Global-constraint component outputs: Mesh Constraint → GC, Plane
+# Constraint → PC (knowledge param_aliases; the corpus wires both into the
+# aggregation's GC input).
+CONSTRAINT_OUT = ["GC", "PC"]
+# Aggregation MODE semantics (wasp src/wasp/core/aggregation.py: mode 1 =
+# local constraints only, 2 = global only, 3 = local+global; default 0 =
+# none). Corpus global-constraint examples run MODE = 2 — constraints wired
+# into GC are silently IGNORED unless the mode says to compute them.
+GLOBAL_CONSTRAINT_MODE = 2
 # Aggregation outputs are AGGR (the aggregation object) then PART_OUT (the
 # parts). ALL corpus geometry/transform extraction reads PART_OUT; AGGR only
 # feeds Aggregation Graph / Save Aggregation / Rules From Aggregation — so
@@ -857,6 +868,67 @@ def create_wasp_part(
     return placed
 
 
+# Rule From Text line: PART|CONN _ PART|CONN (connection indices numeric).
+_RULE_LINE_RX = re.compile(
+    r"^\s*([^|_>\s][^|>]*?)\s*\|\s*(\d+)\s*_\s*([^|_>\s][^|>]*?)\s*\|\s*(\d+)\s*$")
+
+
+def analyze_rule_grammar(rule_lines: Sequence[str]) -> List[str]:
+    """Non-fatal lints on a Rule From Text grammar; returns warning strings.
+
+    Two traps codified from the Wasp tutorial notes (docs/wasp-practices.md),
+    both corroborated by the corpus/source:
+      1. Rules are DIRECTIONAL (`A|0_B|1` places a new B on an existing A,
+         never the reverse). A grammar with no inverse for a rule can
+         exhaust its legal connections and stop well short of N — the
+         "closed loop" / stuck-aggregation trap. Deliberate one-way
+         hierarchies (slab→column grammars) are legitimate, so this is a
+         warning, not an error.
+      2. Wasp part names are case-sensitive: names differing only by case
+         are DIFFERENT parts, almost always a typo.
+    Unparseable lines are left to Wasp itself to reject — no warning here.
+    """
+    parsed: List[Tuple[str, str, str, str]] = []
+    for line in rule_lines:
+        m = _RULE_LINE_RX.match(str(line))
+        if m:
+            parsed.append((m.group(1), m.group(2), m.group(3), m.group(4)))
+
+    warnings: List[str] = []
+
+    have = set(parsed)
+    missing: List[str] = []
+    for a, ac, b, bc in parsed:
+        if (b, bc, a, ac) not in have:
+            inverse = f"{b}|{bc}_{a}|{ac}"
+            if inverse not in missing:
+                missing.append(inverse)
+    if missing:
+        warnings.append(
+            "Rules are directional; no inverse rule present for: "
+            + ", ".join(missing)
+            + ". One-way grammars can exhaust their legal connections and "
+            "stop short of N parts (the aggregation 'gets stuck'). Add the "
+            "inverse rule(s) if growth should continue from the new part "
+            "too; ignore this if the one-way sequence is deliberate "
+            "(e.g. slab→column hierarchies).")
+
+    by_lower: Dict[str, set] = {}
+    for a, _, b, _ in parsed:
+        by_lower.setdefault(a.lower(), set()).add(a)
+        by_lower.setdefault(b.lower(), set()).add(b)
+    collisions = sorted(
+        "/".join(sorted(v)) for v in by_lower.values() if len(v) > 1)
+    if collisions:
+        warnings.append(
+            "Part names differing only by case: "
+            + ", ".join(collisions)
+            + " — Wasp names are case-sensitive, so these address DIFFERENT "
+            "parts. Make the spelling match the part's NAME exactly.")
+
+    return warnings
+
+
 def define_rules(
     client: GHClient,
     registry: WaspRegistry,
@@ -880,6 +952,10 @@ def define_rules(
     the whole grammar (set_panel split_lines default true → one item per
     line); older bridges feed a panel's text as a single item, so each rule
     line gets its own panel, all appended into the rule text input.
+
+    The grammar is linted (analyze_rule_grammar) for missing inverse rules
+    and case-colliding part names; findings come back as a non-fatal
+    ``warnings`` list in the result, never as an error.
     """
     placed: Dict[str, Any] = {}
 
@@ -897,6 +973,8 @@ def define_rules(
             "directly into Graph-Grammar Aggregation RULES for "
             "\"P|c_P|c>node_node\" graph rules (run_aggregation "
             "mode=\"graph\").")
+
+    grammar_warnings = analyze_rule_grammar(rule_lines)
 
     zone_tracker = ZoneTracker()
     rules = add_wasp(client, registry, "rule_from_text", x, y)
@@ -961,6 +1039,8 @@ def define_rules(
     if org:
         placed["organization"] = {"stage": org}
 
+    if grammar_warnings:
+        placed["warnings"] = grammar_warnings
     placed["rules_output_param"] = param_ref(rules_out) if rules_out else "R"
     placed["zone"] = zone_tracker.rect()
     placed["all_ids"] = sorted(
@@ -980,6 +1060,7 @@ def run_aggregation(
     x: float = 0.0,
     y: float = 0.0,
     field_component_id: Optional[str] = None,
+    global_constraint_ids: Optional[Sequence[str]] = None,
 ) -> Dict[str, Any]:
     """Place a Wasp aggregation, wire it mode-appropriately, pulse RESET, solve.
 
@@ -990,7 +1071,16 @@ def run_aggregation(
       - "graph": PART/PREV/RULES/ID/RESET — NO N and NO seed (``count`` and
         ``seed`` are ignored); ``rule_id`` should be a PANEL carrying
         "P|c_P|c>node_node" graph rules wired directly into RULES (no Rule
-        From Text component in this language).
+        From Text component in this language). Graph mode also has NO
+        GC/MODE inputs — and performs NO collision checking at all
+        (aggregate_sequence in the Wasp source never calls collision_check).
+
+    ``global_constraint_ids``: Wasp global-constraint components (Plane
+    Constraint / Mesh Constraint) whose constraint output (PC / GC) is wired
+    into the aggregation's GC input. Because constraints wired into GC are
+    IGNORED in the default aggregation mode 0, a MODE slider set to
+    GLOBAL_CONSTRAINT_MODE (2 — global constraints computed) is placed and
+    wired automatically. Not available for mode="graph" (no such inputs).
 
     All wiring is sent with solve:false so the (stateful) aggregation never
     initializes from partial inputs; RESET is then pulsed automatically
@@ -1011,6 +1101,12 @@ def run_aggregation(
             "mode=\"field\" requires field_component_id (a component whose "
             "FIELD output feeds Field-driven Aggregation); build one with "
             "the Wasp field components first")
+    if mode == "graph" and global_constraint_ids:
+        raise ValueError(
+            "mode=\"graph\" does not support global_constraint_ids: "
+            "Graph-Grammar Aggregation has no GC/MODE inputs and performs "
+            "no collision or constraint checking — the grammar author "
+            "controls placement entirely")
 
     placed: Dict[str, Any] = {}
     zone_tracker = ZoneTracker()
@@ -1068,6 +1164,32 @@ def run_aggregation(
                                 agg["id"], param_ref(field_in))
         placed["field_source"] = field_component_id  # not placed by us
 
+    if global_constraint_ids:
+        gc_in = require_param(agg.get("inputs"), AGG_GC_IN,
+                              "aggregation GC input")
+        for cid in global_constraint_ids:
+            connect_with_candidates(client, cid, CONSTRAINT_OUT,
+                                    agg["id"], param_ref(gc_in))
+        placed["global_constraint_sources"] = list(global_constraint_ids)
+
+        # Constraints wired into GC are ignored unless the aggregation mode
+        # says to compute them (source: mode 2 = global, 3 = local+global;
+        # corpus examples run 2). Slider range 0..3 covers every mode the
+        # source defines.
+        mode_in = require_param(agg.get("inputs"), AGG_MODE_IN,
+                                "aggregation MODE input")
+        mode_slider = call_no_solve(client, "add_component", {
+            "type": "Number Slider", "x": x - 250, "y": y + 240,
+        })
+        zone_tracker.add(x - 250, y + 240)
+        placed["mode_slider_id"] = mode_slider["id"]
+        call_no_solve(client, "set_slider", {
+            "id": mode_slider["id"], "value": float(GLOBAL_CONSTRAINT_MODE),
+            "min": 0.0, "max": 3.0,
+        })
+        connect(client, mode_slider["id"], None, agg["id"],
+                param_ref(mode_in), source_index=0)
+
     # Automatic RESET pulse (backlog #2): the aggregation caches its internal
     # state on first solve, so drive RESET high for one solve and low again
     # before the final recompute.
@@ -1114,17 +1236,28 @@ def run_aggregation(
     # user-tweakable driver (sliders, reset) goes into a SEPARATE INPUTS
     # group with role nicknames — never magic values buried mid-graph.
     organization: Dict[str, Any] = {}
+    # With global constraints wired, the stage explainer gains the
+    # constraints note (MODE gating, soft/hard, seed-outside-zone fix) so a
+    # reader of the canvas learns why the extra slider exists.
+    stage_explainer_text: Optional[str] = None
+    if global_constraint_ids:
+        texts = load_stage_explainers()
+        parts = [texts.get(f"aggregation_{mode}"),
+                 texts.get("global_constraints")]
+        joined = "\n".join(t for t in parts if t)
+        stage_explainer_text = joined or None
     stage_org = _organize_quietly(
         client,
         ids=[agg["id"]],
         stage_name=STAGE_AGGREGATION,
         x=x, y=y - 110,
         explainer_key=f"aggregation_{mode}",
+        explainer_text=stage_explainer_text,
     )
     if stage_org:
         organization["stage"] = stage_org
 
-    input_keys = ("count_slider_id", "seed_slider_id",
+    input_keys = ("count_slider_id", "seed_slider_id", "mode_slider_id",
                   "reset_toggle_id", "reset_panel_id")
     input_ids = [placed[k] for k in input_keys if k in placed]
     if input_ids:
@@ -1133,6 +1266,8 @@ def run_aggregation(
             input_nicknames[placed["count_slider_id"]] = "part count"
         if "seed_slider_id" in placed:
             input_nicknames[placed["seed_slider_id"]] = "random seed"
+        if "mode_slider_id" in placed:
+            input_nicknames[placed["mode_slider_id"]] = "constraint mode"
         if "reset_toggle_id" in placed:
             input_nicknames[placed["reset_toggle_id"]] = "reset"
         if "reset_panel_id" in placed:

@@ -121,7 +121,9 @@ STOCHASTIC_INPUTS = [
     {"name": "Rules", "nickname": "RULES", "index": 1, "typeName": "Rule"},
     {"name": "Number of Parts", "nickname": "N", "index": 2, "typeName": "Integer"},
     {"name": "Random Seed", "nickname": "SEED", "index": 3, "typeName": "Integer"},
-    {"name": "Reset", "nickname": "RESET", "index": 4, "typeName": "Boolean"},
+    {"name": "Aggregation Mode", "nickname": "MODE", "index": 4, "typeName": "Integer"},
+    {"name": "Global Constraints", "nickname": "GC", "index": 5, "typeName": "Constraint"},
+    {"name": "Reset", "nickname": "RESET", "index": 6, "typeName": "Boolean"},
 ]
 
 
@@ -332,6 +334,94 @@ def test_run_aggregation_rejects_unknown_mode(fake_registry):
         macros.run_aggregation(FakeClient(), fake_registry,
                                ["p"], "r", 10, mode="quantum")
     assert excinfo.value.code == "invalid_mode"
+
+
+# ── global constraints (MODE gating — wasp core: mode 2/3 computes GC) ────
+
+
+def test_run_aggregation_global_constraints_wire_gc_and_mode(fake_registry):
+    client = FakeClient()
+    result = macros.run_aggregation(
+        client, fake_registry, ["part-A"], "rules-1", 50,
+        mode="stochastic",
+        global_constraint_ids=["mesh-const-1", "plane-const-1"],
+    )
+    conns = client.sent("connect_by_name")
+    # Every constraint id wired into GC (first output candidate is GC).
+    gc_conns = [c for c in conns if c["targetParam"] == "GC"]
+    assert {c["sourceId"] for c in gc_conns} == {"mesh-const-1",
+                                                 "plane-const-1"}
+    # MODE slider placed, set to 2 (constraints are IGNORED at mode 0),
+    # range covering the source-defined modes 0..3.
+    assert any(c["targetParam"] == "MODE" for c in conns)
+    mode_sets = [s for s in client.sent("set_slider")
+                 if s["id"] == result["mode_slider_id"]]
+    assert mode_sets and mode_sets[0]["value"] == 2.0
+    assert mode_sets[0]["max"] == 3.0
+    assert result["global_constraint_sources"] == ["mesh-const-1",
+                                                   "plane-const-1"]
+    # The slider we placed belongs to the macro's id manifest.
+    assert result["mode_slider_id"] in result["all_ids"]
+
+
+def test_run_aggregation_no_constraints_no_mode_slider(fake_registry):
+    client = FakeClient()
+    result = macros.run_aggregation(client, fake_registry,
+                                    ["part-A"], "rules-1", 50)
+    assert "mode_slider_id" not in result
+    assert not any(c["targetParam"] == "MODE"
+                   for c in client.sent("connect_by_name"))
+
+
+def test_run_aggregation_graph_mode_rejects_global_constraints(fake_registry):
+    with pytest.raises(ValueError) as excinfo:
+        macros.run_aggregation(FakeClient(), fake_registry,
+                               ["p"], "r", 10, mode="graph",
+                               global_constraint_ids=["c-1"])
+    assert "graph" in str(excinfo.value)
+
+
+# ── rule-grammar lints (directional-rule + case-sensitivity traps) ─────────
+
+
+def test_analyze_rule_grammar_warns_on_missing_inverse():
+    warnings = macros.analyze_rule_grammar(["HEX|0_CUBE|1"])
+    assert len(warnings) == 1
+    assert "CUBE|1_HEX|0" in warnings[0]
+    assert "directional" in warnings[0]
+
+
+def test_analyze_rule_grammar_quiet_when_both_directions_present():
+    assert macros.analyze_rule_grammar(["HEX|0_CUBE|1",
+                                        "CUBE|1_HEX|0"]) == []
+
+
+def test_analyze_rule_grammar_symmetric_self_rule_is_its_own_inverse():
+    assert macros.analyze_rule_grammar(["P|0_P|0"]) == []
+
+
+def test_analyze_rule_grammar_warns_on_case_collision():
+    warnings = macros.analyze_rule_grammar(["HEX|0_hex|1", "hex|1_HEX|0"])
+    assert len(warnings) == 1
+    assert "case-sensitive" in warnings[0]
+
+
+def test_analyze_rule_grammar_ignores_unparseable_lines():
+    # Malformed lines are Wasp's to reject; the lint stays quiet.
+    assert macros.analyze_rule_grammar(["not a rule", ""]) == []
+
+
+def test_define_rules_surfaces_warnings(fake_registry):
+    client = FakeClient()
+    result = macros.define_rules(client, fake_registry,
+                                 "HEX|0_HEX|1", ["part-A"])
+    assert any("HEX|1_HEX|0" in w for w in result["warnings"])
+
+
+def test_define_rules_no_warnings_key_when_clean(fake_registry):
+    result = macros.define_rules(FakeClient(), fake_registry,
+                                 "HEX|0_HEX|1\nHEX|1_HEX|0", ["part-A"])
+    assert "warnings" not in result
 
 
 def test_create_wasp_part_with_planes(fake_registry):

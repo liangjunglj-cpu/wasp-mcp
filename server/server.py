@@ -991,7 +991,11 @@ def define_rules(
 
     Returns:
         Ids of placed components incl. rules_component_id (pass as rule_id
-        to run_aggregation).
+        to run_aggregation). May include non-fatal "warnings": missing
+        inverse rules (rules are directional — a one-way grammar can exhaust
+        its legal connections and stop short of N) and part names differing
+        only by case (Wasp names are case-sensitive). Warnings never block
+        placement; relay them to the user.
     """
     try:
         part_ids = _require_list(parts_component_ids, "parts_component_ids")
@@ -1015,6 +1019,7 @@ def run_aggregation(
     x: float = 400.0,
     y: float = 100.0,
     field_component_id: Optional[str] = None,
+    global_constraint_ids: OptionalStrList = None,
 ) -> dict:
     """Place and run a Wasp aggregation.
 
@@ -1045,6 +1050,16 @@ def run_aggregation(
         y: Canvas y for the aggregation component.
         field_component_id: Component whose FIELD output drives a
             field-mode aggregation (required when mode="field").
+        global_constraint_ids: Optional Wasp global-constraint components
+            (Plane Constraint / Mesh Constraint ids; JSON array, a
+            JSON-encoded string is also accepted). Their constraint outputs
+            (PC / GC) are wired into the aggregation's GC input AND a MODE
+            slider set to 2 is placed automatically — global constraints
+            are ignored in the default mode 0. Not valid with mode="graph"
+            (no GC/MODE inputs; graph mode does no collision/constraint
+            checking at all). If a constrained aggregation places nothing,
+            the seed part likely sits outside the allowed zone — move it
+            with Wasp Transform Part.
 
     Returns:
         Ids of placed components incl. aggregation_id and the aggregation's
@@ -1053,6 +1068,8 @@ def run_aggregation(
     """
     try:
         ids = _require_list(part_ids, "part_ids")
+        constraint_ids = _coerce_list(global_constraint_ids,
+                                      "global_constraint_ids")
     except ValueError as exc:
         return _invalid(exc)
     try:
@@ -1060,6 +1077,7 @@ def run_aggregation(
             _client, _registry, ids, rule_id, count,
             seed=seed, mode=mode, x=x, y=y,
             field_component_id=field_component_id,
+            global_constraint_ids=constraint_ids,
         ))
     except (BridgeError, RegistryLookupError, ValueError) as exc:
         return _macro_error(exc)

@@ -376,9 +376,15 @@ Wire commands: `add_user_object`, `add_component`, `set_panel`,
   "rules_component_id": "guid",
   "grammar_panel_id": "guid",
   "rules_output_param": "R",
+  "warnings": ["Rules are directional; no inverse rule present for: ..."],
   "all_ids": ["guid", "guid"]
 }}
 ```
+
+`warnings` (only present when non-empty) is a non-fatal lint: missing
+inverse rules (rules are directional — one-way grammars can stop short of N)
+and part names differing only by case (Wasp is case-sensitive). Relay them
+to the user; deliberate one-way hierarchies can ignore the inverse warning.
 
 Pass `rules_component_id` as `rule_id` to `run_aggregation`.
 
@@ -396,16 +402,25 @@ and expire to start computing. Wire commands: `add_user_object`,
 | `seed` | int \| null | `null` | Seed slider, stochastic mode only. |
 | `mode` | str | `"stochastic"` | `"stochastic"` → `stochastic_aggregation`, `"field"` → `field_driven_aggregation`, `"graph"` → `graph_grammar_aggregation`. |
 | `x`, `y` | float | 400.0, 100.0 | |
+| `field_component_id` | str \| null | `null` | FIELD source, required when `mode="field"`. |
+| `global_constraint_ids` | list[str] \| null | `null` | Plane/Mesh Constraint component ids. Wired into GC + a MODE slider set to 2 is placed (constraints are ignored at the default mode 0). Rejected for `mode="graph"` (no GC/MODE inputs; graph mode does no collision/constraint checking). |
 
 ```json
 {"success": true, "result": {
   "aggregation_id": "guid",
   "count_slider_id": "guid",
   "seed_slider_id": "guid",
+  "mode_slider_id": "guid",
+  "global_constraint_sources": ["guid"],
   "aggregation_output_param": "PART",
   "all_ids": ["guid", "guid", "guid"]
 }}
 ```
+
+`mode_slider_id` / `global_constraint_sources` appear only when
+`global_constraint_ids` was given. If a constrained aggregation places
+nothing, the seed part sits outside the allowed zone — move it with Wasp
+Transform Part (see docs/wasp-practices.md §3).
 
 Note: this *starts* the solve; it does not wait. Long aggregations keep
 `solutionState: "running"` — see `get_aggregation` and troubleshooting.

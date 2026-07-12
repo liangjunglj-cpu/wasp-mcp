@@ -138,6 +138,29 @@ step (b) in the cookbook). `gh_canvas_state` returns each component's
 Wasp GhPython components also go red if the Wasp Python modules are missing —
 verify plain-GH Wasp works by hand if errors mention imports.
 
+## Aggregation stops well short of N parts
+
+Not a bridge fault — the rule grammar ran out of legal moves. Wasp rules are
+directional (`A|0_B|1` never implies `B|1_A|0`); a grammar without inverse
+rules can strand growth in small clusters once every open connection lacks a
+compatible rule ("closed loop" trap). `define_rules` returns a `warnings`
+list naming the missing inverses — add them if growth should continue both
+ways. Collisions also consume moves: densely self-intersecting parts
+legitimately stall early. See docs/wasp-practices.md §2.
+
+## Constrained aggregation ignores constraints, or places nothing
+
+Two distinct failures (docs/wasp-practices.md §3):
+
+- **Constraints ignored:** constraints wired into GC only compute when the
+  aggregation MODE input is 2 (global) or 3 (local+global); the default
+  mode 0 skips them silently. `run_aggregation` with `global_constraint_ids`
+  wires GC *and* places a MODE slider at 2 — if you wired GC by hand with the
+  low-level tools, check the MODE input.
+- **Nothing places at all:** the seed part sits outside the allowed zone, so
+  the aggregation cannot initialize. Move the seed into the valid region with
+  Wasp Transform Part (or move/flip the constraint) and reset.
+
 ## Macro failed halfway
 
 Macros place several components then wire them; a failure mid-way (e.g.

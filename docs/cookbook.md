@@ -41,7 +41,10 @@ the incoming part (Wasp `Rule(part1, conn1, part2, conn2)` semantics; rules
 are directional — write both directions if you want both).
 Part names in the grammar must match the `name` you gave `create_wasp_part`
 exactly (case-sensitive). More lines = more permitted attachments = richer,
-less predictable growth.
+less predictable growth. `define_rules` lints the grammar and returns
+non-fatal `warnings` for missing inverse rules and case-colliding names.
+For deeper authoring guidance (connection orientation, constraints, fields,
+geometry proxies) see docs/wasp-practices.md.
 
 > Note: the separator syntax (`|` between part and connection, `_` between the
 > two halves) belongs to Wasp's "Rules From Text" component, not to this
@@ -146,6 +149,29 @@ Notes:
   the data through the wire at all and use out="bake" instead.
 - `out="transforms"` requires the `deconstruct_part` UserObject (present in
   the standard Wasp install).
+
+## (g) Constrain the aggregation to a volume
+
+Global constraints crop growth to a buildable zone. Place the constraint
+component first, then hand its id to `run_aggregation`:
+
+> Place a Wasp Mesh Constraint with `gh_add_wasp_component` at (100, 500),
+> reference my closed Rhino mesh `<guid>` into a Geometry param with
+> `gh_set_geometry_ref`, and wire it into the constraint's GEO input. Then
+> run a stochastic aggregation with `run_aggregation`: parts `[<part_id>]`,
+> rules `<rules_component_id>`, 200 parts, and
+> `global_constraint_ids: ["<constraint_component_id>"]`.
+
+Notes:
+- `run_aggregation` wires the constraint output (Mesh Constraint `GC` /
+  Plane Constraint `PC`) into the aggregation's GC input **and sets the MODE
+  slider to 2 automatically** — constraints are silently ignored at the
+  default mode 0.
+- Multiple constraints intersect (a part must satisfy all of them). A void =
+  one mesh constraint set to inside + an intersecting one set to outside.
+- If zero parts place, the seed part is outside the allowed zone — move it
+  with Wasp Transform Part, or move/flip the constraint. More in
+  docs/wasp-practices.md §3 and troubleshooting.
 
 ## Bonus: save your work
 

@@ -449,6 +449,30 @@ live-regression finding #6 (cross-zone Point B match). No new wire command:
   the zone manifest. Unbound required slots and kind mismatches are typed
   errors BEFORE any canvas mutation. Bridge version gates as elsewhere.
 
+## Codified from tutorial-notes integration (2026-07-12 — binding)
+
+Source: Liang's tutorial-note summaries of the Wasp #101 series /
+masterclass, distilled into docs/wasp-practices.md. Prose guidance only —
+per corpus discipline it NEVER supplies wiring evidence; every behavioral
+change below was verified against the Wasp source or corpus first.
+
+1. **Aggregation MODE gates constraints** (wasp core aggregation.py: mode
+   1 = local only, 2 = global only, 3 = local+global, default 0 = none;
+   corpus global-constraint examples run MODE=2). `run_aggregation` gains
+   optional `global_constraint_ids`: each constraint output (Mesh Constraint
+   `GC` / Plane Constraint `PC`) is wired into the aggregation `GC` input
+   and a MODE slider (value 2, range 0–3) is placed and joined to the INPUTS
+   group as "constraint mode". Rejected with a typed ValueError for
+   mode="graph" (no GC/MODE inputs).
+2. **Graph-Grammar Aggregation performs NO collision checking**
+   (aggregate_sequence never calls collision_check) — codified in the
+   aggregation_graph stage explainer; the grammar author owns overlaps.
+3. **Rule-grammar lints (non-fatal)**: `define_rules` results may carry
+   `warnings` — missing inverse rules (rules are directional; one-way
+   grammars can exhaust legal connections and stop short of N) and part
+   names differing only by case (Wasp names are case-sensitive). Warnings
+   never block placement.
+
 ## Non-goals for v0.1
 
 DisCo commands, intent/pattern system from baseline (keep code but don't extend),
