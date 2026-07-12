@@ -161,6 +161,30 @@ Two distinct failures (docs/wasp-practices.md §3):
   the aggregation cannot initialize. Move the seed into the valid region with
   Wasp Transform Part (or move/flip the constraint) and reset.
 
+## Multi-field aggregation: everything follows one field / field-name error
+
+Wasp matches parts to fields **by name** (docs/wasp-practices.md §4). With
+several fields merged into FIELD:
+
+- A part with an empty FIELD input silently defaults to the **first** field
+  in the list — so "my second field does nothing" usually means no part
+  names it.
+- A part naming a field that isn't supplied is a hard component error
+  ("does not have a valid field name assigned").
+
+Fix: give every Field component a NAME, and put that name into each part's
+FIELD input — which only **Advanced Part** exposes (Basic Part has no FIELD
+input; that alone forces the Advanced Part switch for multi-channel work).
+
+## Part proportions don't match my catalog numbers
+
+Expected behavior, mostly (docs/wasp-practices.md §6): with LIM=False the
+NUM values are probabilities, and parts with more valid rules still win more
+placements; in field mode the field outranks the ratios entirely. Options:
+LIM=True makes NUM a hard stock (the aggregation then stops early when the
+catalog empties — that's the trade), or AD=True re-balances probabilities
+adaptively (experimental, and only works with LIM=False).
+
 ## Macro failed halfway
 
 Macros place several components then wire them; a failure mid-way (e.g.

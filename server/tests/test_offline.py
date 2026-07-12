@@ -123,7 +123,8 @@ STOCHASTIC_INPUTS = [
     {"name": "Random Seed", "nickname": "SEED", "index": 3, "typeName": "Integer"},
     {"name": "Aggregation Mode", "nickname": "MODE", "index": 4, "typeName": "Integer"},
     {"name": "Global Constraints", "nickname": "GC", "index": 5, "typeName": "Constraint"},
-    {"name": "Reset", "nickname": "RESET", "index": 6, "typeName": "Boolean"},
+    {"name": "Parts Catalog", "nickname": "CAT", "index": 6, "typeName": "Catalog"},
+    {"name": "Reset", "nickname": "RESET", "index": 7, "typeName": "Boolean"},
 ]
 
 
@@ -379,6 +380,38 @@ def test_run_aggregation_graph_mode_rejects_global_constraints(fake_registry):
                                ["p"], "r", 10, mode="graph",
                                global_constraint_ids=["c-1"])
     assert "graph" in str(excinfo.value)
+
+
+# ── parts catalog (stock/proportion control via the CAT input) ────────────
+
+
+def test_run_aggregation_wires_catalog_into_cat(fake_registry):
+    client = FakeClient()
+    result = macros.run_aggregation(
+        client, fake_registry, ["part-A"], "rules-1", 50,
+        catalog_component_id="catalog-1",
+    )
+    conns = client.sent("connect_by_name")
+    assert any(c["targetParam"] == "CAT" and c["sourceId"] == "catalog-1"
+               for c in conns)
+    assert result["catalog_source"] == "catalog-1"
+
+
+def test_run_aggregation_no_catalog_no_cat_wire(fake_registry):
+    client = FakeClient()
+    result = macros.run_aggregation(client, fake_registry,
+                                    ["part-A"], "rules-1", 50)
+    assert "catalog_source" not in result
+    assert not any(c["targetParam"] == "CAT"
+                   for c in client.sent("connect_by_name"))
+
+
+def test_run_aggregation_graph_mode_rejects_catalog(fake_registry):
+    with pytest.raises(ValueError) as excinfo:
+        macros.run_aggregation(FakeClient(), fake_registry,
+                               ["p"], "r", 10, mode="graph",
+                               catalog_component_id="catalog-1")
+    assert "CAT" in str(excinfo.value)
 
 
 # ── rule-grammar lints (directional-rule + case-sensitivity traps) ─────────

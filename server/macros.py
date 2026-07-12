@@ -42,6 +42,9 @@ AGG_FIELD_IN = ["FIELD", "F"]
 AGG_RESET_IN = ["RESET", "RES"]
 AGG_MODE_IN = ["MODE"]
 AGG_GC_IN = ["GC"]
+AGG_CAT_IN = ["CAT"]
+# Parts Catalog output (param_aliases; corpus wires CAT -> aggregation CAT).
+CATALOG_OUT = ["CAT"]
 # Global-constraint component outputs: Mesh Constraint → GC, Plane
 # Constraint → PC (knowledge param_aliases; the corpus wires both into the
 # aggregation's GC input).
@@ -1061,6 +1064,7 @@ def run_aggregation(
     y: float = 0.0,
     field_component_id: Optional[str] = None,
     global_constraint_ids: Optional[Sequence[str]] = None,
+    catalog_component_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Place a Wasp aggregation, wire it mode-appropriately, pulse RESET, solve.
 
@@ -1081,6 +1085,20 @@ def run_aggregation(
     IGNORED in the default aggregation mode 0, a MODE slider set to
     GLOBAL_CONSTRAINT_MODE (2 — global constraints computed) is placed and
     wired automatically. Not available for mode="graph" (no such inputs).
+
+    ``catalog_component_id``: a Wasp Parts Catalog component whose CAT
+    output is wired into the aggregation's CAT input (stock/proportion
+    control). Catalog semantics (Wasp source, Parts Catalog component):
+    LIM=False (default) treats NUM as proportional probabilities, LIM=True
+    as hard stock — the aggregation may stop before N when the catalog
+    empties; AD (adaptive re-balancing) works ONLY with LIM=False. Not
+    available for mode="graph" (no CAT input).
+
+    Field mode with MULTIPLE named fields (source-verified): each part
+    follows the field named in its FIELD input (Advanced Part); a part
+    without a name silently defaults to the FIRST field, and a part naming
+    a nonexistent field is a component error — assign names when merging
+    several fields into ``field_component_id``'s upstream.
 
     All wiring is sent with solve:false so the (stateful) aggregation never
     initializes from partial inputs; RESET is then pulsed automatically
@@ -1107,6 +1125,11 @@ def run_aggregation(
             "Graph-Grammar Aggregation has no GC/MODE inputs and performs "
             "no collision or constraint checking — the grammar author "
             "controls placement entirely")
+    if mode == "graph" and catalog_component_id:
+        raise ValueError(
+            "mode=\"graph\" does not support catalog_component_id: "
+            "Graph-Grammar Aggregation has no CAT input — the grammar "
+            "itself decides exactly which parts get placed")
 
     placed: Dict[str, Any] = {}
     zone_tracker = ZoneTracker()
@@ -1163,6 +1186,13 @@ def run_aggregation(
         connect_with_candidates(client, field_component_id, FIELD_OUT,
                                 agg["id"], param_ref(field_in))
         placed["field_source"] = field_component_id  # not placed by us
+
+    if catalog_component_id:
+        cat_in = require_param(agg.get("inputs"), AGG_CAT_IN,
+                               "aggregation CAT input")
+        connect_with_candidates(client, catalog_component_id, CATALOG_OUT,
+                                agg["id"], param_ref(cat_in))
+        placed["catalog_source"] = catalog_component_id  # not placed by us
 
     if global_constraint_ids:
         gc_in = require_param(agg.get("inputs"), AGG_GC_IN,

@@ -404,6 +404,7 @@ and expire to start computing. Wire commands: `add_user_object`,
 | `x`, `y` | float | 400.0, 100.0 | |
 | `field_component_id` | str \| null | `null` | FIELD source, required when `mode="field"`. |
 | `global_constraint_ids` | list[str] \| null | `null` | Plane/Mesh Constraint component ids. Wired into GC + a MODE slider set to 2 is placed (constraints are ignored at the default mode 0). Rejected for `mode="graph"` (no GC/MODE inputs; graph mode does no collision/constraint checking). |
+| `catalog_component_id` | str \| null | `null` | Parts Catalog component id, wired into CAT. LIM=False (default) = NUM as proportions; LIM=True = hard stock (may stop before N); AD only works with LIM=False. Rejected for `mode="graph"` (no CAT input). |
 
 ```json
 {"success": true, "result": {

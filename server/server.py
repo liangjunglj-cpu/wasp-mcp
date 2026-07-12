@@ -1020,6 +1020,7 @@ def run_aggregation(
     y: float = 100.0,
     field_component_id: Optional[str] = None,
     global_constraint_ids: OptionalStrList = None,
+    catalog_component_id: Optional[str] = None,
 ) -> dict:
     """Place and run a Wasp aggregation.
 
@@ -1060,6 +1061,15 @@ def run_aggregation(
             checking at all). If a constrained aggregation places nothing,
             the seed part likely sits outside the allowed zone — move it
             with Wasp Transform Part.
+        catalog_component_id: Optional Wasp Parts Catalog component id;
+            its CAT output is wired into the aggregation's CAT input for
+            stock/proportion control. LIM=False (default) = NUM values are
+            proportional probabilities; LIM=True = hard stock (aggregation
+            may stop before N when the catalog empties); AD (adaptive
+            re-balancing) works only with LIM=False. Not valid with
+            mode="graph" (no CAT input). Note: proportions are least
+            accurate in field mode — the field outranks the ratios; use
+            LIM or AD there.
 
     Returns:
         Ids of placed components incl. aggregation_id and the aggregation's
@@ -1078,6 +1088,7 @@ def run_aggregation(
             seed=seed, mode=mode, x=x, y=y,
             field_component_id=field_component_id,
             global_constraint_ids=constraint_ids,
+            catalog_component_id=catalog_component_id,
         ))
     except (BridgeError, RegistryLookupError, ValueError) as exc:
         return _macro_error(exc)

@@ -472,6 +472,22 @@ change below was verified against the Wasp source or corpus first.
    grammars can exhaust legal connections and stop short of N) and part
    names differing only by case (Wasp names are case-sensitive). Warnings
    never block placement.
+4. **Parts Catalog wiring** (batch 2, same date): `run_aggregation` gains
+   optional `catalog_component_id` — the catalog's CAT output is wired into
+   the aggregation CAT input (corpus pattern parts_catalog). Semantics from
+   the Parts Catalog component source: LIM=False (default) → NUM as
+   proportional probabilities; LIM=True → hard stock, aggregation may stop
+   before N; AD (adaptive) works ONLY with LIM=False. Rejected for
+   mode="graph" (no CAT input).
+5. **Multi-channel fields are name-matched** (Field-driven Aggregation
+   component source): with >1 field, each part follows the field named in
+   its FIELD input (Advanced Part only); a part with no name defaults to
+   the FIRST field, an unknown name is a component error. Codified in the
+   aggregation_field stage explainer and troubleshooting.
+6. **Graph-grammar left-half IDs** (aggregate_sequence source): after the
+   first rule, the left half of `X|c_TYPE|c>id_id` references an assigned
+   part ID, not a part type — the addressability that makes hand-crafted
+   sequences possible. Documented in docs/wasp-practices.md §2.
 
 ## Non-goals for v0.1
 

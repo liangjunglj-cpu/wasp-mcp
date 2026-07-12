@@ -173,6 +173,22 @@ Notes:
   with Wasp Transform Part, or move/flip the constraint. More in
   docs/wasp-practices.md §3 and troubleshooting.
 
+## (h) Control part proportions / stock with a Parts Catalog
+
+> Place a Wasp Parts Catalog with `gh_add_wasp_component` at (100, 650), wire
+> my part components into its PART input, and feed a panel "30\n70" into NUM.
+> Then run the stochastic aggregation as in (e) but with
+> `catalog_component_id: "<catalog_id>"`.
+
+Notes:
+- LIM=False (default): NUM values are *proportions* (approximate — parts
+  with more valid rules still win more placements). LIM=True: hard stock;
+  the aggregation stops early once the catalog is empty, whatever N says.
+- AD=True re-balances probabilities adaptively (experimental) and only
+  works with LIM=False.
+- In field mode the field outranks the ratios — use LIM or AD there. See
+  docs/wasp-practices.md §6.
+
 ## Bonus: save your work
 
 > Save the current Grasshopper definition to
