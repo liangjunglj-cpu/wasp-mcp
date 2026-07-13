@@ -22,3 +22,6 @@ vendor/
 desktop.ini
 Thumbs.db
 .DS_Store
+
+# python build artifacts
+server/dist/
