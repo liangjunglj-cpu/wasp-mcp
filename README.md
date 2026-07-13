@@ -41,6 +41,25 @@ Properties → **Unblock**, restart Rhino.
 
 ## Step 2 — Install the MCP server (Claude side)
 
+The server is on PyPI as
+[`wasp-mcp-server`](https://pypi.org/project/wasp-mcp-server/) — no clone
+needed. Add this under `mcpServers` in
+`%APPDATA%\Claude\claude_desktop_config.json` (Claude Desktop), or run
+`claude mcp add WaspMCP -- uvx wasp-mcp-server` (Claude Code):
+
+```json
+{
+  "mcpServers": {
+    "WaspMCP": {
+      "command": "uvx",
+      "args": ["wasp-mcp-server"]
+    }
+  }
+}
+```
+
+### Developer alternative: run from a checkout
+
 Clone this repo (or download and extract the release source zip), then from
 the repo root in PowerShell:
 
